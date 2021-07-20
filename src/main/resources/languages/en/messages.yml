@@ -206,6 +206,7 @@ messages:
     wizard: '&a&oYour Talisman has given you a better Fortune Level but maybe also lowered some other Enchantment Levels'
     caveman: '&a&oYour Talisman gave you haste'
     wise: '&a&oYour Talisman has doubled your experience drops'
+    telekinesis: '&a&oYour Talisman moved the items to your inventory'
 
   soulbound-rune:
     fail: '&cYou can only bind one item to your soul at a time.'

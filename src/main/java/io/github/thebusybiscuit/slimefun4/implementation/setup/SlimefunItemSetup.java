@@ -878,6 +878,11 @@ public final class SlimefunItemSetup {
         false, false, "wise", 20)
         .register(plugin);
 
+        new Talisman(SlimefunItems.TALISMAN_TELEKINESIS,
+        new ItemStack[] { SlimefunItems.MAGIC_LUMP_3, null, SlimefunItems.MAGIC_LUMP_3, SlimefunItems.INFUSED_MAGNET, SlimefunItems.TALISMAN_MINER, SlimefunItems.INFUSED_MAGNET, SlimefunItems.MAGIC_LUMP_3, null, SlimefunItems.MAGIC_LUMP_3},
+        false, false, "telekinesis", 100)
+        .register(plugin);
+
         new SlimefunItem(categories.resources, SlimefunItems.GILDED_IRON, RecipeType.SMELTERY,
         new ItemStack[] {SlimefunItems.GOLD_24K, SlimefunItems.IRON_DUST, null, null, null, null, null, null, null})
         .register(plugin);

@@ -2,6 +2,7 @@ package io.github.thebusybiscuit.slimefun4.implementation.listeners;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -12,6 +13,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.ArmorStand;
@@ -41,13 +43,16 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.thebusybiscuit.slimefun4.api.events.AncientAltarCraftEvent;
+import io.github.thebusybiscuit.slimefun4.api.events.ExplosiveToolBreakBlocksEvent;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.magical.talismans.MagicianTalisman;
 import io.github.thebusybiscuit.slimefun4.implementation.items.magical.talismans.Talisman;
 import io.github.thebusybiscuit.slimefun4.implementation.settings.TalismanEnchantment;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 /**
  * This {@link Listener} is responsible for handling any {@link Event}
@@ -107,47 +112,6 @@ public class TalismanListener implements Listener {
         }
     }
 
-    private void onProjectileDamage(@Nonnull EntityDamageByEntityEvent e) {
-        // "Fixes" #1022 - We just ignore Tridents now.
-        if (e.getDamager() instanceof Projectile && !(e.getDamager() instanceof Trident)) {
-            Projectile projectile = (Projectile) e.getDamager();
-
-            if (Talisman.trigger(e, SlimefunItems.TALISMAN_WHIRLWIND)) {
-                Player p = (Player) e.getEntity();
-                returnProjectile(p, projectile);
-            }
-        }
-    }
-
-    /**
-     * This method is used for the {@link Talisman} of the whirlwind, it returns a copy
-     * of a {@link Projectile} that was fired at a {@link Player}.
-     * 
-     * @param p
-     *            The {@link Player} who was hit
-     * @param projectile
-     *            The {@link Projectile} that hit this {@link Player}
-     */
-    private void returnProjectile(@Nonnull Player p, @Nonnull Projectile projectile) {
-        Vector direction = p.getEyeLocation().getDirection().multiply(2.0);
-        Location loc = p.getEyeLocation().add(direction.getX(), direction.getY(), direction.getZ());
-
-        Projectile returnedProjectile = (Projectile) p.getWorld().spawnEntity(loc, projectile.getType());
-        returnedProjectile.setShooter(projectile.getShooter());
-        returnedProjectile.setVelocity(direction);
-
-        if (projectile instanceof AbstractArrow) {
-            AbstractArrow firedArrow = (AbstractArrow) projectile;
-            AbstractArrow returnedArrow = (AbstractArrow) returnedProjectile;
-
-            returnedArrow.setDamage(firedArrow.getDamage());
-            returnedArrow.setPickupStatus(firedArrow.getPickupStatus());
-            returnedArrow.setPierceLevel(firedArrow.getPierceLevel());
-        }
-
-        projectile.remove();
-    }
-
     @EventHandler(ignoreCancelled = true)
     public void onKill(EntityDeathEvent e) {
         if (e.getDrops().isEmpty() || e.getEntity().getKiller() == null) {
@@ -178,45 +142,6 @@ public class TalismanListener implements Listener {
                 }
             }
         }
-    }
-
-    @Nonnull
-    @ParametersAreNonnullByDefault
-    private Collection<ItemStack> getExtraDrops(LivingEntity entity, Collection<ItemStack> drops) {
-        List<ItemStack> items = new ArrayList<>(drops);
-
-        // Prevent duplication of items stored inside a Horse's chest
-        if (entity instanceof ChestedHorse) {
-            ChestedHorse horse = (ChestedHorse) entity;
-
-            if (horse.isCarryingChest()) {
-                // The chest is not included in getStorageContents()
-                items.remove(new ItemStack(Material.CHEST));
-
-                for (ItemStack item : horse.getInventory().getStorageContents()) {
-                    items.remove(item);
-                }
-            }
-        }
-
-        /*
-         * WARNING: This check is broken as entities now set their
-         * equipment to NULL before calling the event!
-         * 
-         * It prevents duplication of handheld items or armor.
-         */
-        EntityEquipment equipment = entity.getEquipment();
-
-        if (equipment != null) {
-            for (ItemStack item : equipment.getArmorContents()) {
-                items.remove(item);
-            }
-
-            items.remove(equipment.getItemInMainHand());
-            items.remove(equipment.getItemInOffHand());
-        }
-
-        return items;
     }
 
     @EventHandler
@@ -347,8 +272,8 @@ public class TalismanListener implements Listener {
 
                         // We do not want to dupe blocks
                         if (!droppedItem.getType().isBlock()) {
-                            int amount = Math.max(1, (dropAmount * 2) - droppedItem.getAmount());
-                            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new CustomItem(droppedItem, amount));
+                            droppedItem.setAmount(Math.max(1, dropAmount * 2));
+                            drop.setItemStack(droppedItem);
                             doubledDrops = true;
                         }
                     }
@@ -365,13 +290,153 @@ public class TalismanListener implements Listener {
                 }
             }
         }
+
+        /* Has to be after Talisman of Miner otherwise it wont double drops */
+        if (Talisman.trigger(e, SlimefunItems.TALISMAN_TELEKINESIS, false)) {
+            List<Item> drops = e.getItems();
+
+            for (int i = 0; i < drops.size(); i++) {
+                HashMap<Integer, ItemStack> failedDrops = e.getPlayer().getInventory().addItem(drops.get(i).getItemStack());
+
+                if (failedDrops.size() > 0) {
+                    e.getItems().get(i).setItemStack(failedDrops.get(0));
+                } else {
+                    e.getItems().remove(i);
+                }
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onExplosivePickBreak(ExplosiveToolBreakBlocksEvent e) {
+        List<Block> blocks = e.getAdditionalBlocks();
+        blocks.add(e.getPrimaryBlock());
+
+        for (Block b : blocks) {
+            Collection<ItemStack> drops = b.getDrops(e.getItemInHand());
+
+            for (ItemStack drop : drops) {
+                HashMap<Integer, ItemStack> failedDrops = e.getPlayer().getInventory().addItem(drop);
+
+                if (failedDrops.size() > 0) {
+                    // replace existing drops to new ItemStack
+                } else {
+                    // Find a way to remove drops
+                }
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onAncientAltarCraft(AncientAltarCraftEvent e) {
+        HashMap<Integer, ItemStack> failedDrops = e.getPlayer().getInventory().addItem(e.getItem());
+
+        if (failedDrops.size() > 0) {
+            e.setItem(failedDrops.get(0));
+        } else {
+            e.setCancelled(true);
+        }
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         if (SlimefunTag.CAVEMAN_TALISMAN_TRIGGERS.isTagged(e.getBlock().getType())) {
             Talisman.trigger(e, SlimefunItems.TALISMAN_CAVEMAN);
+        } else if (Talisman.trigger(e, SlimefunItems.TALISMAN_TELEKINESIS)) {
+            SlimefunItem sfItem = BlockStorage.check(e.getBlock());
+
+            if (sfItem != null) {
+                for (ItemStack drop : sfItem.getDrops(e.getPlayer())) {
+                    HashMap<Integer, ItemStack> failedDrops = e.getPlayer().getInventory().addItem(drop);
+
+                    if (failedDrops.size() > 0) {
+                        e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), failedDrops.get(0));
+                    }
+                }
+
+                e.setDropItems(false);
+            }
         }
+    }
+
+    @Nonnull
+    @ParametersAreNonnullByDefault
+    private Collection<ItemStack> getExtraDrops(LivingEntity entity, Collection<ItemStack> drops) {
+        List<ItemStack> items = new ArrayList<>(drops);
+
+        // Prevent duplication of items stored inside a Horse's chest
+        if (entity instanceof ChestedHorse) {
+            ChestedHorse horse = (ChestedHorse) entity;
+
+            if (horse.isCarryingChest()) {
+                // The chest is not included in getStorageContents()
+                items.remove(new ItemStack(Material.CHEST));
+
+                for (ItemStack item : horse.getInventory().getStorageContents()) {
+                    items.remove(item);
+                }
+            }
+        }
+
+        /*
+         * WARNING: This check is broken as entities now set their
+         * equipment to NULL before calling the event!
+         * 
+         * It prevents duplication of handheld items or armor.
+         */
+        EntityEquipment equipment = entity.getEquipment();
+
+        if (equipment != null) {
+            for (ItemStack item : equipment.getArmorContents()) {
+                items.remove(item);
+            }
+
+            items.remove(equipment.getItemInMainHand());
+            items.remove(equipment.getItemInOffHand());
+        }
+
+        return items;
+    }
+
+    private void onProjectileDamage(@Nonnull EntityDamageByEntityEvent e) {
+        // "Fixes" #1022 - We just ignore Tridents now.
+        if (e.getDamager() instanceof Projectile && !(e.getDamager() instanceof Trident)) {
+            Projectile projectile = (Projectile) e.getDamager();
+
+            if (Talisman.trigger(e, SlimefunItems.TALISMAN_WHIRLWIND)) {
+                Player p = (Player) e.getEntity();
+                returnProjectile(p, projectile);
+            }
+        }
+    }
+
+    /**
+     * This method is used for the {@link Talisman} of the whirlwind, it returns a copy
+     * of a {@link Projectile} that was fired at a {@link Player}.
+     * 
+     * @param p
+     *            The {@link Player} who was hit
+     * @param projectile
+     *            The {@link Projectile} that hit this {@link Player}
+     */
+    private void returnProjectile(@Nonnull Player p, @Nonnull Projectile projectile) {
+        Vector direction = p.getEyeLocation().getDirection().multiply(2.0);
+        Location loc = p.getEyeLocation().add(direction.getX(), direction.getY(), direction.getZ());
+
+        Projectile returnedProjectile = (Projectile) p.getWorld().spawnEntity(loc, projectile.getType());
+        returnedProjectile.setShooter(projectile.getShooter());
+        returnedProjectile.setVelocity(direction);
+
+        if (projectile instanceof AbstractArrow) {
+            AbstractArrow firedArrow = (AbstractArrow) projectile;
+            AbstractArrow returnedArrow = (AbstractArrow) returnedProjectile;
+
+            returnedArrow.setDamage(firedArrow.getDamage());
+            returnedArrow.setPickupStatus(firedArrow.getPickupStatus());
+            returnedArrow.setPierceLevel(firedArrow.getPierceLevel());
+        }
+
+        projectile.remove();
     }
 
     private int getAmountWithFortune(@Nonnull Material type, int fortuneLevel) {

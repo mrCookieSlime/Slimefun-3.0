@@ -315,5 +315,4 @@ public class Talisman extends SlimefunItem {
 
         return null;
     }
-
 }

@@ -103,5 +103,4 @@ public class AncientAltarCraftEvent extends PlayerEvent implements Cancellable {
     public HandlerList getHandlers() {
         return getHandlerList();
     }
-
 }
