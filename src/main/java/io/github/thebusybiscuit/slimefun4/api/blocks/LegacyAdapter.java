@@ -1,67 +1,39 @@
-package me.mrCookieSlime.Slimefun.api;
+package io.github.thebusybiscuit.slimefun4.api.blocks;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 
 /**
- * This class is used to speed up parsing of a {@link JsonObject} that is stored at
- * a given {@link Location}.
  * 
- * This simply utilises a {@link HashMap} to cache the data and then provides the same getters
- * as a normal {@link Config}.
- * 
- * @author creator3
- * 
- * @see BlockStorage
+ * @deprecated This should not be used, it only serves the purpose of supporting legacy code
  *
  */
 @Deprecated
-public class BlockInfoConfig extends Config {
+class LegacyAdapter extends Config {
 
-    private final Map<String, String> data;
+    private final SlimefunBlockData data;
 
-    public BlockInfoConfig() {
-        this(new HashMap<>());
-    }
-
-    public BlockInfoConfig(Map<String, String> data) {
+    LegacyAdapter(@Nonnull SlimefunBlockData data) {
         super(null, null);
         this.data = data;
     }
 
-    @Nonnull
-    public Map<String, String> getMap() {
-        return data;
-    }
-
     @Override
     public void setValue(String path, Object value) {
-        if (value != null && !(value instanceof String)) {
-            throw new UnsupportedOperationException("Can't set \"" + path + "\" to \"" + value + "\" (type: " + value.getClass().getSimpleName() + ") because BlockInfoConfig only supports Strings");
-        }
-
-        if (value == null) {
-            data.remove(path);
-        } else {
-            data.put(path, (String) value);
-        }
+        data.setValue(path, value);
     }
 
     @Override
     public boolean contains(String path) {
-        return data.containsKey(path);
+        return data.hasValue(path);
     }
 
     @Override
@@ -71,12 +43,12 @@ public class BlockInfoConfig extends Config {
 
     @Override
     public String getString(String path) {
-        return data.get(path);
+        return data.getValue(path);
     }
 
     @Override
     public Set<String> getKeys() {
-        return data.keySet();
+        throw new UnsupportedOperationException("Cannot get keys for BlockInfoConfig");
     }
 
     @Override

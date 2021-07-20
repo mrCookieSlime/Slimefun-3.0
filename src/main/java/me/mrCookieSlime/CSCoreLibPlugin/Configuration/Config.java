@@ -11,8 +11,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
  * An old remnant of CS-CoreLib.
  * This will be removed once we updated everything.
  * Don't look at the code, it will be gone soon, don't worry.
+ * 
+ * @deprecated Do not use this. At all...
  *
  */
+@Deprecated
 public class Config {
 
     private final File file;

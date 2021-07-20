@@ -323,18 +323,22 @@ public class TickerTask implements Runnable {
     public void enableTicker(@Nonnull Location l) {
         Validate.notNull(l, "Location cannot be null!");
 
-        ChunkPosition chunk = new ChunkPosition(l.getWorld(), l.getBlockX() >> 4, l.getBlockZ() >> 4);
-        Set<Location> newValue = new HashSet<>();
-        Set<Location> oldValue = tickingLocations.putIfAbsent(chunk, newValue);
+        try {
+            ChunkPosition chunk = new ChunkPosition(l.getWorld(), l.getBlockX() >> 4, l.getBlockZ() >> 4);
+            Set<Location> newValue = new HashSet<>();
+            Set<Location> oldValue = tickingLocations.putIfAbsent(chunk, newValue);
 
-        /**
-         * This is faster than doing computeIfAbsent(...)
-         * on a ConcurrentHashMap because it won't block the Thread for too long
-         */
-        if (oldValue != null) {
-            oldValue.add(l);
-        } else {
-            newValue.add(l);
+            /**
+             * This is faster than doing computeIfAbsent(...)
+             * on a ConcurrentHashMap because it won't block the Thread for too long
+             */
+            if (oldValue != null) {
+                oldValue.add(l);
+            } else {
+                newValue.add(l);
+            }
+        } catch (Exception x) {
+            SlimefunPlugin.logger().log(Level.SEVERE, "Exception while enabling a Ticker", x);
         }
     }
 
@@ -348,15 +352,19 @@ public class TickerTask implements Runnable {
     public void disableTicker(@Nonnull Location l) {
         Validate.notNull(l, "Location cannot be null!");
 
-        ChunkPosition chunk = new ChunkPosition(l.getWorld(), l.getBlockX() >> 4, l.getBlockZ() >> 4);
-        Set<Location> locations = tickingLocations.get(chunk);
+        try {
+            ChunkPosition chunk = new ChunkPosition(l.getWorld(), l.getBlockX() >> 4, l.getBlockZ() >> 4);
+            Set<Location> locations = tickingLocations.get(chunk);
 
-        if (locations != null) {
-            locations.remove(l);
+            if (locations != null) {
+                locations.remove(l);
 
-            if (locations.isEmpty()) {
-                tickingLocations.remove(chunk);
+                if (locations.isEmpty()) {
+                    tickingLocations.remove(chunk);
+                }
             }
+        } catch (Exception x) {
+            SlimefunPlugin.logger().log(Level.SEVERE, "Exception while disabling a Ticker", x);
         }
     }
 
