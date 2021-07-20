@@ -90,6 +90,11 @@
             <id>walshy-public</id>
             <url>https://repo.walshy.dev/public</url>
         </repository>
+        <repository>
+            <!-- Orebfuscator -->
+            <id>imprex-repo</id>
+            <url>https://imprex.ingrim4.me/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <build>
@@ -471,6 +476,20 @@
             <groupId>com.github.LoneDev6</groupId>
             <artifactId>itemsadder-api</artifactId>
             <version>2.3.8</version>
+            <scope>provided</scope>
+
+            <exclusions>
+                <exclusion>
+                    <!-- We don't need any of the dependencies -->
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.imprex</groupId>
+            <artifactId>orebfuscator-api</artifactId>
+            <version>1.0.0</version>
             <scope>provided</scope>
 
             <exclusions>

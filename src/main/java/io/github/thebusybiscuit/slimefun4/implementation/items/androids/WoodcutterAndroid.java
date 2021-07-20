@@ -19,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import io.github.thebusybiscuit.cscorelib2.blocks.Vein;
 import io.github.thebusybiscuit.cscorelib2.protection.ProtectableAction;
 import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
+import io.github.thebusybiscuit.slimefun4.api.events.AndroidBlockBreakEvent;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -48,15 +49,19 @@ public class WoodcutterAndroid extends ProgrammableAndroid {
             List<Block> list = Vein.find(target, MAX_REACH, block -> Tag.LOGS.isTagged(block.getType()));
 
             if (!list.isEmpty()) {
-                Block log = list.get(list.size() - 1);
-                log.getWorld().playEffect(log.getLocation(), Effect.STEP_SOUND, log.getType());
+                AndroidBlockBreakEvent event = new AndroidBlockBreakEvent(target, list);
+                Bukkit.getServer().getPluginManager().callEvent(event);
 
-                OfflinePlayer owner = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "owner")));
-                if (SlimefunPlugin.getProtectionManager().hasPermission(owner, log.getLocation(), ProtectableAction.BREAK_BLOCK)) {
-                    breakLog(log, b, menu, face);
+                if (!event.isCancelled()) {
+                    Block log = event.getBlocks().get(event.getBlocks().size() - 1);
+                    log.getWorld().playEffect(log.getLocation(), Effect.STEP_SOUND, log.getType());
+
+                    OfflinePlayer owner = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "owner")));
+                    if (SlimefunPlugin.getProtectionManager().hasPermission(owner, log.getLocation(), ProtectableAction.BREAK_BLOCK)) {
+                        breakLog(log, b, menu, face);
+                    }
+                    return false;
                 }
-
-                return false;
             }
         }
 

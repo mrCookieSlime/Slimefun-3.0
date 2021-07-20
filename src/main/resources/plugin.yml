@@ -18,6 +18,7 @@ softdepend:
 - ClearLag
 - mcMMO
 - ItemsAdder
+- Orebfuscator
 
 # We hook into these plugins too, but they depend on Slimefun.
 loadBefore:

@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.bukkit.Axis;
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -16,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.cscorelib2.blocks.Vein;
 import io.github.thebusybiscuit.cscorelib2.protection.ProtectableAction;
+import io.github.thebusybiscuit.slimefun4.api.events.PlayerBlockBreakEvent;
 import io.github.thebusybiscuit.slimefun4.core.attributes.NotPlaceable;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ToolUseHandler;
@@ -75,9 +77,14 @@ public class LumberAxe extends SlimefunItem implements NotPlaceable {
                         logs.remove(block);
                     }
 
-                    for (Block b : logs) {
-                        if (!BlockStorage.hasBlockInfo(b) && SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), b, ProtectableAction.BREAK_BLOCK)) {
-                            stripLog(b);
+                    PlayerBlockBreakEvent event = new PlayerBlockBreakEvent(e.getPlayer(), block, logs);
+                    Bukkit.getServer().getPluginManager().callEvent(event);
+
+                    if (!event.isCancelled()) {
+                        for (Block b : event.getBlocks()) {
+                            if (!BlockStorage.hasBlockInfo(b) && SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), b, ProtectableAction.BREAK_BLOCK)) {
+                                stripLog(b);
+                            }
                         }
                     }
                 }
