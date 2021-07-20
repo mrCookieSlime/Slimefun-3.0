@@ -18,6 +18,9 @@ options:
   log-duplicate-block-entries: true
   burn-players-when-radioactive: true
   drop-excess-sf-give-items: false
+  disable-per-world-config: false
+  disabled-worlds:
+    - 'THIS_WORLD_IS_DISABLED'
 
 guide:
   show-vanilla-recipes: true

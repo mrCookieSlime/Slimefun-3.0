@@ -196,20 +196,27 @@ public class PerWorldSettingsService {
             return optional.get();
         } else {
             Set<String> items = new LinkedHashSet<>();
-            Config config = getConfig(world);
 
-            config.getConfiguration().options().header("This file is used to disable certain items in a particular world.\nYou can set any item to 'false' to disable it in the world '" + name + "'.\nYou can also disable an entire addon from Slimefun by setting the respective\nvalue of 'enabled' for that Addon.\n\nItems which are disabled in this world will not show up in the Slimefun Guide.\nYou won't be able to use these items either. Using them will result in a warning message.");
-            config.getConfiguration().options().copyHeader(true);
-            config.setDefaultValue("enabled", true);
+            if (!SlimefunPlugin.getCfg().getBoolean("options.disable-per-world-config")) {
+                Config config = getConfig(world);
 
-            if (config.getBoolean("enabled")) {
-                loadItemsFromWorldConfig(name, config, items);
+                config.getConfiguration().options().header("This file is used to disable certain items in a particular world.\nYou can set any item to 'false' to disable it in the world '" + name + "'.\nYou can also disable an entire addon from Slimefun by setting the respective\nvalue of 'enabled' for that Addon.\n\nItems which are disabled in this world will not show up in the Slimefun Guide.\nYou won't be able to use these items either. Using them will result in a warning message.");
+                config.getConfiguration().options().copyHeader(true);
+                config.setDefaultValue("enabled", true);
 
-                // We don't actually wanna write to disk during a Unit test
-                if (SlimefunPlugin.getMinecraftVersion() != MinecraftVersion.UNIT_TEST) {
-                    config.save();
+                if (config.getBoolean("enabled")) {
+                    loadItemsFromWorldConfig(name, config, items);
+
+                    // We don't actually wanna write to disk during a Unit test
+                    if (SlimefunPlugin.getMinecraftVersion() != MinecraftVersion.UNIT_TEST) {
+                        config.save();
+                    }
+                } else {
+                    disabledWorlds.add(world.getUID());
                 }
-            } else {
+            }
+
+            if (SlimefunPlugin.getCfg().getStringList("options.disabled-worlds").contains(name)) {
                 disabledWorlds.add(world.getUID());
             }
 
