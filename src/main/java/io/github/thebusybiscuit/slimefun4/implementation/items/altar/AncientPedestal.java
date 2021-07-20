@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -116,11 +115,6 @@ public class AncientPedestal extends SimpleSlimefunItem<BlockDispenseHandler> {
             stack.setItemMeta(im);
         } else {
             ItemMeta im = stack.getItemMeta();
-
-            if (!customName.startsWith(String.valueOf(ChatColor.COLOR_CHAR))) {
-                customName = ChatColor.WHITE + customName;
-            }
-
             im.setDisplayName(customName);
             stack.setItemMeta(im);
         }
