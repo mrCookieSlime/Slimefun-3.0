@@ -90,6 +90,7 @@ public class LumberAxe extends SlimefunItem implements NotPlaceable {
     }
 
     private void stripLog(@Nonnull Block b) {
+        // No need for a SoundEffect here, this is supposed to be a vanilla sound.
         b.getWorld().playSound(b.getLocation(), Sound.ITEM_AXE_STRIP, 1, 1);
         Axis axis = ((Orientable) b.getBlockData()).getAxis();
         b.setType(Material.valueOf("STRIPPED_" + b.getType().name()));

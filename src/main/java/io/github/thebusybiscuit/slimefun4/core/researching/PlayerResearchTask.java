@@ -7,12 +7,12 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import io.github.thebusybiscuit.slimefun4.api.events.ResearchUnlockEvent;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.guide.options.SlimefunGuideSettings;
+import io.github.thebusybiscuit.slimefun4.core.services.sounds.SoundEffect;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.FireworkUtils;
 
@@ -64,7 +64,7 @@ public class PlayerResearchTask implements Consumer<PlayerProfile> {
 
             if (!isInstant) {
                 SlimefunPlugin.runSync(() -> {
-                    p.playSound(p.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 0.7F, 1F);
+                    SoundEffect.PLAYER_RESEARCHING_SOUND.playFor(p);
                     SlimefunPlugin.getLocalization().sendMessage(p, "messages.research.progress", true, msg -> msg.replace(PLACEHOLDER, research.getName(p)).replace("%progress%", "0%"));
                 }, 5L);
             }
@@ -93,7 +93,7 @@ public class PlayerResearchTask implements Consumer<PlayerProfile> {
             int index = i;
 
             SlimefunPlugin.runSync(() -> {
-                p.playSound(p.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 0.7F, 1);
+                SoundEffect.PLAYER_RESEARCHING_SOUND.playFor(p);
 
                 SlimefunPlugin.getLocalization().sendMessage(p, "messages.research.progress", true, msg -> {
                     String progress = RESEARCH_PROGRESS[index - 1] + "%";

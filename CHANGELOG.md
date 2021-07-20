@@ -46,6 +46,8 @@ https://thebusybiscuit.github.io/builds/TheBusyBiscuit/Slimefun4/stable/#26
 * (API) Added SlimefunItemSpawnEvent and ItemSpawnReason
 * Added "Amethyst Block -> 4 Amethyst Shards" recipe to the Grind Stone
 * Added an option to the IndustrialMiner to configure if they can mine deepslate ores
+* Added sound effects for Slime Boots
+* Added `sounds.yml` file to configure sound effects for Slimefun
 * (API) Added `LimitedUseItem`
 
 #### Changes

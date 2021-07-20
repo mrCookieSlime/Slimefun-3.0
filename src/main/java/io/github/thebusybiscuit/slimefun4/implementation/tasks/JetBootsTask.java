@@ -6,10 +6,11 @@ import javax.annotation.Nonnull;
 
 import org.bukkit.Effect;
 import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import io.github.thebusybiscuit.slimefun4.core.services.sounds.SoundEffect;
 import io.github.thebusybiscuit.slimefun4.implementation.items.electric.gadgets.JetBoots;
 import io.github.thebusybiscuit.slimefun4.utils.NumberUtils;
 
@@ -33,7 +34,7 @@ public class JetBootsTask extends AbstractPlayerTask {
         double accuracy = NumberUtils.reparseDouble(boots.getSpeed() - 0.7);
 
         if (boots.removeItemCharge(p.getInventory().getBoots(), COST)) {
-            p.getWorld().playSound(p.getLocation(), Sound.ENTITY_TNT_PRIMED, (float) 0.25, 1);
+            SoundEffect.JETBOOTS_THRUST_SOUND.playAt(p.getLocation(), SoundCategory.PLAYERS);
             p.getWorld().playEffect(p.getLocation(), Effect.SMOKE, 1, 1);
             p.setFallDistance(0F);
             double gravity = 0.04;

@@ -3,7 +3,7 @@ package io.github.thebusybiscuit.slimefun4.implementation.items.medical;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.bukkit.GameMode;
-import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,6 +12,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import io.github.thebusybiscuit.cscorelib2.inventory.ItemUtils;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
+import io.github.thebusybiscuit.slimefun4.core.services.sounds.SoundEffect;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
@@ -38,7 +39,7 @@ public class Splint extends SimpleSlimefunItem<ItemUseHandler> {
                 ItemUtils.consumeItem(e.getItem(), false);
             }
 
-            p.getWorld().playSound(p.getLocation(), Sound.ENTITY_SKELETON_HURT, 1, 1);
+            SoundEffect.SPLINT_CONSUME_SOUND.playAt(p.getLocation(), SoundCategory.PLAYERS);
             p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1, 0));
 
             e.cancel();

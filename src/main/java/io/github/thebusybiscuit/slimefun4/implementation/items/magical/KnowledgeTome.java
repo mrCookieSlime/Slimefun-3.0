@@ -3,9 +3,10 @@ package io.github.thebusybiscuit.slimefun4.implementation.items.magical;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.inventory.ItemStack;
@@ -16,14 +17,23 @@ import io.github.thebusybiscuit.cscorelib2.inventory.ItemUtils;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.core.researching.Research;
+import io.github.thebusybiscuit.slimefun4.core.services.sounds.SoundEffect;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
+/**
+ * The {@link KnowledgeTome} allows you to copy every unlocked {@link Research}
+ * from one {@link Player} to another.
+ * 
+ * @author TheBusyBiscuit
+ *
+ */
 public class KnowledgeTome extends SimpleSlimefunItem<ItemUseHandler> {
 
+    @ParametersAreNonnullByDefault
     public KnowledgeTome(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
     }
@@ -44,7 +54,7 @@ public class KnowledgeTome extends SimpleSlimefunItem<ItemUseHandler> {
                 lore.set(1, ChatColor.BLACK + "" + p.getUniqueId());
                 im.setLore(lore);
                 item.setItemMeta(im);
-                p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
+                SoundEffect.TOME_OF_KNOWLEDGE_USE_SOUND.playFor(p);
             } else {
                 UUID uuid = UUID.fromString(ChatColor.stripColor(item.getItemMeta().getLore().get(1)));
 

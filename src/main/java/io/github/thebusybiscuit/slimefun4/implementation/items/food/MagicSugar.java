@@ -4,7 +4,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -12,6 +11,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import io.github.thebusybiscuit.cscorelib2.inventory.ItemUtils;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
+import io.github.thebusybiscuit.slimefun4.core.services.sounds.SoundEffect;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
@@ -49,7 +49,7 @@ public class MagicSugar extends SimpleSlimefunItem<ItemUseHandler> {
                 ItemUtils.consumeItem(e.getItem(), false);
             }
 
-            p.playSound(p.getLocation(), Sound.ENTITY_GENERIC_EAT, 1, 1);
+            SoundEffect.MAGIC_SUGAR_CONSUME_SOUND.playFor(p);
             p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 600, 3));
         };
     }

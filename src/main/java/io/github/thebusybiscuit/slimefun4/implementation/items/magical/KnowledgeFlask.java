@@ -2,12 +2,12 @@ package io.github.thebusybiscuit.slimefun4.implementation.items.magical;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.cscorelib2.inventory.ItemUtils;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
+import io.github.thebusybiscuit.slimefun4.core.services.sounds.SoundEffect;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -44,8 +44,7 @@ public class KnowledgeFlask extends SimpleSlimefunItem<ItemUseHandler> {
                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                 }
 
-                p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 0.5F);
-
+                SoundEffect.FLASK_OF_KNOWLEDGE_FILLUP_SOUND.playFor(p);
                 ItemUtils.consumeItem(e.getItem(), false);
                 e.cancel();
             }

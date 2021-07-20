@@ -2,24 +2,27 @@ package io.github.thebusybiscuit.slimefun4.implementation.items.androids;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.cscorelib2.collections.RandomizedSet;
+import io.github.thebusybiscuit.slimefun4.core.services.sounds.SoundEffect;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 
-public class FisherAndroid extends ProgrammableAndroid {
+public class FishermanAndroid extends ProgrammableAndroid {
 
     private final RandomizedSet<ItemStack> fishingLoot = new RandomizedSet<>();
 
-    public FisherAndroid(Category category, int tier, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    @ParametersAreNonnullByDefault
+    public FishermanAndroid(Category category, int tier, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, tier, item, recipeType, recipe);
 
         // Fish
@@ -53,7 +56,7 @@ public class FisherAndroid extends ProgrammableAndroid {
         Block water = b.getRelative(BlockFace.DOWN);
 
         if (water.getType() == Material.WATER) {
-            water.getWorld().playSound(water.getLocation(), Sound.ENTITY_PLAYER_SPLASH, 0.3F, 0.7F);
+            SoundEffect.FISHERMAN_ANDROID_FISHING_SOUND.playAt(water);
 
             if (ThreadLocalRandom.current().nextInt(100) < 10 * getTier()) {
                 ItemStack drop = fishingLoot.getRandom();

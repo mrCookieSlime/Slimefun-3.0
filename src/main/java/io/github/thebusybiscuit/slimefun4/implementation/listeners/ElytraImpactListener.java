@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.attributes.DamageableItem;
 import io.github.thebusybiscuit.slimefun4.core.attributes.ProtectionType;
+import io.github.thebusybiscuit.slimefun4.core.services.sounds.SoundEffect;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.armor.ElytraCap;
 import io.github.thebusybiscuit.slimefun4.implementation.items.armor.SlimefunArmorPiece;
@@ -57,8 +57,8 @@ public class ElytraImpactListener implements Listener {
                     SlimefunItem item = helmet.get();
 
                     if (item.canUse(p, true) && profile.hasFullProtectionAgainst(ProtectionType.FLYING_INTO_WALL)) {
-                        e.setDamage(0);
-                        p.playSound(p.getLocation(), Sound.BLOCK_STONE_HIT, 20, 1);
+                        SoundEffect.ELYTRA_CAP_IMPACT_SOUND.playFor(p);
+                        e.setCancelled(true);
 
                         if (item instanceof DamageableItem) {
                             ((DamageableItem) item).damageItem(p, p.getInventory().getHelmet());

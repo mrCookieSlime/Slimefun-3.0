@@ -4,10 +4,11 @@ import javax.annotation.Nonnull;
 
 import org.bukkit.Effect;
 import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import io.github.thebusybiscuit.slimefun4.core.services.sounds.SoundEffect;
 import io.github.thebusybiscuit.slimefun4.implementation.items.electric.gadgets.Jetpack;
 
 public class JetpackTask extends AbstractPlayerTask {
@@ -28,7 +29,8 @@ public class JetpackTask extends AbstractPlayerTask {
         }
 
         if (jetpack.removeItemCharge(p.getInventory().getChestplate(), COST)) {
-            p.getWorld().playSound(p.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, (float) 0.25, 1);
+            SoundEffect.JETPACK_THRUST_SOUND.playAt(p.getLocation(), SoundCategory.PLAYERS);
+
             p.getWorld().playEffect(p.getLocation(), Effect.SMOKE, 1, 1);
             p.setFallDistance(0F);
             Vector vector = new Vector(0, 1, 0);

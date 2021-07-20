@@ -3,7 +3,7 @@ package io.github.thebusybiscuit.slimefun4.implementation.listeners;
 import javax.annotation.Nonnull;
 
 import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Player;
@@ -73,10 +73,7 @@ public class SlimefunBootsListener implements Listener {
                 ((StomperBoots) boots).stomp(e);
             } else if (boots instanceof LongFallBoots) {
                 e.setCancelled(true);
-
-                if (boots.getId().equals("BEE_BOOTS")) {
-                    e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.BLOCK_HONEY_BLOCK_FALL, 1, 2);
-                }
+                ((LongFallBoots) boots).getSoundEffect().playAt(p.getLocation(), SoundCategory.PLAYERS);
             }
         }
     }

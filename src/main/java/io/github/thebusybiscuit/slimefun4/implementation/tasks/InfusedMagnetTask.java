@@ -3,12 +3,11 @@ package io.github.thebusybiscuit.slimefun4.implementation.tasks;
 import javax.annotation.Nonnull;
 
 import org.bukkit.GameMode;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
+import io.github.thebusybiscuit.slimefun4.core.services.sounds.SoundEffect;
 import io.github.thebusybiscuit.slimefun4.implementation.items.magical.InfusedMagnet;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 
@@ -60,7 +59,7 @@ public class InfusedMagnetTask extends AbstractPlayerTask {
 
         // Only play a sound if an Item was found
         if (playSound) {
-            p.playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 0.25F, 0.9F);
+            SoundEffect.INFUSED_MAGNET_TELEPORT_SOUND.playFor(p);
         }
     }
 

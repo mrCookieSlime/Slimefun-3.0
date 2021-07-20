@@ -6,7 +6,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.bukkit.GameMode;
 import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Villager.Profession;
 import org.bukkit.inventory.ItemStack;
@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import io.github.thebusybiscuit.cscorelib2.inventory.ItemUtils;
 import io.github.thebusybiscuit.cscorelib2.protection.ProtectableAction;
 import io.github.thebusybiscuit.slimefun4.core.handlers.EntityInteractHandler;
+import io.github.thebusybiscuit.slimefun4.core.services.sounds.SoundEffect;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -62,7 +63,7 @@ public class VillagerRune extends SimpleSlimefunItem<EntityInteractHandler> {
 
                 double offset = ThreadLocalRandom.current().nextDouble(0.5);
 
-                v.getWorld().playSound(v.getLocation(), Sound.ENTITY_VILLAGER_CELEBRATE, 1, 1.4F);
+                SoundEffect.VILLAGER_RUNE_TRANSFORM_SOUND.playAt(v.getLocation(), SoundCategory.NEUTRAL);
                 v.getWorld().spawnParticle(Particle.CRIMSON_SPORE, v.getLocation(), 10, 0, offset / 2, 0, 0);
                 v.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, v.getLocation(), 5, 0.04, 1, 0.04);
             }

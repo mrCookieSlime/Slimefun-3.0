@@ -20,6 +20,7 @@ import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.core.attributes.Radioactivity;
 import io.github.thebusybiscuit.slimefun4.core.handlers.RainbowTickHandler;
+import io.github.thebusybiscuit.slimefun4.core.services.sounds.SoundEffect;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.RadioactiveItem;
@@ -29,7 +30,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AncientPede
 import io.github.thebusybiscuit.slimefun4.implementation.items.androids.AndroidInterface;
 import io.github.thebusybiscuit.slimefun4.implementation.items.androids.ButcherAndroid;
 import io.github.thebusybiscuit.slimefun4.implementation.items.androids.FarmerAndroid;
-import io.github.thebusybiscuit.slimefun4.implementation.items.androids.FisherAndroid;
+import io.github.thebusybiscuit.slimefun4.implementation.items.androids.FishermanAndroid;
 import io.github.thebusybiscuit.slimefun4.implementation.items.androids.MinerAndroid;
 import io.github.thebusybiscuit.slimefun4.implementation.items.androids.ProgrammableAndroid;
 import io.github.thebusybiscuit.slimefun4.implementation.items.androids.WoodcutterAndroid;
@@ -374,7 +375,8 @@ public final class SlimefunItemSetup {
 
         new LongFallBoots(categories.magicalArmor, SlimefunItems.SLIME_BOOTS, RecipeType.ARMOR_FORGE,
         new ItemStack[] {null, null, null, new ItemStack(Material.SLIME_BALL), null, new ItemStack(Material.SLIME_BALL), new ItemStack(Material.IRON_INGOT), null, new ItemStack(Material.IRON_INGOT)},
-        new PotionEffect[] {new PotionEffect(PotionEffectType.JUMP, 300, 5)})
+        new PotionEffect[] {new PotionEffect(PotionEffectType.JUMP, 300, 5)},
+        SoundEffect.SLIME_BOOTS_FALL_SOUND)
         .register(plugin);
 
         new SwordOfBeheading(categories.weapons, SlimefunItems.SWORD_OF_BEHEADING, RecipeType.ENHANCED_CRAFTING_TABLE,
@@ -1042,7 +1044,8 @@ public final class SlimefunItemSetup {
 
         new LongFallBoots(categories.magicalArmor, SlimefunItems.SLIME_BOOTS_STEEL, RecipeType.ARMOR_FORGE,
         new ItemStack[] {null, null, null, new ItemStack(Material.SLIME_BALL), null, new ItemStack(Material.SLIME_BALL), new ItemStack(Material.SLIME_BALL), SlimefunItems.STEEL_PLATE, new ItemStack(Material.SLIME_BALL)},
-        new PotionEffect[] {new PotionEffect(PotionEffectType.JUMP, 300, 5)})
+        new PotionEffect[] {new PotionEffect(PotionEffectType.JUMP, 300, 5)},
+        SoundEffect.SLIME_BOOTS_FALL_SOUND)
         .register(plugin);
 
         new VampireBlade(categories.weapons, SlimefunItems.BLADE_OF_VAMPIRES, RecipeType.MAGIC_WORKBENCH,
@@ -1919,7 +1922,7 @@ public final class SlimefunItemSetup {
         new ItemStack[] {null, null, null, new ItemStack(Material.DIAMOND_AXE), SlimefunItems.PROGRAMMABLE_ANDROID, new ItemStack(Material.DIAMOND_AXE), null, SlimefunItems.ELECTRIC_MOTOR, null})
         .register(plugin);
 
-        new FisherAndroid(categories.androids, 1, SlimefunItems.PROGRAMMABLE_ANDROID_FISHERMAN, RecipeType.ENHANCED_CRAFTING_TABLE,
+        new FishermanAndroid(categories.androids, 1, SlimefunItems.PROGRAMMABLE_ANDROID_FISHERMAN, RecipeType.ENHANCED_CRAFTING_TABLE,
         new ItemStack[] {null, null, null, new ItemStack(Material.FISHING_ROD), SlimefunItems.PROGRAMMABLE_ANDROID, new ItemStack(Material.FISHING_ROD), null, SlimefunItems.ELECTRIC_MOTOR, null})
         .register(plugin);
 
@@ -1931,7 +1934,7 @@ public final class SlimefunItemSetup {
         new ItemStack[] {SlimefunItems.PLASTIC_SHEET, SlimefunItems.ANDROID_MEMORY_CORE, SlimefunItems.PLASTIC_SHEET, SlimefunItems.COMBUSTION_REACTOR, SlimefunItems.PROGRAMMABLE_ANDROID, new ItemStack(Material.CHEST), SlimefunItems.PLASTIC_SHEET, SlimefunItems.POWER_CRYSTAL, SlimefunItems.PLASTIC_SHEET})
         .register(plugin);
 
-        new FisherAndroid(categories.androids, 2, SlimefunItems.PROGRAMMABLE_ANDROID_2_FISHERMAN, RecipeType.ENHANCED_CRAFTING_TABLE,
+        new FishermanAndroid(categories.androids, 2, SlimefunItems.PROGRAMMABLE_ANDROID_2_FISHERMAN, RecipeType.ENHANCED_CRAFTING_TABLE,
         new ItemStack[] {null, null, null, new ItemStack(Material.FISHING_ROD), SlimefunItems.PROGRAMMABLE_ANDROID_2, new ItemStack(Material.FISHING_ROD), null, SlimefunItems.ELECTRIC_MOTOR, null})
         .register(plugin);
 
@@ -1947,7 +1950,7 @@ public final class SlimefunItemSetup {
         new ItemStack[] {SlimefunItems.PLASTIC_SHEET, SlimefunItems.ANDROID_MEMORY_CORE, SlimefunItems.PLASTIC_SHEET, SlimefunItems.NUCLEAR_REACTOR, SlimefunItems.PROGRAMMABLE_ANDROID_2, new ItemStack(Material.CHEST), SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.POWER_CRYSTAL, SlimefunItems.BLISTERING_INGOT_3})
         .register(plugin);
 
-        new FisherAndroid(categories.androids, 3, SlimefunItems.PROGRAMMABLE_ANDROID_3_FISHERMAN, RecipeType.ENHANCED_CRAFTING_TABLE,
+        new FishermanAndroid(categories.androids, 3, SlimefunItems.PROGRAMMABLE_ANDROID_3_FISHERMAN, RecipeType.ENHANCED_CRAFTING_TABLE,
         new ItemStack[] {null, null, null, new ItemStack(Material.FISHING_ROD), SlimefunItems.PROGRAMMABLE_ANDROID_3, new ItemStack(Material.FISHING_ROD), null, SlimefunItems.ELECTRIC_MOTOR, null})
         .register(plugin);
 
@@ -2580,7 +2583,8 @@ public final class SlimefunItemSetup {
 
             new LongFallBoots(categories.magicalArmor, SlimefunItems.BEE_BOOTS, RecipeType.ARMOR_FORGE,
             new ItemStack[] {null, null, null, SlimefunItems.GOLD_8K, null, SlimefunItems.GOLD_8K, new ItemStack(Material.HONEY_BLOCK), null, new ItemStack(Material.HONEY_BLOCK)},
-            new PotionEffect[] {new PotionEffect(PotionEffectType.JUMP, 300, 2)})
+            new PotionEffect[] {new PotionEffect(PotionEffectType.JUMP, 300, 2)},
+            SoundEffect.BEE_BOOTS_FALL_SOUND)
             .register(plugin);
         }
 
