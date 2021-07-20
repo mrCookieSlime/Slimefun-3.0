@@ -47,13 +47,12 @@ public class CheatSheetSlimefunGuide extends SurvivalSlimefunGuide {
      *            The {@link PlayerProfile} of the {@link Player}
      * @return a {@link List} of visible {@link Category} instances
      */
-    @Nonnull
     @Override
-    protected List<Category> getVisibleCategories(@Nonnull Player p, @Nonnull PlayerProfile profile) {
+    protected @Nonnull List<Category> getVisibleCategories(@Nonnull Player p, @Nonnull PlayerProfile profile) {
         List<Category> categories = new LinkedList<>();
 
         for (Category category : SlimefunPlugin.getRegistry().getCategories()) {
-            if (!(category instanceof FlexCategory)) {
+            if (!(category instanceof FlexCategory) || ((FlexCategory) category).isVisible(p, profile, getMode())) {
                 categories.add(category);
             }
         }
@@ -61,15 +60,13 @@ public class CheatSheetSlimefunGuide extends SurvivalSlimefunGuide {
         return categories;
     }
 
-    @Nonnull
     @Override
-    public SlimefunGuideMode getMode() {
+    public @Nonnull SlimefunGuideMode getMode() {
         return SlimefunGuideMode.CHEAT_MODE;
     }
 
-    @Nonnull
     @Override
-    public ItemStack getItem() {
+    public @Nonnull ItemStack getItem() {
         return item;
     }
 

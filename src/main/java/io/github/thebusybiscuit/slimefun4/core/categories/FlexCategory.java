@@ -77,12 +77,12 @@ public abstract class FlexCategory extends Category {
     }
 
     @Override
-    public final void add(SlimefunItem item) {
+    public final void add(@Nonnull SlimefunItem item) {
         throw new UnsupportedOperationException("You cannot add items to a FlexCategory!");
     }
 
     @Override
-    public final List<SlimefunItem> getItems() {
+    public final @Nonnull List<SlimefunItem> getItems() {
         throw new UnsupportedOperationException("A FlexCategory has no items!");
     }
 
@@ -92,7 +92,7 @@ public abstract class FlexCategory extends Category {
     }
 
     @Override
-    public final void remove(SlimefunItem item) {
+    public final void remove(@Nonnull SlimefunItem item) {
         throw new UnsupportedOperationException("A FlexCategory has no items, so there is nothing remove!");
     }
 

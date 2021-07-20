@@ -55,7 +55,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 /**
  * The {@link SurvivalSlimefunGuide} is the standard version of our {@link SlimefunGuide}.
  * It uses an {@link Inventory} to display {@link SlimefunGuide} contents.
- * 
+ *
  * @author TheBusyBiscuit
  * 
  * @see SlimefunGuide
@@ -83,18 +83,17 @@ public class SurvivalSlimefunGuide implements SlimefunGuideImplementation {
      * 
      * @return The {@link Sound}
      */
-    @Nonnull
-    public Sound getSound() {
+    public @Nonnull Sound getSound() {
         return sound;
     }
 
     @Override
-    public SlimefunGuideMode getMode() {
+    public @Nonnull SlimefunGuideMode getMode() {
         return SlimefunGuideMode.SURVIVAL_MODE;
     }
 
     @Override
-    public ItemStack getItem() {
+    public @Nonnull ItemStack getItem() {
         return item;
     }
 
@@ -111,13 +110,16 @@ public class SurvivalSlimefunGuide implements SlimefunGuideImplementation {
      *            The {@link PlayerProfile} of the {@link Player}
      * @return a {@link List} of visible {@link Category} instances
      */
-    @Nonnull
-    protected List<Category> getVisibleCategories(@Nonnull Player p, @Nonnull PlayerProfile profile) {
+    protected @Nonnull List<Category> getVisibleCategories(@Nonnull Player p, @Nonnull PlayerProfile profile) {
         List<Category> categories = new LinkedList<>();
 
         for (Category category : SlimefunPlugin.getRegistry().getCategories()) {
             try {
-                if (!category.isHidden(p) && (!(category instanceof FlexCategory) || ((FlexCategory) category).isVisible(p, profile, getMode()))) {
+                if (category instanceof FlexCategory) {
+                    if (((FlexCategory) category).isVisible(p, profile, getMode())) {
+                        categories.add(category);
+                    }
+                } else if (!category.isHidden(p)) {
                     categories.add(category);
                 }
             } catch (Exception | LinkageError x) {
@@ -219,6 +221,7 @@ public class SurvivalSlimefunGuide implements SlimefunGuideImplementation {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void openCategory(PlayerProfile profile, Category category, int page) {
         Player p = profile.getPlayer();
 
@@ -383,6 +386,7 @@ public class SurvivalSlimefunGuide implements SlimefunGuideImplementation {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void displayItem(PlayerProfile profile, ItemStack item, int index, boolean addToHistory) {
         Player p = profile.getPlayer();
 
@@ -487,6 +491,7 @@ public class SurvivalSlimefunGuide implements SlimefunGuideImplementation {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void displayItem(PlayerProfile profile, SlimefunItem item, boolean addToHistory) {
         Player p = profile.getPlayer();
 
@@ -620,9 +625,8 @@ public class SurvivalSlimefunGuide implements SlimefunGuideImplementation {
         }
     }
 
-    @Nonnull
     @ParametersAreNonnullByDefault
-    private static ItemStack getDisplayItem(Player p, boolean isSlimefunRecipe, ItemStack item) {
+    private static @Nonnull ItemStack getDisplayItem(Player p, boolean isSlimefunRecipe, ItemStack item) {
         if (isSlimefunRecipe) {
             SlimefunItem slimefunItem = SlimefunItem.getByItem(item);
 
@@ -723,8 +727,7 @@ public class SurvivalSlimefunGuide implements SlimefunGuideImplementation {
         return SlimefunPlugin.getPermissionsService().hasPermission(p, item);
     }
 
-    @Nonnull
-    private ChestMenu create(@Nonnull Player p) {
+    private @Nonnull ChestMenu create(@Nonnull Player p) {
         ChestMenu menu = new ChestMenu(SlimefunPlugin.getLocalization().getMessage(p, "guide.title.main"));
 
         menu.setEmptySlotsClickable(false);
