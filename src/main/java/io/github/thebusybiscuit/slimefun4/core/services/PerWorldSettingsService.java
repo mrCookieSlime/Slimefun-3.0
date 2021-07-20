@@ -17,12 +17,12 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Server;
 import org.bukkit.World;
 
-import io.github.thebusybiscuit.cscorelib2.collections.OptionalMap;
-import io.github.thebusybiscuit.cscorelib2.config.Config;
+import io.github.bakedlibs.dough.collections.OptionalMap;
+import io.github.bakedlibs.dough.config.Config;
 import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This Service is responsible for disabling a {@link SlimefunItem} in a certain {@link World}.
@@ -32,13 +32,13 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
  */
 public class PerWorldSettingsService {
 
-    private final SlimefunPlugin plugin;
+    private final Slimefun plugin;
 
     private final OptionalMap<UUID, Set<String>> disabledItems = new OptionalMap<>(HashMap::new);
     private final Map<SlimefunAddon, Set<String>> disabledAddons = new HashMap<>();
     private final Set<UUID> disabledWorlds = new HashSet<>();
 
-    public PerWorldSettingsService(@Nonnull SlimefunPlugin plugin) {
+    public PerWorldSettingsService(@Nonnull Slimefun plugin) {
         this.plugin = plugin;
     }
 
@@ -175,7 +175,7 @@ public class PerWorldSettingsService {
 
         Config config = getConfig(world);
 
-        for (SlimefunItem item : SlimefunPlugin.getRegistry().getEnabledSlimefunItems()) {
+        for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
             if (item != null) {
                 String addon = item.getAddon().getName().toLowerCase(Locale.ROOT);
                 config.setValue(addon + '.' + item.getId(), !items.contains(item.getId()));
@@ -206,7 +206,7 @@ public class PerWorldSettingsService {
                 loadItemsFromWorldConfig(name, config, items);
 
                 // We don't actually wanna write to disk during a Unit test
-                if (SlimefunPlugin.getMinecraftVersion() != MinecraftVersion.UNIT_TEST) {
+                if (Slimefun.getMinecraftVersion() != MinecraftVersion.UNIT_TEST) {
                     config.save();
                 }
             } else {
@@ -218,7 +218,7 @@ public class PerWorldSettingsService {
     }
 
     private void loadItemsFromWorldConfig(@Nonnull String worldName, @Nonnull Config config, @Nonnull Set<String> items) {
-        for (SlimefunItem item : SlimefunPlugin.getRegistry().getEnabledSlimefunItems()) {
+        for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
             if (item != null) {
                 String addon = item.getAddon().getName().toLowerCase(Locale.ROOT);
                 config.setDefaultValue(addon + ".enabled", true);

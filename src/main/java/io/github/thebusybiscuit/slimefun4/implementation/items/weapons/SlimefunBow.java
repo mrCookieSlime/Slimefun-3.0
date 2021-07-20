@@ -6,11 +6,11 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.bukkit.entity.Arrow;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BowShootHandler;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * This class represents a {@link SlimefunItem} that is a Bow.
@@ -23,7 +23,7 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 public abstract class SlimefunBow extends SlimefunItem {
 
     @ParametersAreNonnullByDefault
-    protected SlimefunBow(Category category, SlimefunItemStack item, ItemStack[] recipe) {
+    protected SlimefunBow(ItemGroup category, SlimefunItemStack item, ItemStack[] recipe) {
         super(category, item, RecipeType.MAGIC_WORKBENCH, recipe);
     }
 

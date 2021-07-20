@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Server;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.papermc.lib.PaperLib;
 
 /**
@@ -14,7 +14,7 @@ import io.papermc.lib.PaperLib;
  * @author TheBusyBiscuit
  * @author Walshy
  * 
- * @see SlimefunPlugin
+ * @see Slimefun
  *
  */
 public enum MinecraftVersion {

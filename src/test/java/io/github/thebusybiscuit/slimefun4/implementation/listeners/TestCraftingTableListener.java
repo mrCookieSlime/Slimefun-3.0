@@ -21,26 +21,26 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.VanillaItem;
 import io.github.thebusybiscuit.slimefun4.implementation.listeners.crafting.CraftingTableListener;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
-public class TestCraftingTableListener {
+class TestCraftingTableListener {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
     private static CraftingTableListener listener;
     private static ServerMock server;
 
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
         listener = new CraftingTableListener(plugin);
     }
 
@@ -86,14 +86,14 @@ public class TestCraftingTableListener {
     }
 
     @Test
-    public void testCraftEventWithoutSlimefunItems() {
+    void testCraftEventWithoutSlimefunItems() {
         CraftItemEvent event = mockCraftingEvent(new ItemStack(Material.DIAMOND));
         Assertions.assertEquals(Result.DEFAULT, event.getResult());
     }
 
     @Test
-    public void testCraftEventWithSlimefunItem() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MOCK_DIAMOND", new CustomItem(Material.DIAMOND, "&cMock Diamond"));
+    void testCraftEventWithSlimefunItem() {
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MOCK_DIAMOND", new CustomItemStack(Material.DIAMOND, "&cMock Diamond"));
         item.register(plugin);
 
         CraftItemEvent event = mockCraftingEvent(item.getItem());
@@ -101,8 +101,8 @@ public class TestCraftingTableListener {
     }
 
     @Test
-    public void testCraftEventWithChangingSlimefunItem() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "CHANGING_ITEM", new CustomItem(Material.DIAMOND, "&dChanging Diamond"));
+    void testCraftEventWithChangingSlimefunItem() {
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "CHANGING_ITEM", new CustomItemStack(Material.DIAMOND, "&dChanging Diamond"));
         item.register(plugin);
 
         item.setUseableInWorkbench(true);
@@ -115,7 +115,7 @@ public class TestCraftingTableListener {
     }
 
     @Test
-    public void testCraftEventWithVanillaItem() {
+    void testCraftEventWithVanillaItem() {
         VanillaItem item = TestUtilities.mockVanillaItem(plugin, Material.DIAMOND, true);
         item.register(plugin);
 
@@ -124,14 +124,14 @@ public class TestCraftingTableListener {
     }
 
     @Test
-    public void testPreCraftEventWithoutSlimefunItems() {
+    void testPreCraftEventWithoutSlimefunItems() {
         PrepareItemCraftEvent event = mockPreCraftingEvent(new ItemStack(Material.DIAMOND));
         Assertions.assertNotNull(event.getInventory().getResult());
     }
 
     @Test
-    public void testPreCraftEventWithSlimefunItem() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MOCK_DIAMOND2", new CustomItem(Material.DIAMOND, "&cMock Diamond"));
+    void testPreCraftEventWithSlimefunItem() {
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MOCK_DIAMOND2", new CustomItemStack(Material.DIAMOND, "&cMock Diamond"));
         item.register(plugin);
 
         PrepareItemCraftEvent event = mockPreCraftingEvent(item.getItem());
@@ -139,7 +139,7 @@ public class TestCraftingTableListener {
     }
 
     @Test
-    public void testPreCraftEventWithVanillaItem() {
+    void testPreCraftEventWithVanillaItem() {
         VanillaItem item = TestUtilities.mockVanillaItem(plugin, Material.GOLD_INGOT, true);
         item.register(plugin);
 

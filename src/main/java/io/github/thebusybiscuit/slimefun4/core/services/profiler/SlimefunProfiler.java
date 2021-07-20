@@ -23,10 +23,10 @@ import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.tasks.TickerTask;
 import io.github.thebusybiscuit.slimefun4.utils.NumberUtils;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 /**
  * The {@link SlimefunProfiler} works closely to the {@link TickerTask} and is
@@ -176,7 +176,7 @@ public class SlimefunProfiler {
     public void stop() {
         isProfiling = false;
 
-        if (SlimefunPlugin.instance() == null || !SlimefunPlugin.instance().isEnabled()) {
+        if (Slimefun.instance() == null || !Slimefun.instance().isEnabled()) {
             // Slimefun has been disabled
             return;
         }
@@ -210,7 +210,7 @@ public class SlimefunProfiler {
                     return;
                 }
             } catch (InterruptedException e) {
-                SlimefunPlugin.logger().log(Level.SEVERE, "A Profiler Thread was interrupted", e);
+                Slimefun.logger().log(Level.SEVERE, "A Profiler Thread was interrupted", e);
                 Thread.currentThread().interrupt();
             }
         }
@@ -365,7 +365,7 @@ public class SlimefunProfiler {
     }
 
     public int getTickRate() {
-        return SlimefunPlugin.getTickerTask().getTickRate();
+        return Slimefun.getTickerTask().getTickRate();
     }
 
     /**

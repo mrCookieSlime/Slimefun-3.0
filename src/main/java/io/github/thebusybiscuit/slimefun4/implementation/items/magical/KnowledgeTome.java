@@ -11,20 +11,20 @@ import org.bukkit.event.Event.Result;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import io.github.thebusybiscuit.cscorelib2.chat.ChatColors;
-import io.github.thebusybiscuit.cscorelib2.inventory.ItemUtils;
+import io.github.bakedlibs.dough.common.ChatColors;
+import io.github.bakedlibs.dough.items.ItemUtils;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
-import io.github.thebusybiscuit.slimefun4.core.researching.Research;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 public class KnowledgeTome extends SimpleSlimefunItem<ItemUseHandler> {
 
-    public KnowledgeTome(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public KnowledgeTome(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
     }
 
@@ -49,7 +49,7 @@ public class KnowledgeTome extends SimpleSlimefunItem<ItemUseHandler> {
                 UUID uuid = UUID.fromString(ChatColor.stripColor(item.getItemMeta().getLore().get(1)));
 
                 if (p.getUniqueId().equals(uuid)) {
-                    SlimefunPlugin.getLocalization().sendMessage(p, "messages.no-tome-yourself");
+                    Slimefun.getLocalization().sendMessage(p, "messages.no-tome-yourself");
                     return;
                 }
 

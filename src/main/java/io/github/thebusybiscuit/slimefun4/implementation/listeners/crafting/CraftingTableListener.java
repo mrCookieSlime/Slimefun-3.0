@@ -10,8 +10,8 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This {@link Listener} prevents any {@link SlimefunItem} from being used in a
@@ -22,7 +22,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
  */
 public class CraftingTableListener implements SlimefunCraftingListener {
 
-    public CraftingTableListener(@Nonnull SlimefunPlugin plugin) {
+    public CraftingTableListener(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -33,7 +33,7 @@ public class CraftingTableListener implements SlimefunCraftingListener {
 
             if (sfItem != null && !sfItem.isUseableInWorkbench()) {
                 e.setResult(Result.DENY);
-                SlimefunPlugin.getLocalization().sendMessage((Player) e.getWhoClicked(), "workbench.not-enhanced", true);
+                Slimefun.getLocalization().sendMessage((Player) e.getWhoClicked(), "workbench.not-enhanced", true);
                 break;
             }
         }

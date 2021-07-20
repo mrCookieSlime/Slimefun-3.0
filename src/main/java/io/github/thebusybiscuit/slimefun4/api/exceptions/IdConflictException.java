@@ -2,7 +2,7 @@ package io.github.thebusybiscuit.slimefun4.api.exceptions;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 
 /**
  * An {@link IdConflictException} is thrown whenever two Addons try to add

@@ -10,8 +10,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.magical.SoulboundItem;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
@@ -19,18 +21,16 @@ import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 class TestSoulboundListener {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
     private static ServerMock server;
 
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
         new SoulboundListener(plugin);
     }
 
@@ -44,7 +44,7 @@ class TestSoulboundListener {
     @DisplayName("Test if the soulbound item is dropped or not")
     void testItemDrop(boolean soulbound) {
         PlayerMock player = server.addPlayer();
-        ItemStack item = new CustomItem(Material.DIAMOND_SWORD, "&4Cool Sword");
+        ItemStack item = new CustomItemStack(Material.DIAMOND_SWORD, "&4Cool Sword");
         SlimefunUtils.setSoulbound(item, soulbound);
         player.getInventory().setItem(6, item);
         player.setHealth(0);
@@ -65,7 +65,7 @@ class TestSoulboundListener {
         soulboundItem.register(plugin);
 
         if (!enabled) {
-            SlimefunPlugin.getWorldSettingsService().setEnabled(player.getWorld(), soulboundItem, false);
+            Slimefun.getWorldSettingsService().setEnabled(player.getWorld(), soulboundItem, false);
         }
 
         player.getInventory().setItem(0, item);
@@ -75,7 +75,7 @@ class TestSoulboundListener {
             // If the item is enabled, we don't want it to drop.
             return enabled == !event.getDrops().contains(item);
         });
-        SlimefunPlugin.getRegistry().getEnabledSlimefunItems().remove(soulboundItem);
+        Slimefun.getRegistry().getEnabledSlimefunItems().remove(soulboundItem);
     }
 
     @ParameterizedTest
@@ -83,7 +83,7 @@ class TestSoulboundListener {
     @DisplayName("Test if soulbound item is returned to player")
     void testItemRecover(boolean soulbound) {
         PlayerMock player = server.addPlayer();
-        ItemStack item = new CustomItem(Material.DIAMOND_SWORD, "&4Cool Sword");
+        ItemStack item = new CustomItemStack(Material.DIAMOND_SWORD, "&4Cool Sword");
         SlimefunUtils.setSoulbound(item, soulbound);
         player.getInventory().setItem(6, item);
         player.setHealth(0);

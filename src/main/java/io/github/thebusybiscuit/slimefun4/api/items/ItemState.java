@@ -1,7 +1,6 @@
 package io.github.thebusybiscuit.slimefun4.api.items;
 
 import io.github.thebusybiscuit.slimefun4.implementation.items.VanillaItem;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 /**
  * Defines whether a SlimefunItem is enabled, disabled or fall-back to its vanilla behavior.
@@ -32,5 +31,6 @@ public enum ItemState {
      * This {@link SlimefunItem} has fallen back to its vanilla behavior, because it is disabled and an instance of
      * {@link VanillaItem}.
      */
-    VANILLA_FALLBACK
+    VANILLA_FALLBACK;
+
 }

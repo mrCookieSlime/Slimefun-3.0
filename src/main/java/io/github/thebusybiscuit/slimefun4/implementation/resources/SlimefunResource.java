@@ -8,7 +8,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.slimefun4.api.geo.GEOResource;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This is an abstract parent class for any {@link GEOResource}
@@ -35,7 +35,7 @@ abstract class SlimefunResource implements GEOResource {
         Validate.notNull(defaultName, "The default name cannot be null!");
         Validate.notNull(item, "item cannot be null!");
 
-        this.key = new NamespacedKey(SlimefunPlugin.instance(), key);
+        this.key = new NamespacedKey(Slimefun.instance(), key);
         this.defaultName = defaultName;
         this.item = item;
         this.maxDeviation = maxDeviation;

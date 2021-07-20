@@ -14,13 +14,14 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.Server;
 
-import io.github.thebusybiscuit.cscorelib2.blocks.BlockPosition;
-import io.github.thebusybiscuit.cscorelib2.config.Config;
+import io.github.bakedlibs.dough.blocks.BlockPosition;
+import io.github.bakedlibs.dough.config.Config;
 import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
 import io.github.thebusybiscuit.slimefun4.api.network.Network;
 import io.github.thebusybiscuit.slimefun4.core.networks.cargo.CargoNet;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.listeners.NetworkListener;
+
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 /**
@@ -201,7 +202,7 @@ public class NetworkManager {
              * 
              * (Skip for Unit Tests as they don't support block info yet)
              */
-            if (!BlockStorage.hasBlockInfo(l) && SlimefunPlugin.getMinecraftVersion() != MinecraftVersion.UNIT_TEST) {
+            if (!BlockStorage.hasBlockInfo(l) && Slimefun.getMinecraftVersion() != MinecraftVersion.UNIT_TEST) {
                 return;
             }
 
@@ -209,7 +210,7 @@ public class NetworkManager {
                 network.markDirty(l);
             }
         } catch (Exception x) {
-            SlimefunPlugin.logger().log(Level.SEVERE, x, () -> "An Exception was thrown while causing a networks update @ " + new BlockPosition(l));
+            Slimefun.logger().log(Level.SEVERE, x, () -> "An Exception was thrown while causing a networks update @ " + new BlockPosition(l));
         }
     }
 

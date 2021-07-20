@@ -11,8 +11,9 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
-import io.github.thebusybiscuit.slimefun4.core.researching.Research;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
@@ -27,7 +28,7 @@ class PlaceholderAPIIntegration extends PlaceholderExpansion {
     private final String version;
     private final String author;
 
-    public PlaceholderAPIIntegration(@Nonnull SlimefunPlugin plugin) {
+    public PlaceholderAPIIntegration(@Nonnull Slimefun plugin) {
         this.version = plugin.getDescription().getVersion();
         this.author = plugin.getDescription().getAuthors().toString();
     }
@@ -98,7 +99,7 @@ class PlaceholderAPIIntegration extends PlaceholderExpansion {
         }
 
         if (isPlaceholder(p, false, params, "researches_total_researches")) {
-            return String.valueOf(SlimefunPlugin.getRegistry().getResearches().size());
+            return String.valueOf(Slimefun.getRegistry().getResearches().size());
         }
 
         if (isPlaceholder(p, true, params, "researches_percentage_researches_unlocked")) {
@@ -106,7 +107,7 @@ class PlaceholderAPIIntegration extends PlaceholderExpansion {
 
             if (profile.isPresent()) {
                 Set<Research> set = profile.get().getResearches();
-                return String.valueOf(Math.round(((set.size() * 100.0F) / SlimefunPlugin.getRegistry().getResearches().size()) * 100.0F) / 100.0F);
+                return String.valueOf(Math.round(((set.size() * 100.0F) / Slimefun.getRegistry().getResearches().size()) * 100.0F) / 100.0F);
             } else if (p instanceof Player) {
                 return getProfilePlaceholder((Player) p);
             }
@@ -123,16 +124,16 @@ class PlaceholderAPIIntegration extends PlaceholderExpansion {
         }
 
         if (isPlaceholder(p, false, params, "gps_complexity") && p != null) {
-            return String.valueOf(SlimefunPlugin.getGPSNetwork().getNetworkComplexity(p.getUniqueId()));
+            return String.valueOf(Slimefun.getGPSNetwork().getNetworkComplexity(p.getUniqueId()));
         }
 
         if (isPlaceholder(p, false, params, "timings_lag")) {
-            return SlimefunPlugin.getProfiler().getTime();
+            return Slimefun.getProfiler().getTime();
         }
 
         if (isPlaceholder(p, false, params, "language") && p instanceof Player) {
             Player player = (Player) p;
-            return SlimefunPlugin.getLocalization().getLanguage(player).getName(player);
+            return Slimefun.getLocalization().getLanguage(player).getName(player);
         }
 
         return null;
@@ -140,7 +141,7 @@ class PlaceholderAPIIntegration extends PlaceholderExpansion {
 
     @Nonnull
     private String getProfilePlaceholder(@Nonnull Player p) {
-        return SlimefunPlugin.getLocalization().getMessage(p, "placeholderapi.profile-loading");
+        return Slimefun.getLocalization().getMessage(p, "placeholderapi.profile-loading");
     }
 
 }

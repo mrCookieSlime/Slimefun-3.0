@@ -13,7 +13,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 
 /**
@@ -27,7 +27,7 @@ public class DeathpointListener implements Listener {
 
     private final DateTimeFormatter format = DateTimeFormatter.ofPattern("(MMM dd, yyyy @ hh:mm)", Locale.ROOT);
 
-    public DeathpointListener(@Nonnull SlimefunPlugin plugin) {
+    public DeathpointListener(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -36,7 +36,7 @@ public class DeathpointListener implements Listener {
         Player p = e.getEntity();
 
         if (SlimefunUtils.containsSimilarItem(p.getInventory(), SlimefunItems.GPS_EMERGENCY_TRANSMITTER, true)) {
-            SlimefunPlugin.getGPSNetwork().addWaypoint(p, "player:death " + SlimefunPlugin.getLocalization().getMessage(p, "gps.deathpoint").replace("%date%", format.format(LocalDateTime.now())), p.getLocation().getBlock().getLocation());
+            Slimefun.getGPSNetwork().addWaypoint(p, "player:death " + Slimefun.getLocalization().getMessage(p, "gps.deathpoint").replace("%date%", format.format(LocalDateTime.now())), p.getLocation().getBlock().getLocation());
         }
     }
 }

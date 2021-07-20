@@ -9,12 +9,12 @@ import io.github.thebusybiscuit.slimefun4.core.commands.SlimefunCommand;
 import io.github.thebusybiscuit.slimefun4.core.commands.SubCommand;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuide;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuideMode;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 class OpenGuideCommand extends SubCommand {
 
     @ParametersAreNonnullByDefault
-    OpenGuideCommand(SlimefunPlugin plugin, SlimefunCommand cmd) {
+    OpenGuideCommand(Slimefun plugin, SlimefunCommand cmd) {
         super(plugin, cmd, "open_guide", false);
     }
 
@@ -25,10 +25,10 @@ class OpenGuideCommand extends SubCommand {
             if (sender.hasPermission("slimefun.command.open_guide")) {
                 SlimefunGuide.openGuide((Player) sender, SlimefunGuideMode.SURVIVAL_MODE);
             } else {
-                SlimefunPlugin.getLocalization().sendMessage(sender, "messages.no-permission", true);
+                Slimefun.getLocalization().sendMessage(sender, "messages.no-permission", true);
             }
         } else {
-            SlimefunPlugin.getLocalization().sendMessage(sender, "messages.only-players", true);
+            Slimefun.getLocalization().sendMessage(sender, "messages.only-players", true);
         }
     }
 

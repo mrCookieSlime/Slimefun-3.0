@@ -9,24 +9,24 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 import io.github.thebusybiscuit.slimefun4.test.presets.SlimefunItemTest;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 class TestEnderBackpack implements SlimefunItemTest<EnderBackpack> {
 
     private static ServerMock server;
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
 
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll
@@ -35,7 +35,7 @@ class TestEnderBackpack implements SlimefunItemTest<EnderBackpack> {
     }
 
     @Override
-    public EnderBackpack registerSlimefunItem(SlimefunPlugin plugin, String id) {
+    public EnderBackpack registerSlimefunItem(Slimefun plugin, String id) {
         SlimefunItemStack item = new SlimefunItemStack(id, Material.ENDER_CHEST, "&5Test Ender Backpack");
         EnderBackpack backpack = new EnderBackpack(TestUtilities.getCategory(plugin, "ender_backpack"), item, RecipeType.NULL, new ItemStack[9]);
         backpack.register(plugin);

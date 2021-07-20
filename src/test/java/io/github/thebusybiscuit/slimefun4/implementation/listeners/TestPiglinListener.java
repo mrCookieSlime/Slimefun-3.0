@@ -19,26 +19,26 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mockito;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.listeners.entity.PiglinListener;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.ItemEntityMock;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 class TestPiglinListener {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
     private static PiglinListener listener;
     private static ServerMock server;
 
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
         listener = new PiglinListener(plugin);
     }
 
@@ -81,7 +81,7 @@ class TestPiglinListener {
 
     @Test
     void testPiglinPickupWithSlimefunItem() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "PIGLIN_PICKUP_MOCK", new CustomItem(Material.GOLD_INGOT, "&6Piglin Bait"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "PIGLIN_PICKUP_MOCK", new CustomItemStack(Material.GOLD_INGOT, "&6Piglin Bait"));
         item.register(plugin);
 
         EntityPickupItemEvent event = createPickupEvent(item.getItem());
@@ -100,7 +100,7 @@ class TestPiglinListener {
     @ParameterizedTest
     @EnumSource(value = EquipmentSlot.class, names = { "HAND", "OFF_HAND" })
     void testPiglinInteractWithSlimefunItem(EquipmentSlot hand) {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "PIGLIN_GIVE_" + hand.name(), new CustomItem(Material.GOLD_INGOT, "&6Piglin Bait"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "PIGLIN_GIVE_" + hand.name(), new CustomItemStack(Material.GOLD_INGOT, "&6Piglin Bait"));
         item.register(plugin);
 
         PlayerInteractEntityEvent event = createInteractEvent(hand, item.getItem());

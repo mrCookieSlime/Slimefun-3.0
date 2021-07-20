@@ -8,6 +8,9 @@ import javax.annotation.Nonnull;
 import org.apache.commons.lang.Validate;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.bakedlibs.dough.common.CommonPatterns;
+import io.github.bakedlibs.dough.skins.PlayerSkin;
+
 /**
  * This enum holds all currently used Head textures in Slimefun.
  * Credit for most of these goes to our main head designer "AquaLazuryt".
@@ -125,7 +128,7 @@ public enum HeadTexture {
 
     HeadTexture(@Nonnull String texture) {
         Validate.notNull(texture, "Texture cannot be null");
-        Validate.isTrue(PatternUtils.HEXADECIMAL.matcher(texture).matches(), "Textures must be in hexadecimal.");
+        Validate.isTrue(CommonPatterns.HEXADECIMAL.matcher(texture).matches(), "Textures must be in hexadecimal.");
 
         this.texture = texture;
         this.uuid = UUID.nameUUIDFromBytes(texture.getBytes(StandardCharsets.UTF_8));
@@ -158,6 +161,10 @@ public enum HeadTexture {
      */
     public @Nonnull ItemStack getAsItemStack() {
         return SlimefunUtils.getCustomHead(getTexture());
+    }
+
+    public @Nonnull PlayerSkin getAsSkin() {
+        return PlayerSkin.fromHashCode(texture);
     }
 
 }

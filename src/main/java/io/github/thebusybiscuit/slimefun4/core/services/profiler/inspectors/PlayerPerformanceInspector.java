@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import io.github.thebusybiscuit.slimefun4.core.services.profiler.PerformanceInspector;
+
 import net.md_5.bungee.api.chat.TextComponent;
 
 /**

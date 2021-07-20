@@ -16,26 +16,26 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.VanillaItem;
 import io.github.thebusybiscuit.slimefun4.implementation.listeners.crafting.AnvilListener;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
-public class TestAnvilListener {
+class TestAnvilListener {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
     private static AnvilListener listener;
     private static ServerMock server;
 
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
         listener = new AnvilListener(plugin);
     }
 
@@ -55,14 +55,14 @@ public class TestAnvilListener {
     }
 
     @Test
-    public void testAnvilWithoutSlimefunItems() {
+    void testAnvilWithoutSlimefunItems() {
         InventoryClickEvent event = mockAnvilEvent(new ItemStack(Material.IRON_SWORD));
         Assertions.assertEquals(Result.DEFAULT, event.getResult());
     }
 
     @Test
-    public void testAnvilWithSlimefunItem() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MOCKED_IRON_SWORD", new CustomItem(Material.IRON_SWORD, "&6Mock"));
+    void testAnvilWithSlimefunItem() {
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MOCKED_IRON_SWORD", new CustomItemStack(Material.IRON_SWORD, "&6Mock"));
         item.register(plugin);
 
         InventoryClickEvent event = mockAnvilEvent(item.getItem());
@@ -70,7 +70,7 @@ public class TestAnvilListener {
     }
 
     @Test
-    public void testAnvilWithVanillaItem() {
+    void testAnvilWithVanillaItem() {
         VanillaItem item = TestUtilities.mockVanillaItem(plugin, Material.IRON_SWORD, true);
         item.register(plugin);
 

@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AncientPedestal;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 
@@ -19,7 +19,7 @@ import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
  */
 public class ItemPickupListener implements Listener {
 
-    public ItemPickupListener(@Nonnull SlimefunPlugin plugin) {
+    public ItemPickupListener(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 

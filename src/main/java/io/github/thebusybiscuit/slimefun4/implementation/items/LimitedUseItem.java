@@ -16,16 +16,16 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import io.github.thebusybiscuit.cscorelib2.chat.ChatColors;
+import io.github.bakedlibs.dough.common.ChatColors;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.magical.staves.StormStaff;
 import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
 import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * This class represents an item with a limited number of uses.
@@ -40,13 +40,14 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
  */
 public abstract class LimitedUseItem extends SimpleSlimefunItem<ItemUseHandler> {
 
-    private final NamespacedKey defaultUsageKey = new NamespacedKey(SlimefunPlugin.instance(), "uses_left");
+    private final NamespacedKey defaultUsageKey;
     private int maxUseCount = -1;
 
     @ParametersAreNonnullByDefault
-    public LimitedUseItem(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
-        super(category, item, recipeType, recipe);
+    protected LimitedUseItem(ItemGroup group, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+        super(group, item, recipeType, recipe);
 
+        this.defaultUsageKey = new NamespacedKey(Slimefun.instance(), "uses_left");
         addItemHandler(getItemHandler());
     }
 
@@ -63,7 +64,8 @@ public abstract class LimitedUseItem extends SimpleSlimefunItem<ItemUseHandler> 
      * Sets the maximum number of times this item can be used.
      * The number must be greater than zero.
      *
-     * @param count The maximum number of times this item can be used.
+     * @param count
+     *            The maximum number of times this item can be used.
      * @return The {@link LimitedUseItem} for chaining of setters
      */
     public final @Nonnull LimitedUseItem setMaxUseCount(int count) {

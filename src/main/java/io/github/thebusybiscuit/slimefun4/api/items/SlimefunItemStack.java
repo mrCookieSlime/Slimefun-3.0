@@ -1,4 +1,4 @@
-package me.mrCookieSlime.Slimefun.api;
+package io.github.thebusybiscuit.slimefun4.api.items;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -18,43 +18,128 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
-import io.github.thebusybiscuit.cscorelib2.item.ImmutableItemMeta;
-import io.github.thebusybiscuit.cscorelib2.skull.SkullItem;
+import io.github.bakedlibs.dough.common.CommonPatterns;
+import io.github.bakedlibs.dough.items.ItemMetaSnapshot;
+import io.github.bakedlibs.dough.skins.PlayerHead;
+import io.github.bakedlibs.dough.skins.PlayerSkin;
 import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
 import io.github.thebusybiscuit.slimefun4.api.exceptions.PrematureCodeException;
 import io.github.thebusybiscuit.slimefun4.api.exceptions.WrongItemStackException;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
-import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
-public class SlimefunItemStack extends CustomItem {
+/**
+ * The {@link SlimefunItemStack} functions as the base for any
+ * {@link SlimefunItem}.
+ * 
+ * @author TheBusyBiscuit
+ * @author Walshy
+ *
+ */
+public class SlimefunItemStack extends ItemStack {
 
     private String id;
-    private ImmutableItemMeta immutableMeta;
+    private ItemMetaSnapshot itemMetaSnapshot;
 
     private boolean locked = false;
     private String texture = null;
 
-    public SlimefunItemStack(@Nonnull String id, @Nonnull Material type, @Nullable String name, String... lore) {
-        super(type, name, lore);
+    public SlimefunItemStack(@Nonnull String id, @Nonnull ItemStack item) {
+        super(item);
 
-        setItemId(id);
+        Validate.notNull(id, "The Item id must never be null!");
+        Validate.isTrue(id.equals(id.toUpperCase(Locale.ROOT)), "Slimefun Item Ids must be uppercase! (e.g. 'MY_ITEM_ID')");
+
+        if (Slimefun.instance() == null) {
+            throw new PrematureCodeException("A SlimefunItemStack must never be be created before your Plugin was enabled.");
+        }
+
+        this.id = id;
+
+        ItemMeta meta = getItemMeta();
+
+        Slimefun.getItemDataService().setItemData(meta, id);
+        Slimefun.getItemTextureService().setTexture(meta, id);
+
+        setItemMeta(meta);
+    }
+
+    public SlimefunItemStack(@Nonnull String id, @Nonnull ItemStack item, @Nonnull Consumer<ItemMeta> consumer) {
+        this(id, item);
+
+        ItemMeta im = getItemMeta();
+        consumer.accept(im);
+        setItemMeta(im);
+    }
+
+    public SlimefunItemStack(@Nonnull String id, @Nonnull Material type, @Nonnull Consumer<ItemMeta> consumer) {
+        this(id, new ItemStack(type), consumer);
+    }
+
+    public SlimefunItemStack(@Nonnull String id, @Nonnull Material type, @Nullable String name, @Nonnull Consumer<ItemMeta> consumer) {
+        this(id, type, meta -> {
+            if (name != null) {
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+            }
+
+            consumer.accept(meta);
+        });
+    }
+
+    public SlimefunItemStack(@Nonnull String id, @Nonnull ItemStack item, @Nullable String name, String... lore) {
+        this(id, item, im -> {
+            if (name != null) {
+                im.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+            }
+
+            if (lore.length > 0) {
+                List<String> lines = new ArrayList<>();
+
+                for (String line : lore) {
+                    lines.add(ChatColor.translateAlternateColorCodes('&', line));
+                }
+                im.setLore(lines);
+            }
+        });
+    }
+
+    public SlimefunItemStack(@Nonnull String id, @Nonnull Material type, @Nullable String name, String... lore) {
+        this(id, new ItemStack(type), name, lore);
     }
 
     public SlimefunItemStack(@Nonnull String id, @Nonnull Material type, @Nonnull Color color, @Nullable String name, String... lore) {
-        super(new ItemStack(type), color, name, lore);
+        this(id, type, im -> {
+            if (name != null) {
+                im.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+            }
 
-        setItemId(id);
+            if (lore.length > 0) {
+                List<String> lines = new ArrayList<>();
+
+                for (String line : lore) {
+                    lines.add(ChatColor.translateAlternateColorCodes('&', line));
+                }
+
+                im.setLore(lines);
+            }
+
+            if (im instanceof LeatherArmorMeta) {
+                ((LeatherArmorMeta) im).setColor(color);
+            }
+
+            if (im instanceof PotionMeta) {
+                ((PotionMeta) im).setColor(color);
+            }
+        });
     }
 
     public SlimefunItemStack(@Nonnull String id, @Nonnull Color color, @Nonnull PotionEffect effect, @Nullable String name, String... lore) {
-        super(Material.POTION, im -> {
+        this(id, Material.POTION, im -> {
             if (name != null) {
                 im.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
             }
@@ -78,20 +163,6 @@ public class SlimefunItemStack extends CustomItem {
                 }
             }
         });
-
-        setItemId(id);
-    }
-
-    public SlimefunItemStack(@Nonnull String id, @Nonnull ItemStack item, @Nullable String name, String... lore) {
-        super(item, name, lore);
-
-        setItemId(id);
-    }
-
-    public SlimefunItemStack(@Nonnull String id, @Nonnull ItemStack item) {
-        super(item);
-
-        setItemId(id);
     }
 
     public SlimefunItemStack(@Nonnull SlimefunItemStack item, int amount) {
@@ -99,29 +170,9 @@ public class SlimefunItemStack extends CustomItem {
         setAmount(amount);
     }
 
-    public SlimefunItemStack(@Nonnull String id, @Nonnull ItemStack item, @Nonnull Consumer<ItemMeta> consumer) {
-        super(item, consumer);
-
-        setItemId(id);
-    }
-
-    public SlimefunItemStack(@Nonnull String id, @Nonnull Material type, @Nullable String name, @Nonnull Consumer<ItemMeta> consumer) {
-        super(type, meta -> {
-            if (name != null) {
-                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
-            }
-
-            consumer.accept(meta);
-        });
-
-        setItemId(id);
-    }
-
     public SlimefunItemStack(@Nonnull String id, @Nonnull String texture, @Nullable String name, String... lore) {
-        super(getSkull(id, texture), name, lore);
+        this(id, getSkull(id, texture), name, lore);
         this.texture = getTexture(id, texture);
-
-        setItemId(id);
     }
 
     public SlimefunItemStack(@Nonnull String id, @Nonnull HeadTexture head, @Nullable String name, String... lore) {
@@ -129,7 +180,7 @@ public class SlimefunItemStack extends CustomItem {
     }
 
     public SlimefunItemStack(@Nonnull String id, @Nonnull String texture, @Nullable String name, @Nonnull Consumer<ItemMeta> consumer) {
-        super(getSkull(id, texture), meta -> {
+        this(id, getSkull(id, texture), meta -> {
             if (name != null) {
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
             }
@@ -138,33 +189,11 @@ public class SlimefunItemStack extends CustomItem {
         });
 
         this.texture = getTexture(id, texture);
-
-        setItemId(id);
     }
 
     public SlimefunItemStack(@Nonnull String id, @Nonnull String texture, @Nonnull Consumer<ItemMeta> consumer) {
-        super(getSkull(id, texture), consumer);
+        this(id, getSkull(id, texture), consumer);
         this.texture = getTexture(id, texture);
-
-        setItemId(id);
-    }
-
-    private void setItemId(@Nonnull String id) {
-        Validate.notNull(id, "The Item id must never be null!");
-        Validate.isTrue(id.equals(id.toUpperCase(Locale.ROOT)), "Slimefun Item Ids must be uppercase! (e.g. 'MY_ITEM_ID')");
-
-        if (SlimefunPlugin.instance() == null) {
-            throw new PrematureCodeException("A SlimefunItemStack must never be be created before your Plugin was enabled.");
-        }
-
-        this.id = id;
-
-        ItemMeta meta = getItemMeta();
-
-        SlimefunPlugin.getItemDataService().setItemData(meta, id);
-        SlimefunPlugin.getItemTextureService().setTexture(meta, id);
-
-        setItemMeta(meta);
     }
 
     /**
@@ -183,7 +212,7 @@ public class SlimefunItemStack extends CustomItem {
      * @return The {@link SlimefunItem} for this {@link SlimefunItemStack}, null if not found.
      */
     public @Nullable SlimefunItem getItem() {
-        return SlimefunItem.getByID(id);
+        return SlimefunItem.getById(id);
     }
 
     /**
@@ -206,14 +235,14 @@ public class SlimefunItemStack extends CustomItem {
         return type.isInstance(item) ? type.cast(item) : null;
     }
 
-    public @Nonnull ImmutableItemMeta getImmutableMeta() {
-        return immutableMeta;
+    public @Nonnull ItemMetaSnapshot getItemMetaSnapshot() {
+        return itemMetaSnapshot;
     }
 
     @Override
     public boolean setItemMeta(ItemMeta meta) {
         validate();
-        immutableMeta = new ImmutableItemMeta(meta);
+        itemMetaSnapshot = new ItemMetaSnapshot(meta);
 
         return super.setItemMeta(meta);
     }
@@ -245,20 +274,21 @@ public class SlimefunItemStack extends CustomItem {
     }
 
     public @Nullable String getDisplayName() {
-        if (immutableMeta == null) {
+        if (itemMetaSnapshot == null) {
             // Just to be extra safe
             return null;
         }
 
-        return immutableMeta.getDisplayName().orElse(null);
+        return itemMetaSnapshot.getDisplayName().orElse(null);
     }
 
     private static @Nonnull ItemStack getSkull(@Nonnull String id, @Nonnull String texture) {
-        if (SlimefunPlugin.getMinecraftVersion() == MinecraftVersion.UNIT_TEST) {
+        if (Slimefun.getMinecraftVersion() == MinecraftVersion.UNIT_TEST) {
             return new ItemStack(Material.PLAYER_HEAD);
         }
 
-        return SkullItem.fromBase64(getTexture(id, texture));
+        PlayerSkin skin = PlayerSkin.fromBase64(getTexture(id, texture));
+        return PlayerHead.getItemStack(skin);
     }
 
     private static @Nonnull String getTexture(@Nonnull String id, @Nonnull String texture) {
@@ -267,7 +297,7 @@ public class SlimefunItemStack extends CustomItem {
 
         if (texture.startsWith("ey")) {
             return texture;
-        } else if (PatternUtils.HEXADECIMAL.matcher(texture).matches()) {
+        } else if (CommonPatterns.HEXADECIMAL.matcher(texture).matches()) {
             String value = "{\"textures\":{\"SKIN\":{\"url\":\"http://textures.minecraft.net/texture/" + texture + "\"}}}";
             return Base64.getEncoder().encodeToString(value.getBytes(StandardCharsets.UTF_8));
         } else {

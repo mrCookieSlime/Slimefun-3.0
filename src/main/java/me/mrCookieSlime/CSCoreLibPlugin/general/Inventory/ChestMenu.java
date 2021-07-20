@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
  * Don't look at the code, it will be gone soon, don't worry.
  *
  */
+@Deprecated
 public class ChestMenu {
 
     private boolean clickable;

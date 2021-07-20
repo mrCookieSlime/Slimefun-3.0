@@ -17,7 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuide;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuideMode;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 
@@ -26,13 +26,13 @@ class GuideModeOption implements SlimefunGuideOption<SlimefunGuideMode> {
     @Nonnull
     @Override
     public SlimefunAddon getAddon() {
-        return SlimefunPlugin.instance();
+        return Slimefun.instance();
     }
 
     @Nonnull
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(SlimefunPlugin.instance(), "guide_mode");
+        return new NamespacedKey(Slimefun.instance(), "guide_mode");
     }
 
     @Nonnull

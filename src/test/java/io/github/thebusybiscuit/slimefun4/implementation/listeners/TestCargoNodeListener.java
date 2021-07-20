@@ -15,28 +15,28 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.cargo.CargoInputNode;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 import io.github.thebusybiscuit.slimefun4.test.providers.SlimefunItemsSource;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 class TestCargoNodeListener {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
     private static CargoNodeListener listener;
     private static ServerMock server;
 
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
         listener = new CargoNodeListener(plugin);
     }
 
@@ -67,8 +67,8 @@ class TestCargoNodeListener {
         Block b = l.getBlock();
         Block against = b.getRelative(BlockFace.DOWN);
 
-        Category category = TestUtilities.getCategory(plugin, "cargo_test");
-        SlimefunItemStack item = new SlimefunItemStack("MOCK_CARGO_NODE", new CustomItem(Material.PLAYER_HEAD, "&4Cargo node!"));
+        ItemGroup category = TestUtilities.getCategory(plugin, "cargo_test");
+        SlimefunItemStack item = new SlimefunItemStack("MOCK_CARGO_NODE", new CustomItemStack(Material.PLAYER_HEAD, "&4Cargo node!"));
         CargoInputNode node = new CargoInputNode(category, item, RecipeType.NULL, new ItemStack[9], null);
         node.register(plugin);
 
@@ -86,8 +86,8 @@ class TestCargoNodeListener {
         Block b = l.getBlock();
         b.setType(Material.GRASS);
 
-        Category category = TestUtilities.getCategory(plugin, "cargo_test");
-        SlimefunItemStack item = new SlimefunItemStack("MOCK_CARGO_NODE_2", new CustomItem(Material.PLAYER_HEAD, "&4Cargo node!"));
+        ItemGroup category = TestUtilities.getCategory(plugin, "cargo_test");
+        SlimefunItemStack item = new SlimefunItemStack("MOCK_CARGO_NODE_2", new CustomItemStack(Material.PLAYER_HEAD, "&4Cargo node!"));
         CargoInputNode node = new CargoInputNode(category, item, RecipeType.NULL, new ItemStack[9], null);
         node.register(plugin);
 
@@ -100,7 +100,7 @@ class TestCargoNodeListener {
     @Test
     @DisplayName("Test non-Cargo node not being affected")
     void testNonCargoNode() {
-        SlimefunPlugin.getRegistry().setBackwardsCompatible(true);
+        Slimefun.getRegistry().setBackwardsCompatible(true);
         Player player = server.addPlayer();
         Location l = new Location(player.getWorld(), 190, 50, 400);
         Block b = l.getBlock();
@@ -111,7 +111,7 @@ class TestCargoNodeListener {
         BlockPlaceEvent event = new BlockPlaceEvent(b, b.getState(), against, item, player, true, EquipmentSlot.HAND);
         listener.onCargoNodePlace(event);
         Assertions.assertFalse(event.isCancelled());
-        SlimefunPlugin.getRegistry().setBackwardsCompatible(false);
+        Slimefun.getRegistry().setBackwardsCompatible(false);
     }
 
 }

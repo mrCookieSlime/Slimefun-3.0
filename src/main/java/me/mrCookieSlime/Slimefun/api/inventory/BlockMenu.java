@@ -9,8 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.config.Config;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.config.Config;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 // This class will be deprecated, relocated and rewritten in a future version.
 public class BlockMenu extends DirtyChestMenu {
@@ -118,7 +118,7 @@ public class BlockMenu extends DirtyChestMenu {
             try {
                 Files.delete(file.toPath());
             } catch (IOException e) {
-                SlimefunPlugin.logger().log(Level.WARNING, e, () -> "Could not delete file \"" + file.getName() + '"');
+                Slimefun.logger().log(Level.WARNING, e, () -> "Could not delete file \"" + file.getName() + '"');
             }
         }
     }

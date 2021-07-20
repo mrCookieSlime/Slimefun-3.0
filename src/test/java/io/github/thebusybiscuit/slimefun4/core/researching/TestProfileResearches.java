@@ -11,7 +11,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
@@ -20,12 +21,12 @@ import be.seeseemelk.mockbukkit.ServerMock;
 class TestProfileResearches {
 
     private static ServerMock server;
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
 
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll
@@ -36,7 +37,7 @@ class TestProfileResearches {
     @Test
     @DisplayName("Test setting a Research as unlocked")
     void testSetResearched() throws InterruptedException {
-        SlimefunPlugin.getRegistry().setResearchingEnabled(true);
+        Slimefun.getRegistry().setResearchingEnabled(true);
 
         Player player = server.addPlayer();
         PlayerProfile profile = TestUtilities.awaitProfile(player);
@@ -57,7 +58,7 @@ class TestProfileResearches {
     @Test
     @DisplayName("Test checking if Research is unlocked")
     void testHasUnlocked() throws InterruptedException {
-        SlimefunPlugin.getRegistry().setResearchingEnabled(true);
+        Slimefun.getRegistry().setResearchingEnabled(true);
 
         Player player = server.addPlayer();
         PlayerProfile profile = TestUtilities.awaitProfile(player);
@@ -76,14 +77,14 @@ class TestProfileResearches {
 
         // Researches are disabled now, so this method should pass
         // Whether Research#isEnabled() works correctly is covered elsewhere
-        SlimefunPlugin.getRegistry().setResearchingEnabled(false);
+        Slimefun.getRegistry().setResearchingEnabled(false);
         Assertions.assertTrue(profile.hasUnlocked(research));
     }
 
     @Test
     @DisplayName("Test getting all unlocked Researches")
     void testGetResearches() throws InterruptedException {
-        SlimefunPlugin.getRegistry().setResearchingEnabled(true);
+        Slimefun.getRegistry().setResearchingEnabled(true);
 
         Player player = server.addPlayer();
         PlayerProfile profile = TestUtilities.awaitProfile(player);

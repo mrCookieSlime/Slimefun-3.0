@@ -4,12 +4,12 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.Rechargeable;
 import io.github.thebusybiscuit.slimefun4.implementation.tasks.JetpackTask;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * {@link JetBoots} allow you to fly up into the air.
@@ -27,7 +27,7 @@ public class Jetpack extends SlimefunItem implements Rechargeable {
     private final float capacity;
 
     @ParametersAreNonnullByDefault
-    public Jetpack(Category category, SlimefunItemStack item, ItemStack[] recipe, double thrust, float capacity) {
+    public Jetpack(ItemGroup category, SlimefunItemStack item, ItemStack[] recipe, double thrust, float capacity) {
         super(category, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
 
         this.thrust = thrust;

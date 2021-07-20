@@ -21,7 +21,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import io.github.thebusybiscuit.slimefun4.api.events.ClimbingPickLaunchEvent;
 import io.github.thebusybiscuit.slimefun4.api.exceptions.TagMisconfigurationException;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 import io.github.thebusybiscuit.slimefun4.test.presets.SlimefunItemTest;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
@@ -30,8 +32,6 @@ import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.block.BlockMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 class TestClimbingPick implements SlimefunItemTest<ClimbingPick> {
 
@@ -39,12 +39,12 @@ class TestClimbingPick implements SlimefunItemTest<ClimbingPick> {
     private static final double WEAK_SURFACE_DEFAULT = 0.6;
 
     private static ServerMock server;
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
 
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll
@@ -53,7 +53,7 @@ class TestClimbingPick implements SlimefunItemTest<ClimbingPick> {
     }
 
     @Override
-    public ClimbingPick registerSlimefunItem(SlimefunPlugin plugin, String id) {
+    public ClimbingPick registerSlimefunItem(Slimefun plugin, String id) {
         SlimefunItemStack item = new SlimefunItemStack(id, Material.IRON_PICKAXE, "&5Test Pick", id);
         ClimbingPick pick = new ClimbingPick(TestUtilities.getCategory(plugin, "climbing_pick"), item, RecipeType.NULL, new ItemStack[9]) {
 

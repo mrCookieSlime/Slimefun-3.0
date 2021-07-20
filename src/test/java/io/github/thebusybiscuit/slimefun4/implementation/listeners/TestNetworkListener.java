@@ -16,14 +16,14 @@ import org.mockito.Mockito;
 
 import io.github.thebusybiscuit.slimefun4.api.network.Network;
 import io.github.thebusybiscuit.slimefun4.core.networks.NetworkManager;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 
 class TestNetworkListener {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
     private static NetworkListener listener;
     private static NetworkManager manager = new NetworkManager(80);
     private static ServerMock server;
@@ -31,7 +31,7 @@ class TestNetworkListener {
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
         listener = new NetworkListener(plugin, manager);
     }
 

@@ -9,22 +9,22 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 class TestItemSettings {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
 
     @BeforeAll
     public static void load() {
         MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll
@@ -35,7 +35,7 @@ class TestItemSettings {
     @Test
     @DisplayName("Test illegal Item Settings arguments")
     void testIllegalItemSettings() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "ITEM_SETTINGS_TEST", new CustomItem(Material.DIAMOND, "&cTest"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "ITEM_SETTINGS_TEST", new CustomItemStack(Material.DIAMOND, "&cTest"));
         item.register(plugin);
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> item.addItemSetting());
@@ -46,7 +46,7 @@ class TestItemSettings {
     @Test
     @DisplayName("Test adding an Item Setting")
     void testAddItemSetting() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "ITEM_SETTINGS_TEST_2", new CustomItem(Material.DIAMOND, "&cTest"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "ITEM_SETTINGS_TEST_2", new CustomItemStack(Material.DIAMOND, "&cTest"));
         ItemSetting<String> setting = new ItemSetting<>(item, "test", "Hello World");
 
         Assertions.assertTrue(setting.isType(String.class));
@@ -69,7 +69,7 @@ class TestItemSettings {
     @Test
     @DisplayName("Test updating an Item Settings value")
     void testUpdateItemSetting() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "ITEM_SETTINGS_TEST_3", new CustomItem(Material.DIAMOND, "&cTest"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "ITEM_SETTINGS_TEST_3", new CustomItemStack(Material.DIAMOND, "&cTest"));
         ItemSetting<String> setting = new ItemSetting<>(item, "test", "Hello World");
 
         item.addItemSetting(setting);
@@ -86,7 +86,7 @@ class TestItemSettings {
     @Test
     @DisplayName("Test Item Settings double-registration")
     void testAlreadyExistingItemSetting() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "ITEM_SETTINGS_TEST", new CustomItem(Material.DIAMOND, "&cTest"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "ITEM_SETTINGS_TEST", new CustomItemStack(Material.DIAMOND, "&cTest"));
         ItemSetting<String> setting = new ItemSetting<>(item, "test", "Hello World");
 
         item.addItemSetting(setting);

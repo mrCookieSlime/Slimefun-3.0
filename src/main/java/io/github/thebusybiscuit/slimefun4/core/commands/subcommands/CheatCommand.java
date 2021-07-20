@@ -8,12 +8,12 @@ import org.bukkit.entity.Player;
 import io.github.thebusybiscuit.slimefun4.core.commands.SlimefunCommand;
 import io.github.thebusybiscuit.slimefun4.core.commands.SubCommand;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuide;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 class CheatCommand extends SubCommand {
 
     @ParametersAreNonnullByDefault
-    CheatCommand(SlimefunPlugin plugin, SlimefunCommand cmd) {
+    CheatCommand(Slimefun plugin, SlimefunCommand cmd) {
         super(plugin, cmd, "cheat", false);
     }
 
@@ -23,10 +23,10 @@ class CheatCommand extends SubCommand {
             if (sender.hasPermission("slimefun.cheat.items")) {
                 SlimefunGuide.openCheatMenu((Player) sender);
             } else {
-                SlimefunPlugin.getLocalization().sendMessage(sender, "messages.no-permission", true);
+                Slimefun.getLocalization().sendMessage(sender, "messages.no-permission", true);
             }
         } else {
-            SlimefunPlugin.getLocalization().sendMessage(sender, "messages.only-players", true);
+            Slimefun.getLocalization().sendMessage(sender, "messages.only-players", true);
         }
     }
 

@@ -1,25 +1,26 @@
 package io.github.thebusybiscuit.slimefun4.implementation.items.electric.machines.enchanting;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-
-import io.github.thebusybiscuit.cscorelib2.chat.ChatColors;
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
-import io.github.thebusybiscuit.slimefun4.api.items.settings.IntRangeSetting;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Collections;
-import java.util.List;
+import io.github.bakedlibs.dough.common.ChatColors;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.settings.IntRangeSetting;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
+import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 
 /**
  * This is a super class of the {@link AutoEnchanter} and {@link AutoDisenchanter} which is
@@ -40,7 +41,7 @@ abstract class AbstractEnchantmentMachine extends AContainer {
     private final ItemSetting<List<String>> ignoredLores = new ItemSetting<>(this, "ignored-lores", Collections.singletonList("&7- &cCan't be used in " + this.getItemName()));
 
     @ParametersAreNonnullByDefault
-    protected AbstractEnchantmentMachine(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    protected AbstractEnchantmentMachine(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
         addItemSetting(useLevelLimit);
@@ -58,9 +59,9 @@ abstract class AbstractEnchantmentMachine extends AContainer {
             throw new IllegalStateException("Enchantment level limit not enabled, cannot display a warning.");
         }
 
-        String notice = ChatColors.color(SlimefunPlugin.getLocalization().getMessage("messages.above-limit-level"));
+        String notice = ChatColors.color(Slimefun.getLocalization().getMessage("messages.above-limit-level"));
         notice = notice.replace("%level%", String.valueOf(levelLimit.getValue()));
-        ItemStack progressBar = new CustomItem(Material.BARRIER, " ", notice);
+        ItemStack progressBar = new CustomItemStack(Material.BARRIER, " ", notice);
         menu.replaceExistingItem(22, progressBar);
     }
 

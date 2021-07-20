@@ -27,7 +27,7 @@ import org.bukkit.persistence.PersistentDataType;
 import io.github.thebusybiscuit.slimefun4.core.services.localization.Language;
 import io.github.thebusybiscuit.slimefun4.core.services.localization.LanguageFile;
 import io.github.thebusybiscuit.slimefun4.core.services.localization.SlimefunLocalization;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.NumberUtils;
 
 /**
@@ -46,12 +46,12 @@ public class LocalizationService extends SlimefunLocalization {
     // All supported languages are stored in this LinkedHashMap, it is Linked so we keep the order
     private final Map<String, Language> languages = new LinkedHashMap<>();
     private final boolean translationsEnabled;
-    private final SlimefunPlugin plugin;
+    private final Slimefun plugin;
     private final String prefix;
     private final NamespacedKey languageKey;
     private final Language defaultLanguage;
 
-    public LocalizationService(@Nonnull SlimefunPlugin plugin, @Nullable String prefix, @Nullable String serverDefaultLanguage) {
+    public LocalizationService(@Nonnull Slimefun plugin, @Nullable String prefix, @Nullable String serverDefaultLanguage) {
         super(plugin);
 
         this.plugin = plugin;
@@ -59,7 +59,7 @@ public class LocalizationService extends SlimefunLocalization {
         languageKey = new NamespacedKey(plugin, LANGUAGE_PATH);
 
         if (serverDefaultLanguage != null) {
-            translationsEnabled = SlimefunPlugin.getCfg().getBoolean("options.enable-translations");
+            translationsEnabled = Slimefun.getCfg().getBoolean("options.enable-translations");
 
             defaultLanguage = new Language(serverDefaultLanguage, "11b3188fd44902f72602bd7c2141f5a70673a411adb3d81862c69e536166b");
             defaultLanguage.setFile(LanguageFile.MESSAGES, getConfig().getConfiguration());
@@ -79,7 +79,7 @@ public class LocalizationService extends SlimefunLocalization {
                 plugin.getLogger().log(Level.WARNING, "Could not recognize the given language: \"{0}\"", serverDefaultLanguage);
             }
 
-            SlimefunPlugin.logger().log(Level.INFO, "Available languages: {0}", String.join(", ", languages.keySet()));
+            Slimefun.logger().log(Level.INFO, "Available languages: {0}", String.join(", ", languages.keySet()));
             save();
         } else {
             translationsEnabled = false;
@@ -178,7 +178,7 @@ public class LocalizationService extends SlimefunLocalization {
             }
         }
 
-        SlimefunPlugin.logger().log(Level.INFO, "Loaded language \"{0}\"", language);
+        Slimefun.logger().log(Level.INFO, "Loaded language \"{0}\"", language);
         getConfig().setValue(LANGUAGE_PATH, language);
 
         // Loading in the defaults from our resources folder
@@ -188,7 +188,7 @@ public class LocalizationService extends SlimefunLocalization {
             FileConfiguration config = YamlConfiguration.loadConfiguration(reader);
             getConfig().getConfiguration().setDefaults(config);
         } catch (IOException e) {
-            SlimefunPlugin.logger().log(Level.SEVERE, e, () -> "Failed to load language file: \"" + path + "\"");
+            Slimefun.logger().log(Level.SEVERE, e, () -> "Failed to load language file: \"" + path + "\"");
         }
 
         save();
@@ -266,7 +266,7 @@ public class LocalizationService extends SlimefunLocalization {
 
             return config;
         } catch (IOException e) {
-            SlimefunPlugin.logger().log(Level.SEVERE, e, () -> "Failed to load language file into memory: \"" + file + "\"");
+            Slimefun.logger().log(Level.SEVERE, e, () -> "Failed to load language file into memory: \"" + file + "\"");
             return new YamlConfiguration();
         }
     }

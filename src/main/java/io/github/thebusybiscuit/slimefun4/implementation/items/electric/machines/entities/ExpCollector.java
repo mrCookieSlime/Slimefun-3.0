@@ -12,22 +12,23 @@ import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemHandler;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.handlers.SimpleBlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.magical.KnowledgeFlask;
+
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.InventoryBlock;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
-import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 
@@ -46,7 +47,7 @@ public class ExpCollector extends SlimefunItem implements InventoryBlock, Energy
     private static final String DATA_KEY = "stored-exp";
 
     @ParametersAreNonnullByDefault
-    public ExpCollector(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public ExpCollector(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
         createPreset(this, this::constructMenu);
@@ -102,7 +103,7 @@ public class ExpCollector extends SlimefunItem implements InventoryBlock, Energy
 
     protected void constructMenu(BlockMenuPreset preset) {
         for (int slot : border) {
-            preset.addItem(slot, new CustomItem(Material.PURPLE_STAINED_GLASS_PANE, " "), (p, s, item, action) -> false);
+            preset.addItem(slot, new CustomItemStack(Material.PURPLE_STAINED_GLASS_PANE, " "), (p, s, item, action) -> false);
         }
     }
 

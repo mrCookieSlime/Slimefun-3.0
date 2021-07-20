@@ -5,11 +5,11 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.implementation.listeners.VillagerTradingListener;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * The {@link SyntheticEmerald} is an almost normal emerald.
@@ -23,7 +23,7 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 public class SyntheticEmerald extends SlimefunItem {
 
     @ParametersAreNonnullByDefault
-    public SyntheticEmerald(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public SyntheticEmerald(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
         setUseableInWorkbench(true);

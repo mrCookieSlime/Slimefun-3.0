@@ -18,7 +18,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
@@ -31,7 +31,7 @@ class TestInfiniteBlockGenerators {
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        MockBukkit.load(SlimefunPlugin.class);
+        MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll

@@ -4,11 +4,11 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.implementation.items.multiblocks.EnhancedCraftingTable;
 import io.github.thebusybiscuit.slimefun4.implementation.listeners.AutoCrafterListener;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * The {@link EnhancedAutoCrafter} is an implementation of the {@link AbstractAutoCrafter}.
@@ -25,7 +25,7 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 public class EnhancedAutoCrafter extends SlimefunAutoCrafter {
 
     @ParametersAreNonnullByDefault
-    public EnhancedAutoCrafter(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public EnhancedAutoCrafter(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe, RecipeType.ENHANCED_CRAFTING_TABLE);
     }
 

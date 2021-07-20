@@ -7,12 +7,11 @@ import javax.annotation.Nonnull;
 
 import org.bukkit.plugin.Plugin;
 
-import io.github.thebusybiscuit.cscorelib2.config.Config;
-import io.github.thebusybiscuit.cscorelib2.updater.GitHubBuildsUpdater;
-import io.github.thebusybiscuit.cscorelib2.updater.Updater;
+import io.github.bakedlibs.dough.config.Config;
+import io.github.bakedlibs.dough.updater.GitHubBuildsUpdater;
+import io.github.bakedlibs.dough.versions.PrefixedVersion;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunBranch;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This Class represents our {@link Updater} Service.
@@ -25,14 +24,14 @@ import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
 public class UpdaterService {
 
     /**
-     * Our {@link SlimefunPlugin} instance.
+     * Our {@link Slimefun} instance.
      */
-    private final SlimefunPlugin plugin;
+    private final Slimefun plugin;
 
     /**
      * Our {@link Updater} implementation.
      */
-    private final Updater updater;
+    private final GitHubBuildsUpdater updater;
 
     /**
      * The {@link SlimefunBranch} we are currently on.
@@ -41,7 +40,7 @@ public class UpdaterService {
     private final SlimefunBranch branch;
 
     /**
-     * This will create a new {@link UpdaterService} for the given {@link SlimefunPlugin}.
+     * This will create a new {@link UpdaterService} for the given {@link Slimefun}.
      * The {@link File} should be the result of the getFile() operation of that {@link Plugin}.
      *
      * @param plugin
@@ -51,9 +50,9 @@ public class UpdaterService {
      * @param file
      *            The {@link File} of this {@link Plugin}
      */
-    public UpdaterService(@Nonnull SlimefunPlugin plugin, @Nonnull String version, @Nonnull File file) {
+    public UpdaterService(@Nonnull Slimefun plugin, @Nonnull String version, @Nonnull File file) {
         this.plugin = plugin;
-        Updater autoUpdater = null;
+        GitHubBuildsUpdater autoUpdater = null;
 
         if (version.contains("UNOFFICIAL")) {
             // This Server is using a modified build that is not a public release.
@@ -62,7 +61,6 @@ public class UpdaterService {
             // If we are using a development build, we want to switch to our custom
             try {
                 autoUpdater = new GitHubBuildsUpdater(plugin, file, "TheBusyBiscuit/Slimefun4/master");
-
             } catch (Exception x) {
                 plugin.getLogger().log(Level.SEVERE, "Failed to create AutoUpdater", x);
             }
@@ -91,8 +89,7 @@ public class UpdaterService {
      *
      * @return The branch this build of Slimefun is on.
      */
-    @Nonnull
-    public SlimefunBranch getBranch() {
+    public @Nonnull SlimefunBranch getBranch() {
         return branch;
     }
 
@@ -104,8 +101,9 @@ public class UpdaterService {
      * @return The build number of this Slimefun.
      */
     public int getBuildNumber() {
-        if (updater != null && PatternUtils.NUMERIC.matcher(this.updater.getLocalVersion()).matches()) {
-            return Integer.parseInt(updater.getLocalVersion());
+        if (updater != null) {
+            PrefixedVersion version = updater.getCurrentVersion();
+            return version.getNumericVersion();
         }
 
         return -1;
@@ -135,7 +133,7 @@ public class UpdaterService {
      * @return Whether the {@link Updater} is enabled
      */
     public boolean isEnabled() {
-        return SlimefunPlugin.getCfg().getBoolean("options.auto-update") && updater != null;
+        return Slimefun.getCfg().getBoolean("options.auto-update") && updater != null;
     }
 
     /**

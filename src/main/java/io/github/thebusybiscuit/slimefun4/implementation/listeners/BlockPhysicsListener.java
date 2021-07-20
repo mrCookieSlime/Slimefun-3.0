@@ -19,8 +19,9 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
+
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 /**
@@ -37,7 +38,7 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
  */
 public class BlockPhysicsListener implements Listener {
 
-    public BlockPhysicsListener(@Nonnull SlimefunPlugin plugin) {
+    public BlockPhysicsListener(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -95,7 +96,7 @@ public class BlockPhysicsListener implements Listener {
                 Location loc = block.getLocation();
 
                 // Fixes #2496 - Make sure it is not a moving block
-                if (SlimefunPlugin.getTickerTask().isOccupiedSoon(loc)) {
+                if (Slimefun.getTickerTask().isOccupiedSoon(loc)) {
                     e.setCancelled(true);
                 }
             }

@@ -8,10 +8,10 @@ import org.bukkit.block.Dispenser;
 import org.bukkit.event.block.BlockDispenseEvent;
 
 import io.github.thebusybiscuit.slimefun4.api.exceptions.IncompatibleItemHandlerException;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemHandler;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.core.attributes.NotPlaceable;
 import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.BlockPlacer;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
 
 /**
  * This {@link ItemHandler} is triggered when the {@link SlimefunItem} it was assigned to

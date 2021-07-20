@@ -1,4 +1,4 @@
-package io.github.thebusybiscuit.slimefun4.core.categories;
+package io.github.thebusybiscuit.slimefun4.api.items.groups;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -11,26 +11,26 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import me.mrCookieSlime.Slimefun.Objects.Category;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 
 /**
- * Represents a {@link Category} that is only displayed in the Guide during
+ * Represents a {@link ItemGroup} that is only displayed in the Guide during
  * a specified {@link Month}.
  * 
  * @author TheBusyBiscuit
  * 
- * @see Category
- * @see LockedCategory
+ * @see ItemGroup
+ * @see LockedItemGroup
  */
-public class SeasonalCategory extends Category {
+public class SeasonalItemGroup extends ItemGroup {
 
     private final Month month;
 
     /**
-     * The constructor for a {@link SeasonalCategory}.
+     * The constructor for a {@link SeasonalItemGroup}.
      * 
      * @param key
-     *            The {@link NamespacedKey} that is used to identify this {@link Category}
+     *            The {@link NamespacedKey} that is used to identify this {@link ItemGroup}
      * @param month
      *            The month when the category should be displayed (from 1 = January ; to 12 = December)
      * @param tier
@@ -39,7 +39,7 @@ public class SeasonalCategory extends Category {
      *            The display item for this category
      */
     @ParametersAreNonnullByDefault
-    public SeasonalCategory(NamespacedKey key, Month month, int tier, ItemStack item) {
+    public SeasonalItemGroup(NamespacedKey key, Month month, int tier, ItemStack item) {
         super(key, item, tier);
         Validate.notNull(month, "The Month cannot be null");
 
@@ -47,9 +47,9 @@ public class SeasonalCategory extends Category {
     }
 
     /**
-     * This method returns the {@link Month} in which this {@link SeasonalCategory} will appear.
+     * This method returns the {@link Month} in which this {@link SeasonalItemGroup} will appear.
      * 
-     * @return the {@link Month} in which this {@link SeasonalCategory} appears
+     * @return the {@link Month} in which this {@link SeasonalItemGroup} appears
      */
     @Nonnull
     public Month getMonth() {

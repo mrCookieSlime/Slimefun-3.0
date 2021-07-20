@@ -11,7 +11,7 @@ import org.bukkit.command.defaults.HelpCommand;
 import org.bukkit.entity.Player;
 
 import io.github.thebusybiscuit.slimefun4.core.services.localization.Language;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This class represents a {@link SubCommand}, it is a {@link Command} that starts with
@@ -24,14 +24,14 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
  */
 public abstract class SubCommand {
 
-    protected final SlimefunPlugin plugin;
+    protected final Slimefun plugin;
     protected final SlimefunCommand cmd;
 
     private final String name;
     private final boolean hidden;
 
     @ParametersAreNonnullByDefault
-    protected SubCommand(SlimefunPlugin plugin, SlimefunCommand cmd, String name, boolean hidden) {
+    protected SubCommand(Slimefun plugin, SlimefunCommand cmd, String name, boolean hidden) {
         this.plugin = plugin;
         this.cmd = cmd;
 
@@ -83,9 +83,9 @@ public abstract class SubCommand {
     @Nonnull
     public String getDescription(@Nonnull CommandSender sender) {
         if (sender instanceof Player) {
-            return SlimefunPlugin.getLocalization().getMessage((Player) sender, getDescription());
+            return Slimefun.getLocalization().getMessage((Player) sender, getDescription());
         } else {
-            return SlimefunPlugin.getLocalization().getMessage(getDescription());
+            return Slimefun.getLocalization().getMessage(getDescription());
         }
     }
 

@@ -23,12 +23,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.blocks.BlockPosition;
-import io.github.thebusybiscuit.cscorelib2.inventory.InvUtils;
-import io.github.thebusybiscuit.cscorelib2.inventory.ItemUtils;
-import io.github.thebusybiscuit.cscorelib2.protection.ProtectableAction;
-import io.github.thebusybiscuit.cscorelib2.scheduling.TaskQueue;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.blocks.BlockPosition;
+import io.github.bakedlibs.dough.inventory.InvUtils;
+import io.github.bakedlibs.dough.items.ItemUtils;
+import io.github.bakedlibs.dough.protection.Interaction;
+import io.github.bakedlibs.dough.scheduling.TaskQueue;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.WorldUtils;
 import io.papermc.lib.PaperLib;
 
@@ -110,7 +110,7 @@ class MiningTask implements Runnable {
         Player p = Bukkit.getPlayer(owner);
 
         if (p != null) {
-            SlimefunPlugin.getLocalization().sendMessage(p, reason.getErrorMessage());
+            Slimefun.getLocalization().sendMessage(p, reason.getErrorMessage());
         }
 
         stop();
@@ -159,7 +159,7 @@ class MiningTask implements Runnable {
         queue.thenRun(2, () -> setPistonState(pistons[1], false));
 
         queue.thenRun(1, this);
-        queue.execute(SlimefunPlugin.instance());
+        queue.execute(Slimefun.instance());
     }
 
     @Override
@@ -186,7 +186,7 @@ class MiningTask implements Runnable {
                 for (int y = height; y > WorldUtils.getMinHeight(world); y--) {
                     Block b = world.getBlockAt(x, y, z);
 
-                    if (!SlimefunPlugin.getProtectionManager().hasPermission(Bukkit.getOfflinePlayer(owner), b, ProtectableAction.BREAK_BLOCK)) {
+                    if (!Slimefun.getProtectionManager().hasPermission(Bukkit.getOfflinePlayer(owner), b, Interaction.BREAK_BLOCK)) {
                         stop(MinerStoppingReason.NO_PERMISSION);
                         return;
                     }
@@ -200,19 +200,19 @@ class MiningTask implements Runnable {
                         ores++;
 
                         // Repeat the same column when we hit an ore.
-                        SlimefunPlugin.runSync(this, 4);
+                        Slimefun.runSync(this, 4);
                         return;
                     }
                 }
 
                 nextColumn();
             } catch (Exception e) {
-                SlimefunPlugin.logger().log(Level.SEVERE, e, () -> "An Error occurred while running an Industrial Miner at " + new BlockPosition(chest));
+                Slimefun.logger().log(Level.SEVERE, e, () -> "An Error occurred while running an Industrial Miner at " + new BlockPosition(chest));
                 stop();
             }
         });
 
-        queue.execute(SlimefunPlugin.instance());
+        queue.execute(Slimefun.instance());
     }
 
     /**
@@ -232,13 +232,13 @@ class MiningTask implements Runnable {
 
             if (p != null) {
                 p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 0.4F, 1F);
-                SlimefunPlugin.getLocalization().sendMessage(p, "machines.INDUSTRIAL_MINER.finished", msg -> msg.replace("%ores%", String.valueOf(ores)));
+                Slimefun.getLocalization().sendMessage(p, "machines.INDUSTRIAL_MINER.finished", msg -> msg.replace("%ores%", String.valueOf(ores)));
             }
 
             return;
         }
 
-        SlimefunPlugin.runSync(this, 5);
+        Slimefun.runSync(this, 5);
     }
 
     /**
@@ -359,7 +359,7 @@ class MiningTask implements Runnable {
                 stop(MinerStoppingReason.STRUCTURE_DESTROYED);
             }
         } catch (Exception e) {
-            SlimefunPlugin.logger().log(Level.SEVERE, e, () -> "An Error occurred while moving a Piston for an Industrial Miner at " + new BlockPosition(block));
+            Slimefun.logger().log(Level.SEVERE, e, () -> "An Error occurred while moving a Piston for an Industrial Miner at " + new BlockPosition(block));
             stop();
         }
     }

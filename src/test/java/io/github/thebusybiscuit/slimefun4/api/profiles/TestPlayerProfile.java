@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import io.github.thebusybiscuit.slimefun4.api.items.HashedArmorpiece;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
@@ -27,7 +27,7 @@ class TestPlayerProfile {
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        MockBukkit.load(SlimefunPlugin.class);
+        MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll
@@ -42,7 +42,7 @@ class TestPlayerProfile {
         PlayerProfile profile = TestUtilities.awaitProfile(player);
 
         Assertions.assertNotNull(profile);
-        Assertions.assertEquals(profile, SlimefunPlugin.getRegistry().getPlayerProfiles().get(player.getUniqueId()));
+        Assertions.assertEquals(profile, Slimefun.getRegistry().getPlayerProfiles().get(player.getUniqueId()));
 
         // This profile should now be in memory and return true
         Assertions.assertTrue(PlayerProfile.get(player, p -> {}));

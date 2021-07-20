@@ -2,8 +2,8 @@ package io.github.thebusybiscuit.slimefun4.core.attributes;
 
 import javax.annotation.Nonnull;
 
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemHandler;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 
 /**
  * An empty interface that only serves the purpose of bundling together all

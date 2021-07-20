@@ -13,26 +13,27 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerPreResearchEvent;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuideImplementation;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 class TestResearches {
 
     private static ServerMock server;
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
 
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll
@@ -77,15 +78,15 @@ class TestResearches {
     void testResearchRegistration() {
         NamespacedKey key = new NamespacedKey(plugin, "test_research");
         Research research = new Research(key, 1, "Test", 100);
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "RESEARCH_TEST", new CustomItem(Material.TORCH, "&bResearch Test"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "RESEARCH_TEST", new CustomItemStack(Material.TORCH, "&bResearch Test"));
         research.addItems(item, null);
         research.register();
 
-        SlimefunPlugin.getRegistry().setResearchingEnabled(true);
+        Slimefun.getRegistry().setResearchingEnabled(true);
 
         Assertions.assertTrue(research.isEnabled());
         Assertions.assertEquals(research, item.getResearch());
-        Assertions.assertTrue(SlimefunPlugin.getRegistry().getResearches().contains(research));
+        Assertions.assertTrue(Slimefun.getRegistry().getResearches().contains(research));
 
         Optional<Research> optional = Research.getResearch(key);
         Assertions.assertTrue(optional.isPresent());
@@ -97,11 +98,11 @@ class TestResearches {
     void testDisabledResearch() {
         NamespacedKey key = new NamespacedKey(plugin, "disabled_research");
         Research research = new Research(key, 2, "Test", 100);
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "RESEARCH_TEST", new CustomItem(Material.TORCH, "&bResearch Test"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "RESEARCH_TEST", new CustomItemStack(Material.TORCH, "&bResearch Test"));
         research.addItems(item);
 
-        SlimefunPlugin.getRegistry().setResearchingEnabled(true);
-        SlimefunPlugin.getResearchCfg().setValue(key.getNamespace() + '.' + key.getKey() + ".enabled", false);
+        Slimefun.getRegistry().setResearchingEnabled(true);
+        Slimefun.getResearchCfg().setValue(key.getNamespace() + '.' + key.getKey() + ".enabled", false);
         research.register();
 
         Assertions.assertFalse(research.isEnabled());
@@ -114,11 +115,11 @@ class TestResearches {
         NamespacedKey key = new NamespacedKey(plugin, "globally_disabled_research");
         Research research = new Research(key, 3, "Test", 100);
 
-        SlimefunPlugin.getRegistry().setResearchingEnabled(true);
+        Slimefun.getRegistry().setResearchingEnabled(true);
         Assertions.assertTrue(research.isEnabled());
-        SlimefunPlugin.getRegistry().setResearchingEnabled(false);
+        Slimefun.getRegistry().setResearchingEnabled(false);
         Assertions.assertFalse(research.isEnabled());
-        SlimefunPlugin.getRegistry().setResearchingEnabled(true);
+        Slimefun.getRegistry().setResearchingEnabled(true);
     }
 
     @Test
@@ -126,7 +127,7 @@ class TestResearches {
     void testAddItems() {
         NamespacedKey key = new NamespacedKey(plugin, "add_items_to_research");
         Research research = new Research(key, 17, "Test", 100);
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "RESEARCH_ITEMS_TEST", new CustomItem(Material.LAPIS_LAZULI, "&9Adding items is fun"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "RESEARCH_ITEMS_TEST", new CustomItemStack(Material.LAPIS_LAZULI, "&9Adding items is fun"));
         item.register(plugin);
 
         research.addItems(item.getItem(), null);
@@ -137,7 +138,7 @@ class TestResearches {
 
     @Test
     void testPlayerCanUnlockDisabledResearch() {
-        SlimefunPlugin.getRegistry().setResearchingEnabled(false);
+        Slimefun.getRegistry().setResearchingEnabled(false);
 
         Player player = server.addPlayer();
         NamespacedKey key = new NamespacedKey(plugin, "disabled_unlockable_research");
@@ -145,19 +146,19 @@ class TestResearches {
 
         Assertions.assertTrue(research.canUnlock(player));
 
-        SlimefunPlugin.getRegistry().setResearchingEnabled(true);
+        Slimefun.getRegistry().setResearchingEnabled(true);
     }
 
     @Test
     @DisplayName("Test 'free creative researching' option")
     void testFreeCreativeResearch() {
-        SlimefunPlugin.getRegistry().setResearchingEnabled(true);
+        Slimefun.getRegistry().setResearchingEnabled(true);
 
         Player player = server.addPlayer();
         NamespacedKey key = new NamespacedKey(plugin, "free_creative_research");
         Research research = new Research(key, 153, "Test", 100);
 
-        SlimefunPlugin.getRegistry().setFreeCreativeResearchingEnabled(false);
+        Slimefun.getRegistry().setFreeCreativeResearchingEnabled(false);
 
         player.setGameMode(GameMode.SURVIVAL);
         Assertions.assertFalse(research.canUnlock(player));
@@ -165,7 +166,7 @@ class TestResearches {
         player.setGameMode(GameMode.CREATIVE);
         Assertions.assertFalse(research.canUnlock(player));
 
-        SlimefunPlugin.getRegistry().setFreeCreativeResearchingEnabled(true);
+        Slimefun.getRegistry().setFreeCreativeResearchingEnabled(true);
 
         player.setGameMode(GameMode.SURVIVAL);
         Assertions.assertFalse(research.canUnlock(player));
@@ -189,7 +190,7 @@ class TestResearches {
     @Test
     @DisplayName("Test PlayerPreResearchEvent")
     void testPreCanUnlockResearchEvent() throws InterruptedException {
-        SlimefunPlugin.getRegistry().setResearchingEnabled(true);
+        Slimefun.getRegistry().setResearchingEnabled(true);
 
         NamespacedKey key = new NamespacedKey(plugin, "simple_research");
         Research research = new Research(key, 250, "Test", 10);
@@ -198,9 +199,9 @@ class TestResearches {
         SlimefunGuideImplementation guide = Mockito.mock(SlimefunGuideImplementation.class);
         Player player = server.addPlayer();
         PlayerProfile profile = TestUtilities.awaitProfile(player);
-        SlimefunItem sfItem = TestUtilities.mockSlimefunItem(plugin, "RESEARCH_TEST", new CustomItem(Material.TORCH, "&bResearch Test"));
+        SlimefunItem sfItem = TestUtilities.mockSlimefunItem(plugin, "RESEARCH_TEST", new CustomItemStack(Material.TORCH, "&bResearch Test"));
 
-        research.unlockFromGuide(guide, player, profile, sfItem, sfItem.getCategory(), 0);
+        research.unlockFromGuide(guide, player, profile, sfItem, sfItem.getItemGroup(), 0);
 
         server.getPluginManager().assertEventFired(PlayerPreResearchEvent.class, event -> {
             Assertions.assertEquals(player, event.getPlayer());

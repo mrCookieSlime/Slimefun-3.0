@@ -66,7 +66,7 @@
             <url>https://papermc.io/repo/repository/maven-public</url>
         </repository>
         <repository>
-            <!-- CS-CoreLib2, ItemsAdder -->
+            <!-- ItemsAdder -->
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
@@ -192,8 +192,8 @@
                     <!-- Relocate these to avoid clashes and conflicts -->
                     <relocations>
                         <relocation>
-                            <pattern>io.github.thebusybiscuit.cscorelib2</pattern>
-                            <shadedPattern>me.mrCookieSlime.Slimefun.cscorelib2</shadedPattern>
+                            <pattern>io.github.bakedlibs.dough</pattern>
+                            <shadedPattern>io.github.thebusybiscuit.slimefun4.libraries.dough</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>io.papermc.lib</pattern>
@@ -370,9 +370,9 @@
 
         <!-- Shaded packages -->
         <dependency>
-            <groupId>com.github.thebusybiscuit</groupId>
-            <artifactId>CS-CoreLib2</artifactId>
-            <version>0.32.1</version>
+            <groupId>io.github.baked-libs</groupId>
+            <artifactId>dough-api</artifactId>
+            <version>1.0.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

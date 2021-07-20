@@ -1,6 +1,10 @@
 package io.github.thebusybiscuit.slimefun4.api.events;
 
-import io.github.thebusybiscuit.slimefun4.implementation.items.tools.ExplosiveTool;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -10,9 +14,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
+import io.github.thebusybiscuit.slimefun4.implementation.items.tools.ExplosiveTool;
 
 /**
  * This {@link Event} is called when an {@link ExplosiveTool} is used to break blocks.

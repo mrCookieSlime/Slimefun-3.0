@@ -4,12 +4,12 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.Rechargeable;
 import io.github.thebusybiscuit.slimefun4.implementation.tasks.JetBootsTask;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * {@link JetBoots} allow you to hover for a bit.
@@ -27,7 +27,7 @@ public class JetBoots extends SlimefunItem implements Rechargeable {
     private final float capacity;
 
     @ParametersAreNonnullByDefault
-    public JetBoots(Category category, SlimefunItemStack item, ItemStack[] recipe, double speed, float capacity) {
+    public JetBoots(ItemGroup category, SlimefunItemStack item, ItemStack[] recipe, double speed, float capacity) {
         super(category, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
 
         this.speed = speed;

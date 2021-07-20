@@ -16,9 +16,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import io.github.thebusybiscuit.cscorelib2.chat.ChatColors;
+import io.github.bakedlibs.dough.common.ChatColors;
 import io.github.thebusybiscuit.slimefun4.core.commands.subcommands.SlimefunSubCommands;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This {@link CommandExecutor} holds the functionality of our {@code /slimefun} command.
@@ -29,7 +29,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 public class SlimefunCommand implements CommandExecutor, Listener {
 
     private boolean registered = false;
-    private final SlimefunPlugin plugin;
+    private final Slimefun plugin;
     private final List<SubCommand> commands = new LinkedList<>();
     private final Map<SubCommand, Integer> commandUsage = new HashMap<>();
 
@@ -37,9 +37,9 @@ public class SlimefunCommand implements CommandExecutor, Listener {
      * Creates a new instance of {@link SlimefunCommand}
      * 
      * @param plugin
-     *            The instance of our {@link SlimefunPlugin}
+     *            The instance of our {@link Slimefun}
      */
-    public SlimefunCommand(@Nonnull SlimefunPlugin plugin) {
+    public SlimefunCommand(@Nonnull Slimefun plugin) {
         this.plugin = plugin;
     }
 
@@ -54,7 +54,7 @@ public class SlimefunCommand implements CommandExecutor, Listener {
         commands.addAll(SlimefunSubCommands.getAllCommands(this));
     }
 
-    public @Nonnull SlimefunPlugin getPlugin() {
+    public @Nonnull Slimefun getPlugin() {
         return plugin;
     }
 
@@ -92,7 +92,7 @@ public class SlimefunCommand implements CommandExecutor, Listener {
 
     public void sendHelp(@Nonnull CommandSender sender) {
         sender.sendMessage("");
-        sender.sendMessage(ChatColors.color("&aSlimefun &2v" + SlimefunPlugin.getVersion()));
+        sender.sendMessage(ChatColors.color("&aSlimefun &2v" + Slimefun.getVersion()));
         sender.sendMessage("");
 
         for (SubCommand cmd : commands) {

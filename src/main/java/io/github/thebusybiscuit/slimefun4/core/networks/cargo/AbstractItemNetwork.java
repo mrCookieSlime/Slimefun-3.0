@@ -17,7 +17,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import io.github.thebusybiscuit.slimefun4.utils.itemstack.ItemStackWrapper;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -30,15 +29,17 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import io.github.thebusybiscuit.cscorelib2.chat.ChatColors;
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.common.ChatColors;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.network.Network;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.NumberUtils;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
+import io.github.thebusybiscuit.slimefun4.utils.itemstack.ItemStackWrapper;
 import io.papermc.lib.PaperLib;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
@@ -58,7 +59,7 @@ abstract class AbstractItemNetwork extends Network {
     private static final int[] TERMINAL_SLOTS = { 0, 1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 18, 19, 20, 21, 22, 23, 24, 27, 28, 29, 30, 31, 32, 33, 36, 37, 38, 39, 40, 41, 42 };
     private static final int TERMINAL_OUT_SLOT = 17;
 
-    private final ItemStack terminalPlaceholderItem = new CustomItem(Material.BARRIER, "&4No Item cached");
+    private final ItemStack terminalPlaceholderItem = new CustomItemStack(Material.BARRIER, "&4No Item cached");
 
     protected final Set<Location> terminals = new HashSet<>();
     protected final Set<Location> imports = new HashSet<>();
@@ -81,7 +82,7 @@ abstract class AbstractItemNetwork extends Network {
     protected Map<Location, ItemFilter> filterCache = new HashMap<>();
 
     protected AbstractItemNetwork(Location regulator) {
-        super(SlimefunPlugin.getNetworkManager(), regulator);
+        super(Slimefun.getNetworkManager(), regulator);
     }
 
     protected Optional<Block> getAttachedBlock(Location l) {
@@ -174,13 +175,13 @@ abstract class AbstractItemNetwork extends Network {
                     if (stack == null) {
                         stack = is;
                     } else {
-                        stack = new CustomItem(stack, stack.getAmount() + is.getAmount());
+                        stack = new CustomItemStack(stack, stack.getAmount() + is.getAmount());
                     }
 
                     if (is.getAmount() == item.getAmount()) {
                         break;
                     } else {
-                        item = new CustomItem(item, item.getAmount() - is.getAmount());
+                        item = new CustomItemStack(item, item.getAmount() - is.getAmount());
                     }
                 }
             }
@@ -192,7 +193,7 @@ abstract class AbstractItemNetwork extends Network {
             if (prev == null) {
                 terminal.replaceExistingItem(slot, stack);
             } else {
-                terminal.replaceExistingItem(slot, new CustomItem(stack, stack.getAmount() + prev.getAmount()));
+                terminal.replaceExistingItem(slot, new CustomItemStack(stack, stack.getAmount() + prev.getAmount()));
             }
         }
 
@@ -200,10 +201,10 @@ abstract class AbstractItemNetwork extends Network {
     }
 
     private void collectImportRequests(Map<Location, Inventory> inventories) {
-        SlimefunItem item = SlimefunItem.getByID("CT_IMPORT_BUS");
+        SlimefunItem item = SlimefunItem.getById("CT_IMPORT_BUS");
 
         for (Location bus : imports) {
-            long timestamp = SlimefunPlugin.getProfiler().newEntry();
+            long timestamp = Slimefun.getProfiler().newEntry();
             BlockMenu menu = BlockStorage.getInventory(bus);
 
             if (menu.getItemInSlot(17) == null) {
@@ -222,15 +223,15 @@ abstract class AbstractItemNetwork extends Network {
                 itemRequests.add(new ItemRequest(bus, 17, menu.getItemInSlot(17), ItemTransportFlow.INSERT));
             }
 
-            SlimefunPlugin.getProfiler().closeEntry(bus, item, timestamp);
+            Slimefun.getProfiler().closeEntry(bus, item, timestamp);
         }
     }
 
     private void collectExportRequests(Map<Location, Inventory> inventories) {
-        SlimefunItem item = SlimefunItem.getByID("CT_EXPORT_BUS");
+        SlimefunItem item = SlimefunItem.getById("CT_EXPORT_BUS");
 
         for (Location bus : exports) {
-            long timestamp = SlimefunPlugin.getProfiler().newEntry();
+            long timestamp = Slimefun.getProfiler().newEntry();
             BlockMenu menu = BlockStorage.getInventory(bus);
 
             ItemStack itemSlot17 = menu.getItemInSlot(17);
@@ -246,7 +247,7 @@ abstract class AbstractItemNetwork extends Network {
                     ItemStack template = menu.getItemInSlot(slot);
 
                     if (template != null) {
-                        items.add(new CustomItem(template, 1));
+                        items.add(new CustomItemStack(template, 1));
                     }
                 }
 
@@ -263,7 +264,7 @@ abstract class AbstractItemNetwork extends Network {
                 }
             }
 
-            SlimefunPlugin.getProfiler().closeEntry(bus, item, timestamp);
+            Slimefun.getProfiler().closeEntry(bus, item, timestamp);
         }
     }
 
@@ -298,7 +299,7 @@ abstract class AbstractItemNetwork extends Network {
         // gonna use no more than one terminal anyway, so this might be fine
         long timestamp = System.nanoTime();
         Location firstTerminal = null;
-        SlimefunItem item = SlimefunItem.getByID("CHEST_TERMINAL");
+        SlimefunItem item = SlimefunItem.getById("CHEST_TERMINAL");
         List<ItemStackAndInteger> items = findAvailableItems(providers);
 
         try {
@@ -327,7 +328,7 @@ abstract class AbstractItemNetwork extends Network {
         }
 
         if (firstTerminal != null) {
-            return SlimefunPlugin.getProfiler().closeEntry(firstTerminal, item, timestamp);
+            return Slimefun.getProfiler().closeEntry(firstTerminal, item, timestamp);
         } else {
             return System.nanoTime() - timestamp;
         }
@@ -386,7 +387,7 @@ abstract class AbstractItemNetwork extends Network {
             terminal.replaceExistingItem(slot, stack);
             terminal.addMenuClickHandler(slot, (p, sl, is, action) -> {
                 int amount = item.getInt() > item.getItem().getMaxStackSize() ? item.getItem().getMaxStackSize() : item.getInt();
-                ItemStack requestedItem = new CustomItem(item.getItem(), action.isRightClicked() ? amount : 1);
+                ItemStack requestedItem = new CustomItemStack(item.getItem(), action.isRightClicked() ? amount : 1);
                 itemRequests.add(new ItemRequest(l, 44, requestedItem, ItemTransportFlow.WITHDRAW));
                 return false;
             });

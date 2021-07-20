@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.magical.BeeWings;
 import io.github.thebusybiscuit.slimefun4.implementation.tasks.BeeWingsTask;
 
@@ -28,7 +28,7 @@ public class BeeWingsListener implements Listener {
 
     private final BeeWings wings;
 
-    public BeeWingsListener(@Nonnull SlimefunPlugin plugin, @Nonnull BeeWings wings) {
+    public BeeWingsListener(@Nonnull Slimefun plugin, @Nonnull BeeWings wings) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
         this.wings = wings;

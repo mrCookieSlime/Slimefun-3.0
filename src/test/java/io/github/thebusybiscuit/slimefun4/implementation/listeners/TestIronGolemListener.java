@@ -14,26 +14,26 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.VanillaItem;
 import io.github.thebusybiscuit.slimefun4.implementation.listeners.entity.IronGolemListener;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 class TestIronGolemListener {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
     private static IronGolemListener listener;
     private static ServerMock server;
 
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
         listener = new IronGolemListener(plugin);
     }
 
@@ -78,7 +78,7 @@ class TestIronGolemListener {
     @Test
     @DisplayName("Test Iron Golem Healing with Slimefun Items being cancelled")
     void testWithSlimefunIron() {
-        SlimefunItem slimefunItem = TestUtilities.mockSlimefunItem(plugin, "SLIMEFUN_IRON", new CustomItem(Material.IRON_INGOT, "&cSlimefun Iron"));
+        SlimefunItem slimefunItem = TestUtilities.mockSlimefunItem(plugin, "SLIMEFUN_IRON", new CustomItemStack(Material.IRON_INGOT, "&cSlimefun Iron"));
         slimefunItem.register(plugin);
 
         // The Event should be cancelled, we do not wanna use Slimefun Items for this

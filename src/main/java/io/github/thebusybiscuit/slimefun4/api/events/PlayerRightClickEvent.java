@@ -16,8 +16,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.data.TriStateOptional;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.bakedlibs.dough.data.TriStateOptional;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 /**

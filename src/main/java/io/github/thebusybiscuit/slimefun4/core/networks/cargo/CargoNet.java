@@ -16,11 +16,12 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.bakedlibs.dough.common.CommonPatterns;
 import io.github.thebusybiscuit.slimefun4.api.network.Network;
 import io.github.thebusybiscuit.slimefun4.api.network.NetworkComponent;
 import io.github.thebusybiscuit.slimefun4.core.attributes.HologramOwner;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 /**
@@ -41,7 +42,7 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 public class CargoNet extends AbstractItemNetwork implements HologramOwner {
 
     private static final int RANGE = 5;
-    private static final int TICK_DELAY = SlimefunPlugin.getCfg().getInt("networks.cargo-ticker-delay");
+    private static final int TICK_DELAY = Slimefun.getCfg().getInt("networks.cargo-ticker-delay");
 
     private final Set<Location> inputNodes = new HashSet<>();
     private final Set<Location> outputNodes = new HashSet<>();
@@ -51,18 +52,18 @@ public class CargoNet extends AbstractItemNetwork implements HologramOwner {
 
     @Nullable
     public static CargoNet getNetworkFromLocation(@Nonnull Location l) {
-        return SlimefunPlugin.getNetworkManager().getNetworkFromLocation(l, CargoNet.class).orElse(null);
+        return Slimefun.getNetworkManager().getNetworkFromLocation(l, CargoNet.class).orElse(null);
     }
 
     @Nonnull
     public static CargoNet getNetworkFromLocationOrCreate(@Nonnull Location l) {
-        Optional<CargoNet> cargoNetwork = SlimefunPlugin.getNetworkManager().getNetworkFromLocation(l, CargoNet.class);
+        Optional<CargoNet> cargoNetwork = Slimefun.getNetworkManager().getNetworkFromLocation(l, CargoNet.class);
 
         if (cargoNetwork.isPresent()) {
             return cargoNetwork.get();
         } else {
             CargoNet network = new CargoNet(l);
-            SlimefunPlugin.getNetworkManager().registerNetwork(network);
+            Slimefun.getNetworkManager().registerNetwork(network);
             return network;
         }
     }
@@ -183,10 +184,10 @@ public class CargoNet extends AbstractItemNetwork implements HologramOwner {
                 display();
             }
 
-            SlimefunPlugin.getProfiler().scheduleEntries((terminals.isEmpty() ? 1 : 2) + inputs.size());
+            Slimefun.getProfiler().scheduleEntries((terminals.isEmpty() ? 1 : 2) + inputs.size());
 
             CargoNetworkTask runnable = new CargoNetworkTask(this, inputs, outputs, chestTerminalInputs, chestTerminalOutputs);
-            SlimefunPlugin.runSync(runnable);
+            Slimefun.runSync(runnable);
         }
     }
 
@@ -260,8 +261,8 @@ public class CargoNet extends AbstractItemNetwork implements HologramOwner {
 
         if (frequency == null) {
             return 0;
-        } else if (!PatternUtils.NUMERIC.matcher(frequency).matches()) {
-            SlimefunPlugin.logger().log(Level.SEVERE, () -> "Failed to parse a Cargo Node Frequency (" + node.getWorld().getName() + " - " + node.getBlockX() + ',' + node.getBlockY() + ',' + node.getBlockZ() + "): " + frequency);
+        } else if (!CommonPatterns.NUMERIC.matcher(frequency).matches()) {
+            Slimefun.logger().log(Level.SEVERE, () -> "Failed to parse a Cargo Node Frequency (" + node.getWorld().getName() + " - " + node.getBlockX() + ',' + node.getBlockY() + ',' + node.getBlockZ() + "): " + frequency);
             return 0;
         } else {
             return Integer.parseInt(frequency);

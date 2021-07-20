@@ -14,9 +14,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import io.github.thebusybiscuit.slimefun4.core.researching.Research;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 class SlimefunTabCompleter implements TabCompleter {
 
@@ -37,7 +37,7 @@ class SlimefunTabCompleter implements TabCompleter {
             if (args[0].equalsIgnoreCase("give")) {
                 return createReturnList(getSlimefunItems(), args[2]);
             } else if (args[0].equalsIgnoreCase("research")) {
-                List<Research> researches = SlimefunPlugin.getRegistry().getResearches();
+                List<Research> researches = Slimefun.getRegistry().getResearches();
                 List<String> suggestions = new LinkedList<>();
 
                 suggestions.add("all");
@@ -95,7 +95,7 @@ class SlimefunTabCompleter implements TabCompleter {
 
     @Nonnull
     private List<String> getSlimefunItems() {
-        List<SlimefunItem> items = SlimefunPlugin.getRegistry().getEnabledSlimefunItems();
+        List<SlimefunItem> items = Slimefun.getRegistry().getEnabledSlimefunItems();
         List<String> list = new ArrayList<>(items.size());
 
         for (SlimefunItem item : items) {

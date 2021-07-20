@@ -17,9 +17,9 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.core.attributes.PiglinBarterDrop;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This {@link Listener} prevents a {@link Piglin} from bartering with a
@@ -33,7 +33,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
  */
 public class PiglinListener implements Listener {
 
-    public PiglinListener(@Nonnull SlimefunPlugin plugin) {
+    public PiglinListener(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -69,7 +69,7 @@ public class PiglinListener implements Listener {
             SlimefunItem sfItem = SlimefunItem.getByItem(item);
 
             if (sfItem != null) {
-                SlimefunPlugin.getLocalization().sendMessage(p, "messages.piglin-barter", true);
+                Slimefun.getLocalization().sendMessage(p, "messages.piglin-barter", true);
                 e.setCancelled(true);
             }
         }
@@ -78,7 +78,7 @@ public class PiglinListener implements Listener {
     @EventHandler
     public void onPiglinDropItem(EntityDropItemEvent e) {
         if (e.getEntity() instanceof Piglin) {
-            Set<ItemStack> drops = SlimefunPlugin.getRegistry().getBarteringDrops();
+            Set<ItemStack> drops = Slimefun.getRegistry().getBarteringDrops();
 
             /*
              * NOTE: Getting a new random number each iteration because multiple items could have the same

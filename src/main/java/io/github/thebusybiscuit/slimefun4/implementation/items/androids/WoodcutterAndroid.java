@@ -16,22 +16,24 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.blocks.Vein;
-import io.github.thebusybiscuit.cscorelib2.protection.ProtectableAction;
+import io.github.bakedlibs.dough.blocks.Vein;
+import io.github.bakedlibs.dough.protection.Interaction;
 import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
+
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 
 public class WoodcutterAndroid extends ProgrammableAndroid {
 
     private static final int MAX_REACH = 160;
 
-    public WoodcutterAndroid(Category category, int tier, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    @ParametersAreNonnullByDefault
+    public WoodcutterAndroid(ItemGroup category, int tier, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, tier, item, recipeType, recipe);
     }
 
@@ -52,7 +54,7 @@ public class WoodcutterAndroid extends ProgrammableAndroid {
                 log.getWorld().playEffect(log.getLocation(), Effect.STEP_SOUND, log.getType());
 
                 OfflinePlayer owner = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "owner")));
-                if (SlimefunPlugin.getProtectionManager().hasPermission(owner, log.getLocation(), ProtectableAction.BREAK_BLOCK)) {
+                if (Slimefun.getProtectionManager().hasPermission(owner, log.getLocation(), Interaction.BREAK_BLOCK)) {
                     breakLog(log, b, menu, face);
                 }
 
@@ -132,7 +134,7 @@ public class WoodcutterAndroid extends ProgrammableAndroid {
                 break;
         }
 
-        if (SlimefunPlugin.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_16)) {
+        if (Slimefun.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_16)) {
             switch (logType) {
                 case CRIMSON_STEM:
                 case CRIMSON_HYPHAE:

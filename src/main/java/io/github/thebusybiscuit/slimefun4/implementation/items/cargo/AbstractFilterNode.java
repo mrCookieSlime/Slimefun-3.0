@@ -10,15 +10,16 @@ import org.bukkit.block.Block;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.networks.cargo.CargoNet;
 import io.github.thebusybiscuit.slimefun4.implementation.handlers.SimpleBlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
+
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 
@@ -38,7 +39,7 @@ abstract class AbstractFilterNode extends AbstractCargoNode {
     private static final String FILTER_LORE = "filter-lore";
 
     @ParametersAreNonnullByDefault
-    protected AbstractFilterNode(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, @Nullable ItemStack recipeOutput) {
+    protected AbstractFilterNode(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, @Nullable ItemStack recipeOutput) {
         super(category, item, recipeType, recipe, recipeOutput);
 
         addItemHandler(onBreak());
@@ -79,10 +80,10 @@ abstract class AbstractFilterNode extends AbstractCargoNode {
     @Override
     protected void createBorder(BlockMenuPreset preset) {
         for (int i : getBorder()) {
-            preset.addItem(i, new CustomItem(Material.CYAN_STAINED_GLASS_PANE, " "), ChestMenuUtils.getEmptyClickHandler());
+            preset.addItem(i, new CustomItemStack(Material.CYAN_STAINED_GLASS_PANE, " "), ChestMenuUtils.getEmptyClickHandler());
         }
 
-        preset.addItem(2, new CustomItem(Material.PAPER, "&3Items", "", "&bPut in all Items you want to", "&bblacklist/whitelist"), ChestMenuUtils.getEmptyClickHandler());
+        preset.addItem(2, new CustomItemStack(Material.PAPER, "&3Items", "", "&bPut in all Items you want to", "&bblacklist/whitelist"), ChestMenuUtils.getEmptyClickHandler());
     }
 
     @Override
@@ -91,14 +92,14 @@ abstract class AbstractFilterNode extends AbstractCargoNode {
         String filterType = BlockStorage.getLocationInfo(loc, FILTER_TYPE);
 
         if (!BlockStorage.hasBlockInfo(b) || filterType == null || filterType.equals("whitelist")) {
-            menu.replaceExistingItem(15, new CustomItem(Material.WHITE_WOOL, "&7Type: &rWhitelist", "", "&e> Click to change it to Blacklist"));
+            menu.replaceExistingItem(15, new CustomItemStack(Material.WHITE_WOOL, "&7Type: &rWhitelist", "", "&e> Click to change it to Blacklist"));
             menu.addMenuClickHandler(15, (p, slot, item, action) -> {
                 BlockStorage.addBlockInfo(b, FILTER_TYPE, "blacklist");
                 updateBlockMenu(menu, b);
                 return false;
             });
         } else {
-            menu.replaceExistingItem(15, new CustomItem(Material.BLACK_WOOL, "&7Type: &8Blacklist", "", "&e> Click to change it to Whitelist"));
+            menu.replaceExistingItem(15, new CustomItemStack(Material.BLACK_WOOL, "&7Type: &8Blacklist", "", "&e> Click to change it to Whitelist"));
             menu.addMenuClickHandler(15, (p, slot, item, action) -> {
                 BlockStorage.addBlockInfo(b, FILTER_TYPE, "whitelist");
                 updateBlockMenu(menu, b);
@@ -109,14 +110,14 @@ abstract class AbstractFilterNode extends AbstractCargoNode {
         String lore = BlockStorage.getLocationInfo(b.getLocation(), FILTER_LORE);
 
         if (!BlockStorage.hasBlockInfo(b) || lore == null || lore.equals(String.valueOf(true))) {
-            menu.replaceExistingItem(25, new CustomItem(Material.MAP, "&7Include Lore: &2\u2714", "", "&e> Click to toggle whether the Lore has to match"));
+            menu.replaceExistingItem(25, new CustomItemStack(Material.MAP, "&7Include Lore: &2\u2714", "", "&e> Click to toggle whether the Lore has to match"));
             menu.addMenuClickHandler(25, (p, slot, item, action) -> {
                 BlockStorage.addBlockInfo(b, FILTER_LORE, String.valueOf(false));
                 updateBlockMenu(menu, b);
                 return false;
             });
         } else {
-            menu.replaceExistingItem(25, new CustomItem(Material.MAP, "&7Include Lore: &4\u2718", "", "&e> Click to toggle whether the Lore has to match"));
+            menu.replaceExistingItem(25, new CustomItemStack(Material.MAP, "&7Include Lore: &4\u2718", "", "&e> Click to toggle whether the Lore has to match"));
             menu.addMenuClickHandler(25, (p, slot, item, action) -> {
                 BlockStorage.addBlockInfo(b, FILTER_LORE, String.valueOf(true));
                 updateBlockMenu(menu, b);

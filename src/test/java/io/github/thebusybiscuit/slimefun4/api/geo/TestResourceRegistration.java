@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.resources.GEOResourcesSetup;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 
@@ -28,12 +28,12 @@ import be.seeseemelk.mockbukkit.MockBukkit;
 @TestMethodOrder(value = OrderAnnotation.class)
 class TestResourceRegistration {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
 
     @BeforeAll
     public static void load() {
         MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll
@@ -57,7 +57,7 @@ class TestResourceRegistration {
 
     @ParametersAreNonnullByDefault
     private @Nonnull GEOResource testResource(NamespacedKey key, String name, ItemStack item, boolean miner, int deviation) {
-        Optional<GEOResource> optional = SlimefunPlugin.getRegistry().getGEOResources().get(key);
+        Optional<GEOResource> optional = Slimefun.getRegistry().getGEOResources().get(key);
         Assertions.assertTrue(optional.isPresent());
 
         GEOResource resource = optional.get();

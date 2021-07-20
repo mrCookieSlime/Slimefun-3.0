@@ -1,4 +1,4 @@
-package io.github.thebusybiscuit.slimefun4.core.categories;
+package io.github.thebusybiscuit.slimefun4.api.items.groups;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -9,34 +9,34 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
-import me.mrCookieSlime.Slimefun.Objects.Category;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 
 /**
- * The {@link SubCategory} is a child {@link Category} of the
- * {@link MultiCategory}.
+ * The {@link SubItemGroup} is a child {@link ItemGroup} of the
+ * {@link NestedItemGroup}.
  * 
  * @author TheBusyBiscuit
  * 
- * @see MultiCategory
+ * @see NestedItemGroup
  *
  */
-public class SubCategory extends Category {
+public class SubItemGroup extends ItemGroup {
 
-    private final MultiCategory multiCategory;
+    private final NestedItemGroup multiCategory;
 
     @ParametersAreNonnullByDefault
-    public SubCategory(NamespacedKey key, MultiCategory parent, ItemStack item) {
+    public SubItemGroup(NamespacedKey key, NestedItemGroup parent, ItemStack item) {
         this(key, parent, item, 3);
     }
 
     @ParametersAreNonnullByDefault
-    public SubCategory(NamespacedKey key, MultiCategory parent, ItemStack item, int tier) {
+    public SubItemGroup(NamespacedKey key, NestedItemGroup parent, ItemStack item, int tier) {
         super(key, item, tier);
 
         Validate.notNull(parent, "The parent category cannot be null");
 
         multiCategory = parent;
-        parent.addSubCategory(this);
+        parent.addSubGroup(this);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class SubCategory extends Category {
     }
 
     @Nonnull
-    public final MultiCategory getParent() {
+    public final NestedItemGroup getParent() {
         return multiCategory;
     }
 

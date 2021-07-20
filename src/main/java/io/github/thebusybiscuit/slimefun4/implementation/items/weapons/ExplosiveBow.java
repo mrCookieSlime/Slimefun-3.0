@@ -16,11 +16,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.items.settings.IntRangeSetting;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BowShootHandler;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * The {@link ExplosiveBow} is a {@link SlimefunBow} which creates a fake explosion when it hits
@@ -38,7 +38,7 @@ public class ExplosiveBow extends SlimefunBow {
     private final ItemSetting<Integer> range = new IntRangeSetting(this, "explosion-range", 1, 3, Integer.MAX_VALUE);
 
     @ParametersAreNonnullByDefault
-    public ExplosiveBow(Category category, SlimefunItemStack item, ItemStack[] recipe) {
+    public ExplosiveBow(ItemGroup category, SlimefunItemStack item, ItemStack[] recipe) {
         super(category, item, recipe);
 
         addItemSetting(range);

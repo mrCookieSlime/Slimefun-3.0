@@ -9,8 +9,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
-import io.github.thebusybiscuit.slimefun4.core.researching.Research;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
@@ -27,7 +27,7 @@ class TestResearchCommand {
     public static void load() {
         server = MockBukkit.mock();
 
-        SlimefunPlugin plugin = MockBukkit.load(SlimefunPlugin.class);
+        Slimefun plugin = MockBukkit.load(Slimefun.class);
         research = new Research(new NamespacedKey(plugin, "command_test"), 999, "Test", 10);
         research.register();
 
@@ -43,7 +43,7 @@ class TestResearchCommand {
     @Test
     @DisplayName("Test /sf research all")
     void testResearchAll() throws InterruptedException {
-        SlimefunPlugin.getRegistry().setResearchingEnabled(true);
+        Slimefun.getRegistry().setResearchingEnabled(true);
         Player player = server.addPlayer();
         PlayerProfile profile = TestUtilities.awaitProfile(player);
 
@@ -56,7 +56,7 @@ class TestResearchCommand {
     @Test
     @DisplayName("Test /sf research <research id>")
     void testResearchSpecific() throws InterruptedException {
-        SlimefunPlugin.getRegistry().setResearchingEnabled(true);
+        Slimefun.getRegistry().setResearchingEnabled(true);
         Player player = server.addPlayer();
         PlayerProfile profile = TestUtilities.awaitProfile(player);
 
@@ -69,7 +69,7 @@ class TestResearchCommand {
     @Test
     @DisplayName("Test /sf research reset")
     void testResearchReset() throws InterruptedException {
-        SlimefunPlugin.getRegistry().setResearchingEnabled(true);
+        Slimefun.getRegistry().setResearchingEnabled(true);
         Player player = server.addPlayer();
         PlayerProfile profile = TestUtilities.awaitProfile(player);
 

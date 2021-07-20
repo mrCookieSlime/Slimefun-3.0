@@ -7,18 +7,19 @@ import org.bukkit.Tag;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AGenerator;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineFuel;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 public class BioGenerator extends AGenerator {
 
     @ParametersAreNonnullByDefault
-    public BioGenerator(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public BioGenerator(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
     }
 
@@ -59,12 +60,12 @@ public class BioGenerator extends AGenerator {
             registerFuel(new MachineFuel(1, new ItemStack(m)));
         }
 
-        if (SlimefunPlugin.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_15)) {
+        if (Slimefun.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_15)) {
             registerFuel(new MachineFuel(4, new ItemStack(Material.HONEYCOMB)));
             registerFuel(new MachineFuel(40, new ItemStack(Material.HONEYCOMB_BLOCK)));
         }
 
-        if (SlimefunPlugin.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_16)) {
+        if (Slimefun.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_16)) {
             registerFuel(new MachineFuel(4, new ItemStack(Material.SHROOMLIGHT)));
             registerFuel(new MachineFuel(2, new ItemStack(Material.CRIMSON_FUNGUS)));
             registerFuel(new MachineFuel(2, new ItemStack(Material.WARPED_FUNGUS)));

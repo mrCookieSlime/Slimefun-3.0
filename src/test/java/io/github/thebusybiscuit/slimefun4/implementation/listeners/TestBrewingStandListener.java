@@ -18,26 +18,26 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.VanillaItem;
 import io.github.thebusybiscuit.slimefun4.implementation.listeners.crafting.BrewingStandListener;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
-public class TestBrewingStandListener {
+class TestBrewingStandListener {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
     private static BrewingStandListener listener;
     private static ServerMock server;
 
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
         listener = new BrewingStandListener(plugin);
     }
 
@@ -60,14 +60,14 @@ public class TestBrewingStandListener {
     }
 
     @Test
-    public void testBrewingWithoutSlimefunItems() {
+    void testBrewingWithoutSlimefunItems() {
         InventoryClickEvent event = mockBrewingEvent(new ItemStack(Material.BLAZE_POWDER));
         Assertions.assertEquals(Result.ALLOW, event.getResult());
     }
 
     @Test
-    public void testBrewingWithSlimefunItem() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MOCK_POWDER", new CustomItem(Material.BLAZE_POWDER, "&6Magic Mock Powder"));
+    void testBrewingWithSlimefunItem() {
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MOCK_POWDER", new CustomItemStack(Material.BLAZE_POWDER, "&6Magic Mock Powder"));
         item.register(plugin);
 
         InventoryClickEvent event = mockBrewingEvent(item.getItem());
@@ -75,7 +75,7 @@ public class TestBrewingStandListener {
     }
 
     @Test
-    public void testBrewingWithVanillaItem() {
+    void testBrewingWithVanillaItem() {
         VanillaItem item = TestUtilities.mockVanillaItem(plugin, Material.BLAZE_POWDER, true);
         item.register(plugin);
 

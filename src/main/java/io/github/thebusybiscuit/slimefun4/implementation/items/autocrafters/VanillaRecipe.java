@@ -16,9 +16,10 @@ import org.bukkit.inventory.RecipeChoice.MaterialChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.tasks.AsyncRecipeChoiceTask;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
+
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 
 /**
@@ -66,7 +67,7 @@ class VanillaRecipe extends AbstractRecipe {
 
     @Nonnull
     private static RecipeChoice[] getShape(@Nonnull Recipe recipe) {
-        return SlimefunPlugin.getMinecraftRecipeService().getRecipeShape(recipe);
+        return Slimefun.getMinecraftRecipeService().getRecipeShape(recipe);
     }
 
     @Override
@@ -77,7 +78,7 @@ class VanillaRecipe extends AbstractRecipe {
         menu.replaceExistingItem(24, getResult().clone());
         menu.addMenuClickHandler(24, ChestMenuUtils.getEmptyClickHandler());
 
-        RecipeChoice[] choices = SlimefunPlugin.getMinecraftRecipeService().getRecipeShape(recipe);
+        RecipeChoice[] choices = Slimefun.getMinecraftRecipeService().getRecipeShape(recipe);
         ItemStack[] items = new ItemStack[9];
 
         if (choices.length == 1 && choices[0] instanceof MaterialChoice) {

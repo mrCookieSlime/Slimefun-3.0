@@ -3,10 +3,11 @@ package io.github.thebusybiscuit.slimefun4.implementation.items.multiblocks.mine
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import me.mrCookieSlime.Slimefun.Objects.Category;
+
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineFuel;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * The {@link AdvancedIndustrialMiner} is a more advanced version of the {@link IndustrialMiner}.
@@ -20,7 +21,7 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
  */
 public class AdvancedIndustrialMiner extends IndustrialMiner {
 
-    public AdvancedIndustrialMiner(Category category, SlimefunItemStack item) {
+    public AdvancedIndustrialMiner(ItemGroup category, SlimefunItemStack item) {
         super(category, item, Material.DIAMOND_BLOCK, true, 5);
     }
 

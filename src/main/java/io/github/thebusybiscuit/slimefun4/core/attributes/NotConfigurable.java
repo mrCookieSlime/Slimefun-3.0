@@ -1,6 +1,6 @@
 package io.github.thebusybiscuit.slimefun4.core.attributes;
 
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 
 /**
  * Implement this interface for any {@link SlimefunItem} to prevent

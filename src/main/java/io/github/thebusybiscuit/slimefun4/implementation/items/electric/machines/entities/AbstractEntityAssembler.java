@@ -16,25 +16,26 @@ import org.bukkit.event.block.BlockEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
-import io.github.thebusybiscuit.cscorelib2.protection.ProtectableAction;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.bakedlibs.dough.protection.Interaction;
 import io.github.thebusybiscuit.slimefun4.api.events.BlockPlacerPlaceEvent;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.NumberUtils;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
+
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
@@ -66,16 +67,16 @@ public abstract class AbstractEntityAssembler<T extends Entity> extends SimpleSl
     private int lifetime = 0;
 
     @ParametersAreNonnullByDefault
-    protected AbstractEntityAssembler(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    protected AbstractEntityAssembler(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        new BlockMenuPreset(getId(), item.getImmutableMeta().getDisplayName().orElse("Entity Assembler")) {
+        new BlockMenuPreset(getId(), item.getItemMetaSnapshot().getDisplayName().orElse("Entity Assembler")) {
 
             @Override
             public void init() {
                 drawBackground(border);
-                drawBackground(new CustomItem(getHeadBorder(), " "), headBorder);
-                drawBackground(new CustomItem(getBodyBorder(), " "), bodyBorder);
+                drawBackground(new CustomItemStack(getHeadBorder(), " "), headBorder);
+                drawBackground(new CustomItemStack(getBodyBorder(), " "), bodyBorder);
 
                 constructMenu(this);
             }
@@ -87,7 +88,7 @@ public abstract class AbstractEntityAssembler<T extends Entity> extends SimpleSl
 
             @Override
             public boolean canOpen(Block b, Player p) {
-                return p.hasPermission("slimefun.inventory.bypass") || SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(), ProtectableAction.INTERACT_BLOCK);
+                return p.hasPermission("slimefun.inventory.bypass") || Slimefun.getProtectionManager().hasPermission(p, b.getLocation(), Interaction.INTERACT_BLOCK);
             }
 
             @Override
@@ -158,14 +159,14 @@ public abstract class AbstractEntityAssembler<T extends Entity> extends SimpleSl
 
     private void updateBlockInventory(BlockMenu menu, Block b) {
         if (!BlockStorage.hasBlockInfo(b) || BlockStorage.getLocationInfo(b.getLocation(), KEY_ENABLED) == null || BlockStorage.getLocationInfo(b.getLocation(), KEY_ENABLED).equals(String.valueOf(false))) {
-            menu.replaceExistingItem(22, new CustomItem(Material.GUNPOWDER, "&7Enabled: &4\u2718", "", "&e> Click to enable this Machine"));
+            menu.replaceExistingItem(22, new CustomItemStack(Material.GUNPOWDER, "&7Enabled: &4\u2718", "", "&e> Click to enable this Machine"));
             menu.addMenuClickHandler(22, (p, slot, item, action) -> {
                 BlockStorage.addBlockInfo(b, KEY_ENABLED, String.valueOf(true));
                 updateBlockInventory(menu, b);
                 return false;
             });
         } else {
-            menu.replaceExistingItem(22, new CustomItem(Material.REDSTONE, "&7Enabled: &2\u2714", "", "&e> Click to disable this Machine"));
+            menu.replaceExistingItem(22, new CustomItemStack(Material.REDSTONE, "&7Enabled: &2\u2714", "", "&e> Click to disable this Machine"));
             menu.addMenuClickHandler(22, (p, slot, item, action) -> {
                 BlockStorage.addBlockInfo(b, KEY_ENABLED, String.valueOf(false));
                 updateBlockInventory(menu, b);
@@ -175,7 +176,7 @@ public abstract class AbstractEntityAssembler<T extends Entity> extends SimpleSl
 
         double offset = (!BlockStorage.hasBlockInfo(b) || BlockStorage.getLocationInfo(b.getLocation(), KEY_OFFSET) == null) ? 3.0F : Double.valueOf(BlockStorage.getLocationInfo(b.getLocation(), KEY_OFFSET));
 
-        menu.replaceExistingItem(31, new CustomItem(Material.PISTON, "&7Offset: &3" + offset + " Block(s)", "", "&fLeft Click: &7+0.1", "&fRight Click: &7-0.1"));
+        menu.replaceExistingItem(31, new CustomItemStack(Material.PISTON, "&7Offset: &3" + offset + " Block(s)", "", "&fLeft Click: &7+0.1", "&fRight Click: &7-0.1"));
         menu.addMenuClickHandler(31, (p, slot, item, action) -> {
             double offsetv = NumberUtils.reparseDouble(Double.valueOf(BlockStorage.getLocationInfo(b.getLocation(), KEY_OFFSET)) + (action.isRightClicked() ? -0.1F : 0.1F));
             BlockStorage.addBlockInfo(b, KEY_OFFSET, String.valueOf(offsetv));
@@ -206,7 +207,7 @@ public abstract class AbstractEntityAssembler<T extends Entity> extends SimpleSl
                         removeCharge(b.getLocation(), getEnergyConsumption());
                         double offset = Double.parseDouble(BlockStorage.getLocationInfo(b.getLocation(), KEY_OFFSET));
 
-                        SlimefunPlugin.runSync(() -> {
+                        Slimefun.runSync(() -> {
                             Location loc = new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + offset, b.getZ() + 0.5D);
                             spawnEntity(loc);
 
@@ -278,9 +279,9 @@ public abstract class AbstractEntityAssembler<T extends Entity> extends SimpleSl
     }
 
     protected void constructMenu(BlockMenuPreset preset) {
-        preset.addItem(1, new CustomItem(getHead(), "&7Head Slot", "", "&fThis Slot accepts the head type"), ChestMenuUtils.getEmptyClickHandler());
-        preset.addItem(7, new CustomItem(getBody(), "&7Body Slot", "", "&fThis Slot accepts the body type"), ChestMenuUtils.getEmptyClickHandler());
-        preset.addItem(13, new CustomItem(Material.CLOCK, "&7Cooldown: &b30 Seconds", "", "&fThis Machine takes up to half a Minute to operate", "&fso give it some Time!"), ChestMenuUtils.getEmptyClickHandler());
+        preset.addItem(1, new CustomItemStack(getHead(), "&7Head Slot", "", "&fThis Slot accepts the head type"), ChestMenuUtils.getEmptyClickHandler());
+        preset.addItem(7, new CustomItemStack(getBody(), "&7Body Slot", "", "&fThis Slot accepts the body type"), ChestMenuUtils.getEmptyClickHandler());
+        preset.addItem(13, new CustomItemStack(Material.CLOCK, "&7Cooldown: &b30 Seconds", "", "&fThis Machine takes up to half a Minute to operate", "&fso give it some Time!"), ChestMenuUtils.getEmptyClickHandler());
     }
 
     @Override

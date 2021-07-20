@@ -16,7 +16,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.setup.ResearchSetup;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
@@ -27,7 +28,7 @@ class TestResearchSetup {
     @BeforeAll
     public static void load() {
         MockBukkit.mock();
-        MockBukkit.load(SlimefunPlugin.class);
+        MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll
@@ -42,7 +43,7 @@ class TestResearchSetup {
         // Not really ideal but still important to test.
         // Research amount is variable, so we can't test for that.
         // We are really only concerned about any runtime exceptions here.
-        SlimefunPlugin.getRegistry().setResearchingEnabled(true);
+        Slimefun.getRegistry().setResearchingEnabled(true);
         Assertions.assertDoesNotThrow(() -> ResearchSetup.setupResearches());
 
         // Running it a second time should NOT be allowed.
@@ -56,7 +57,7 @@ class TestResearchSetup {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/languages/en/researches.yml"), StandardCharsets.UTF_8))) {
             FileConfiguration config = YamlConfiguration.loadConfiguration(reader);
 
-            for (Research research : SlimefunPlugin.getRegistry().getResearches()) {
+            for (Research research : Slimefun.getRegistry().getResearches()) {
                 String path = research.getKey().getNamespace() + '.' + research.getKey().getKey();
                 Assertions.assertTrue(config.contains(path));
             }

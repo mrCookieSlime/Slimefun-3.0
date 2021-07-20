@@ -4,10 +4,10 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemState;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 
 /**
  * Represents a vanilla item that is overridden by Slimefun (like {@code ELYTRA}).
@@ -29,7 +29,7 @@ public class VanillaItem extends SlimefunItem {
     /**
      * Instantiates a new {@link VanillaItem} with the given arguments.
      *
-     * @param category
+     * @param itemGroup
      *            the category to bind this {@link VanillaItem} to
      * @param item
      *            the item corresponding to this {@link VanillaItem}
@@ -41,8 +41,8 @@ public class VanillaItem extends SlimefunItem {
      *            the recipe to obtain this {@link VanillaItem}
      */
     @ParametersAreNonnullByDefault
-    public VanillaItem(Category category, ItemStack item, String id, RecipeType recipeType, ItemStack[] recipe) {
-        super(category, item, id, recipeType, recipe);
+    public VanillaItem(ItemGroup itemGroup, ItemStack item, String id, RecipeType recipeType, ItemStack[] recipe) {
+        super(itemGroup, item, id, recipeType, recipe);
 
         useableInWorkbench = true;
     }

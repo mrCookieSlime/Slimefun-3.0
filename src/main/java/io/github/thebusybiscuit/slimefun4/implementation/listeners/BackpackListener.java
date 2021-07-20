@@ -25,12 +25,12 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerBackpack;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.backpacks.Cooler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.backpacks.SlimefunBackpack;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 /**
  * This {@link Listener} is responsible for all events centered around a {@link SlimefunBackpack}.
@@ -51,7 +51,7 @@ public class BackpackListener implements Listener {
 
     private final Map<UUID, ItemStack> backpacks = new HashMap<>();
 
-    public void register(@Nonnull SlimefunPlugin plugin) {
+    public void register(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -122,10 +122,10 @@ public class BackpackListener implements Listener {
     public void openBackpack(Player p, ItemStack item, SlimefunBackpack backpack) {
         if (item.getAmount() == 1) {
             if (backpack.canUse(p, true) && !PlayerProfile.get(p, profile -> openBackpack(p, item, profile, backpack.getSize()))) {
-                SlimefunPlugin.getLocalization().sendMessage(p, "messages.opening-backpack");
+                Slimefun.getLocalization().sendMessage(p, "messages.opening-backpack");
             }
         } else {
-            SlimefunPlugin.getLocalization().sendMessage(p, "backpack.no-stack", true);
+            Slimefun.getLocalization().sendMessage(p, "backpack.no-stack", true);
         }
     }
 
@@ -159,7 +159,7 @@ public class BackpackListener implements Listener {
                 }
             });
         } else {
-            SlimefunPlugin.getLocalization().sendMessage(p, "backpack.already-open", true);
+            Slimefun.getLocalization().sendMessage(p, "backpack.already-open", true);
         }
     }
 

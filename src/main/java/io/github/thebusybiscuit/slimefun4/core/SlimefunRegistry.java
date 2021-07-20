@@ -23,21 +23,22 @@ import org.bukkit.entity.Piglin;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.collections.KeyMap;
-import io.github.thebusybiscuit.cscorelib2.config.Config;
+import io.github.bakedlibs.dough.collections.KeyMap;
+import io.github.bakedlibs.dough.config.Config;
 import io.github.thebusybiscuit.slimefun4.api.geo.GEOResource;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemHandler;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuide;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuideImplementation;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuideMode;
 import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlock;
-import io.github.thebusybiscuit.slimefun4.core.researching.Research;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.guide.CheatSheetSlimefunGuide;
 import io.github.thebusybiscuit.slimefun4.implementation.guide.SurvivalSlimefunGuide;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
+
 import me.mrCookieSlime.Slimefun.api.BlockInfoConfig;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
@@ -56,7 +57,7 @@ public final class SlimefunRegistry {
     private final List<SlimefunItem> slimefunItems = new ArrayList<>();
     private final List<SlimefunItem> enabledItems = new ArrayList<>();
 
-    private final List<Category> categories = new ArrayList<>();
+    private final List<ItemGroup> categories = new ArrayList<>();
     private final List<MultiBlock> multiblocks = new LinkedList<>();
 
     private final List<Research> researches = new LinkedList<>();
@@ -93,7 +94,7 @@ public final class SlimefunRegistry {
     private final Map<String, UniversalBlockMenu> universalInventories = new HashMap<>();
     private final Map<Class<? extends ItemHandler>, Set<ItemHandler>> globalItemHandlers = new HashMap<>();
 
-    public void load(@Nonnull SlimefunPlugin plugin, @Nonnull Config cfg) {
+    public void load(@Nonnull Slimefun plugin, @Nonnull Config cfg) {
         Validate.notNull(plugin, "The Plugin cannot be null!");
         Validate.notNull(cfg, "The Config cannot be null!");
 
@@ -164,12 +165,12 @@ public final class SlimefunRegistry {
     }
 
     /**
-     * This returns a {@link List} containing every enabled {@link Category}.
+     * This returns a {@link List} containing every enabled {@link ItemGroup}.
      * 
-     * @return {@link List} containing every enabled {@link Category}
+     * @return {@link List} containing every enabled {@link ItemGroup}
      */
     @Nonnull
-    public List<Category> getCategories() {
+    public List<ItemGroup> getCategories() {
         return categories;
     }
 

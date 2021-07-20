@@ -28,9 +28,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.tools.GrapplingHook;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 /**
  * This {@link Listener} is responsible for the mechanics behind the {@link GrapplingHook}.
@@ -49,7 +49,7 @@ public class GrapplingHookListener implements Listener {
     private final Map<UUID, GrapplingHookEntity> activeHooks = new HashMap<>();
     private final Set<UUID> invulnerability = new HashSet<>();
 
-    public void register(@Nonnull SlimefunPlugin plugin, @Nonnull GrapplingHook grapplingHook) {
+    public void register(@Nonnull Slimefun plugin, @Nonnull GrapplingHook grapplingHook) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
         this.grapplingHook = grapplingHook;
@@ -72,7 +72,7 @@ public class GrapplingHookListener implements Listener {
             return;
         }
 
-        SlimefunPlugin.runSync(() -> {
+        Slimefun.runSync(() -> {
             if (e.getEntity() instanceof Arrow) {
                 handleGrapplingHook((Arrow) e.getEntity());
             }
@@ -188,7 +188,7 @@ public class GrapplingHookListener implements Listener {
                 p.setVelocity(velocity);
 
                 hook.remove();
-                SlimefunPlugin.runSync(() -> activeHooks.remove(p.getUniqueId()), 20L);
+                Slimefun.runSync(() -> activeHooks.remove(p.getUniqueId()), 20L);
             }
         }
     }
@@ -205,14 +205,14 @@ public class GrapplingHookListener implements Listener {
         activeHooks.put(uuid, hook);
 
         // To fix issue #253
-        SlimefunPlugin.runSync(() -> {
+        Slimefun.runSync(() -> {
             GrapplingHookEntity entity = activeHooks.get(uuid);
 
             if (entity != null) {
-                SlimefunPlugin.getBowListener().getProjectileData().remove(uuid);
+                Slimefun.getBowListener().getProjectileData().remove(uuid);
                 entity.remove();
 
-                SlimefunPlugin.runSync(() -> {
+                Slimefun.runSync(() -> {
                     activeHooks.remove(uuid);
                     invulnerability.remove(uuid);
                 }, 20L);

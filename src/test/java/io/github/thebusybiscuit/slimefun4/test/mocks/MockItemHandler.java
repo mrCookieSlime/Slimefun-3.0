@@ -1,6 +1,6 @@
 package io.github.thebusybiscuit.slimefun4.test.mocks;
 
-import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemHandler;
 
 public class MockItemHandler implements ItemHandler {
 

@@ -8,21 +8,21 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 class TestMultiBlocks {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
 
     @BeforeAll
     public static void load() {
         MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll
@@ -33,7 +33,7 @@ class TestMultiBlocks {
     @Test
     @DisplayName("Test Exceptions for invalid MultiBlock constructors")
     void testInvalidConstructors() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MULTIBLOCK_TEST", new CustomItem(Material.BRICK, "&5Multiblock Test"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MULTIBLOCK_TEST", new CustomItemStack(Material.BRICK, "&5Multiblock Test"));
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> new MultiBlock(null, null, null));
 
@@ -46,7 +46,7 @@ class TestMultiBlocks {
     @Test
     @DisplayName("Test MultiBlock constructor")
     void testValidConstructor() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MULTIBLOCK_TEST", new CustomItem(Material.BRICK, "&5Multiblock Test"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MULTIBLOCK_TEST", new CustomItemStack(Material.BRICK, "&5Multiblock Test"));
         MultiBlock multiblock = new MultiBlock(item, new Material[9], BlockFace.DOWN);
 
         Assertions.assertEquals(item, multiblock.getSlimefunItem());
@@ -57,7 +57,7 @@ class TestMultiBlocks {
     @Test
     @DisplayName("Test symmetric MultiBlocks")
     void testSymmetry() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MULTIBLOCK_TEST", new CustomItem(Material.BRICK, "&5Multiblock Test"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MULTIBLOCK_TEST", new CustomItemStack(Material.BRICK, "&5Multiblock Test"));
 
         MultiBlock multiblock = new MultiBlock(item, new Material[] { null, null, null, Material.DIAMOND_BLOCK, null, Material.DIAMOND_BLOCK, null, Material.DISPENSER, null }, BlockFace.DOWN);
         Assertions.assertTrue(multiblock.isSymmetric());
@@ -69,7 +69,7 @@ class TestMultiBlocks {
     @Test
     @DisplayName("Test equal MultiBlocks being equal")
     void testEqual() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MULTIBLOCK_TEST", new CustomItem(Material.BRICK, "&5Multiblock Test"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MULTIBLOCK_TEST", new CustomItemStack(Material.BRICK, "&5Multiblock Test"));
 
         MultiBlock multiblock = new MultiBlock(item, new Material[] { Material.BIRCH_WOOD, Material.BIRCH_WOOD, Material.BIRCH_WOOD, null, Material.CRAFTING_TABLE, null, Material.BIRCH_WOOD, Material.DISPENSER, Material.BIRCH_WOOD }, BlockFace.DOWN);
         MultiBlock multiblock2 = new MultiBlock(item, new Material[] { Material.BIRCH_WOOD, Material.BIRCH_WOOD, Material.BIRCH_WOOD, null, Material.CRAFTING_TABLE, null, Material.BIRCH_WOOD, Material.DISPENSER, Material.BIRCH_WOOD }, BlockFace.DOWN);
@@ -80,7 +80,7 @@ class TestMultiBlocks {
     @Test
     @DisplayName("Test equal MultiBlocks with Tags but different Materials being equal")
     void testEqualWithTags() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MULTIBLOCK_TEST", new CustomItem(Material.BRICK, "&5Multiblock Test"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MULTIBLOCK_TEST", new CustomItemStack(Material.BRICK, "&5Multiblock Test"));
 
         // The wooden fences are different but the structure should still match.
         MultiBlock multiblock = new MultiBlock(item, new Material[] { Material.OAK_FENCE, Material.OAK_FENCE, Material.OAK_FENCE, null, Material.CRAFTING_TABLE, null, Material.BIRCH_WOOD, Material.DISPENSER, Material.BIRCH_WOOD }, BlockFace.DOWN);
@@ -92,7 +92,7 @@ class TestMultiBlocks {
     @Test
     @DisplayName("Test MultiBlocks with moving pistons still being equal")
     void testEqualWithMovingPistons() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "PISTON_MULTIBLOCK_TEST", new CustomItem(Material.BRICK, "&5Multiblock Test"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "PISTON_MULTIBLOCK_TEST", new CustomItemStack(Material.BRICK, "&5Multiblock Test"));
 
         // Some Pistons are moving but that should not interefere with the Multiblock
         MultiBlock multiblock = new MultiBlock(item, new Material[] { Material.PISTON, Material.MOVING_PISTON, Material.PISTON, null, Material.CRAFTING_TABLE, null, Material.PISTON, Material.STONE, Material.PISTON }, BlockFace.DOWN);
@@ -106,7 +106,7 @@ class TestMultiBlocks {
     @Test
     @DisplayName("Test different MultiBlocks not being equal")
     void testNotEqual() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MULTIBLOCK_TEST", new CustomItem(Material.BRICK, "&5Multiblock Test"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MULTIBLOCK_TEST", new CustomItemStack(Material.BRICK, "&5Multiblock Test"));
 
         MultiBlock multiblock = new MultiBlock(item, new Material[] { Material.BIRCH_WOOD, Material.BIRCH_WOOD, Material.BIRCH_WOOD, null, Material.CRAFTING_TABLE, null, Material.BIRCH_WOOD, Material.DISPENSER, Material.BIRCH_WOOD }, BlockFace.DOWN);
         MultiBlock multiblock2 = new MultiBlock(item, new Material[] { Material.BIRCH_WOOD, Material.BIRCH_WOOD, Material.BIRCH_WOOD, null, Material.EMERALD_BLOCK, null, Material.BIRCH_WOOD, Material.DISPENSER, Material.BIRCH_WOOD }, BlockFace.DOWN);

@@ -6,6 +6,7 @@ package me.mrCookieSlime.CSCoreLibPlugin.general.Inventory;
  * Don't look at the code, it will be gone soon, don't worry.
  *
  */
+@Deprecated
 public class ClickAction {
 
     private boolean right;

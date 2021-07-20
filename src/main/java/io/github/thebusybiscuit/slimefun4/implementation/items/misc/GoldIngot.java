@@ -5,11 +5,11 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.apache.commons.lang.Validate;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.implementation.items.multiblocks.Smeltery;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * The {@link GoldIngot} from Slimefun is a simple resource which is divided into different
@@ -30,7 +30,7 @@ public class GoldIngot extends SlimefunItem {
     private final int caratRating;
 
     @ParametersAreNonnullByDefault
-    public GoldIngot(Category category, int caratRating, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public GoldIngot(ItemGroup category, int caratRating, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
         Validate.isTrue(caratRating > 0, "Carat rating must be above zero.");

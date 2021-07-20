@@ -16,8 +16,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AncientPedestal;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 
@@ -28,14 +28,14 @@ import be.seeseemelk.mockbukkit.inventory.HopperInventoryMock;
 
 class TestItemPickupListener {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
     private static ItemPickupListener listener;
     private static ServerMock server;
 
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
         listener = new ItemPickupListener(plugin);
     }
 
@@ -83,9 +83,9 @@ class TestItemPickupListener {
         ItemStack stack;
 
         if (flag) {
-            stack = new CustomItem(Material.DIAMOND, AncientPedestal.ITEM_PREFIX + System.nanoTime());
+            stack = new CustomItemStack(Material.DIAMOND, AncientPedestal.ITEM_PREFIX + System.nanoTime());
         } else {
-            stack = new CustomItem(Material.DIAMOND, "&5Just a normal named diamond");
+            stack = new CustomItemStack(Material.DIAMOND, "&5Just a normal named diamond");
         }
 
         AtomicBoolean removed = new AtomicBoolean(false);
@@ -111,9 +111,9 @@ class TestItemPickupListener {
         ItemStack stack;
 
         if (flag) {
-            stack = new CustomItem(Material.DIAMOND, AncientPedestal.ITEM_PREFIX + System.nanoTime());
+            stack = new CustomItemStack(Material.DIAMOND, AncientPedestal.ITEM_PREFIX + System.nanoTime());
         } else {
-            stack = new CustomItem(Material.DIAMOND, "&5Just a normal named diamond");
+            stack = new CustomItemStack(Material.DIAMOND, "&5Just a normal named diamond");
         }
 
         AtomicBoolean removed = new AtomicBoolean(false);

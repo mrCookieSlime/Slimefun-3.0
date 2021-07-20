@@ -15,7 +15,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This class reads all translators of this project.
@@ -36,7 +36,7 @@ final class TranslatorsReader {
     }
 
     public void load() {
-        InputStream inputStream = SlimefunPlugin.class.getResourceAsStream("/languages/translators.json");
+        InputStream inputStream = Slimefun.class.getResourceAsStream("/languages/translators.json");
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             JsonParser parser = new JsonParser();
@@ -56,7 +56,7 @@ final class TranslatorsReader {
                 }
             }
         } catch (Exception e) {
-            SlimefunPlugin.logger().log(Level.SEVERE, "Failed to load translators.json file", e);
+            Slimefun.logger().log(Level.SEVERE, "Failed to load translators.json file", e);
         }
     }
 

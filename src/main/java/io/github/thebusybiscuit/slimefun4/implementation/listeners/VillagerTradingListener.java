@@ -12,10 +12,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.VanillaItem;
 import io.github.thebusybiscuit.slimefun4.implementation.items.misc.SyntheticEmerald;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 /**
  * This {@link Listener} prevents any {@link SlimefunItem} from being used to trade with
@@ -26,7 +26,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
  */
 public class VillagerTradingListener implements Listener {
 
-    public VillagerTradingListener(@Nonnull SlimefunPlugin plugin) {
+    public VillagerTradingListener(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -48,7 +48,7 @@ public class VillagerTradingListener implements Listener {
             }
 
             if (e.getResult() == Result.DENY) {
-                SlimefunPlugin.getLocalization().sendMessage((Player) e.getWhoClicked(), "villagers.no-trading", true);
+                Slimefun.getLocalization().sendMessage((Player) e.getWhoClicked(), "villagers.no-trading", true);
             }
         }
     }

@@ -6,7 +6,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
-import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemHandler;
 
 /**
  * The {@link ItemDropHandler} is a {@link GlobalItemHandler} which listens to

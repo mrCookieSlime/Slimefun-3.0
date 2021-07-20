@@ -9,24 +9,24 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.Soulbound;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 class TestSoulboundItem {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
 
     @BeforeAll
     public static void load() {
         MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll
@@ -49,7 +49,7 @@ class TestSoulboundItem {
     @Test
     @DisplayName("Test whether an Item can be marked as soulbound")
     void testSetSoulbound() {
-        ItemStack item = new CustomItem(Material.DIAMOND, "&cI wanna be soulbound!");
+        ItemStack item = new CustomItemStack(Material.DIAMOND, "&cI wanna be soulbound!");
 
         Assertions.assertFalse(SlimefunUtils.isSoulbound(item));
 
@@ -65,7 +65,7 @@ class TestSoulboundItem {
     @Test
     @DisplayName("Make sure that marking an item as soulbound twice has no effect")
     void testDoubleCalls() {
-        ItemStack item = new CustomItem(Material.DIAMOND, "&cI wanna be soulbound!");
+        ItemStack item = new CustomItemStack(Material.DIAMOND, "&cI wanna be soulbound!");
 
         SlimefunUtils.setSoulbound(item, true);
         SlimefunUtils.setSoulbound(item, true);
@@ -81,7 +81,7 @@ class TestSoulboundItem {
     @Test
     @DisplayName("Test that soulbound Slimefun Items are soulbound")
     void testSoulboundSlimefunItem() {
-        SlimefunItem item = new SoulboundMock(new Category(new NamespacedKey(plugin, "soulbound_category"), new CustomItem(Material.REDSTONE, "&4Walshrus forever")));
+        SlimefunItem item = new SoulboundMock(new ItemGroup(new NamespacedKey(plugin, "soulbound_category"), new CustomItemStack(Material.REDSTONE, "&4Walshrus forever")));
         item.register(plugin);
 
         Assertions.assertTrue(SlimefunUtils.isSoulbound(item.getItem()));
@@ -89,7 +89,7 @@ class TestSoulboundItem {
 
     private class SoulboundMock extends SlimefunItem implements Soulbound {
 
-        public SoulboundMock(Category category) {
+        public SoulboundMock(ItemGroup category) {
             super(category, new SlimefunItemStack("MOCK_SOULBOUND", Material.REDSTONE, "&4Almighty Redstone"), RecipeType.NULL, new ItemStack[9]);
         }
 

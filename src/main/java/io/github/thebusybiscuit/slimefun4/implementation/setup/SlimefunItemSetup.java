@@ -15,13 +15,17 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.Radioactivity;
 import io.github.thebusybiscuit.slimefun4.core.handlers.RainbowTickHandler;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.RadioactiveItem;
 import io.github.thebusybiscuit.slimefun4.implementation.items.VanillaItem;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AncientAltar;
@@ -209,10 +213,6 @@ import io.github.thebusybiscuit.slimefun4.implementation.items.weapons.VampireBl
 import io.github.thebusybiscuit.slimefun4.utils.ColoredMaterial;
 import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * This class holds the recipes of all items.
@@ -225,13 +225,13 @@ public final class SlimefunItemSetup {
 
     private SlimefunItemSetup() {}
 
-    public static void setup(@Nonnull SlimefunPlugin plugin) {
+    public static void setup(@Nonnull Slimefun plugin) {
         if (registeredItems) {
             throw new UnsupportedOperationException("Slimefun Items can only be registered once!");
         }
 
         registeredItems = true;
-        DefaultCategories categories = new DefaultCategories();
+        DefaultItemGroups categories = new DefaultItemGroups();
 
         // @formatter:off (We will need to refactor this one day)
         new SlimefunItem(categories.weapons, SlimefunItems.GRANDMAS_WALKING_STICK, RecipeType.ENHANCED_CRAFTING_TABLE,
@@ -390,7 +390,7 @@ public final class SlimefunItemSetup {
         .register(plugin);
 
         new BasicCircuitBoard(categories.technicalComponents, SlimefunItems.BASIC_CIRCUIT_BOARD, RecipeType.MOB_DROP,
-        new ItemStack[] {null, null, null, null, new CustomItem(SlimefunUtils.getCustomHead(HeadTexture.IRON_GOLEM.getTexture()), "&aIron Golem"), null, null, null, null})
+        new ItemStack[] {null, null, null, null, new CustomItemStack(SlimefunUtils.getCustomHead(HeadTexture.IRON_GOLEM.getTexture()), "&aIron Golem"), null, null, null, null})
         .register(plugin);
 
         new UnplaceableBlock(categories.technicalComponents, SlimefunItems.ADVANCED_CIRCUIT_BOARD, RecipeType.ENHANCED_CRAFTING_TABLE,
@@ -2563,7 +2563,7 @@ public final class SlimefunItemSetup {
         new ItemStack[] {SlimefunItems.SILICON, new ItemStack(Material.YELLOW_DYE), SlimefunItems.SILICON, new ItemStack(Material.YELLOW_DYE), new ItemStack(Material.STRING), new ItemStack(Material.YELLOW_DYE), SlimefunItems.GILDED_IRON, new ItemStack(Material.YELLOW_DYE), SlimefunItems.SILICON})
         .register(plugin);
         
-        MinecraftVersion minecraftVersion = SlimefunPlugin.getMinecraftVersion();
+        MinecraftVersion minecraftVersion = Slimefun.getMinecraftVersion();
 
         if (minecraftVersion.isAtLeast(MinecraftVersion.MINECRAFT_1_15)) {
             new SlimefunItem(categories.magicalArmor, SlimefunItems.BEE_HELMET, RecipeType.ARMOR_FORGE,
@@ -2591,7 +2591,7 @@ public final class SlimefunItemSetup {
             .register(plugin);
 
             new StrangeNetherGoo(categories.magicalResources, SlimefunItems.STRANGE_NETHER_GOO, RecipeType.BARTER_DROP,
-            new ItemStack[] {null, null, null, null, new CustomItem(HeadTexture.PIGLIN_HEAD.getAsItemStack(), "&fPiglin"), null, null, null, null})
+            new ItemStack[] {null, null, null, null, new CustomItemStack(HeadTexture.PIGLIN_HEAD.getAsItemStack(), "&fPiglin"), null, null, null, null})
             .register(plugin);
         }
 
@@ -2633,7 +2633,7 @@ public final class SlimefunItemSetup {
     }
 
     @ParametersAreNonnullByDefault
-    private static void registerArmorSet(Category category, ItemStack baseComponent, ItemStack[] items, String idSyntax, boolean vanilla, PotionEffect[][] effects, SlimefunAddon addon) {
+    private static void registerArmorSet(ItemGroup category, ItemStack baseComponent, ItemStack[] items, String idSyntax, boolean vanilla, PotionEffect[][] effects, SlimefunAddon addon) {
         String[] components = new String[] { "_HELMET", "_CHESTPLATE", "_LEGGINGS", "_BOOTS" };
         List<ItemStack[]> recipes = new ArrayList<>();
 

@@ -13,26 +13,26 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.inventory.ChestInventoryMock;
 import be.seeseemelk.mockbukkit.inventory.InventoryMock;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 class TestAutoCrafter {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
 
     @BeforeAll
     public static void load() {
         MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll
@@ -44,7 +44,7 @@ class TestAutoCrafter {
     @DisplayName("Test crafting a valid ShapelessRecipe")
     void testValidShapelessRecipe() {
         NamespacedKey key = new NamespacedKey(plugin, "shapeless_recipe_test");
-        ItemStack result = new CustomItem(Material.DIAMOND, "&6Special Diamond :o");
+        ItemStack result = new CustomItemStack(Material.DIAMOND, "&6Special Diamond :o");
         ShapelessRecipe recipe = new ShapelessRecipe(key, result);
         recipe.addIngredient(new MaterialChoice(Material.IRON_NUGGET, Material.GOLD_NUGGET));
 
@@ -71,7 +71,7 @@ class TestAutoCrafter {
     @DisplayName("Test crafting a valid ShapelessRecipe")
     void testDisabledRecipe() {
         NamespacedKey key = new NamespacedKey(plugin, "disabled_recipe_test");
-        ItemStack result = new CustomItem(Material.DIAMOND, "&bAmazing Diamond :o");
+        ItemStack result = new CustomItemStack(Material.DIAMOND, "&bAmazing Diamond :o");
         ShapelessRecipe recipe = new ShapelessRecipe(key, result);
         recipe.addIngredient(new MaterialChoice(Material.GOLD_NUGGET));
 
@@ -100,7 +100,7 @@ class TestAutoCrafter {
     @DisplayName("Test resource leftovers when crafting")
     void testResourceLeftovers() {
         NamespacedKey key = new NamespacedKey(plugin, "resource_leftovers_test");
-        ItemStack result = new CustomItem(Material.DIAMOND, "&9Diamond. Nuff said.");
+        ItemStack result = new CustomItemStack(Material.DIAMOND, "&9Diamond. Nuff said.");
         ShapelessRecipe recipe = new ShapelessRecipe(key, result);
         recipe.addIngredient(new MaterialChoice(Material.HONEY_BOTTLE));
         recipe.addIngredient(new MaterialChoice(Material.HONEY_BOTTLE));
@@ -123,7 +123,7 @@ class TestAutoCrafter {
     @DisplayName("Test crafting an invalid ShapelessRecipe")
     void testInvalidShapelessRecipe() {
         NamespacedKey key = new NamespacedKey(plugin, "shapeless_recipe_test");
-        ItemStack result = new CustomItem(Material.DIAMOND, "&6Special Diamond :o");
+        ItemStack result = new CustomItemStack(Material.DIAMOND, "&6Special Diamond :o");
         ShapelessRecipe recipe = new ShapelessRecipe(key, result);
         recipe.addIngredient(Material.IRON_NUGGET);
 
@@ -142,7 +142,7 @@ class TestAutoCrafter {
     @DisplayName("Test crafting a ShapelessRecipe with a SlimefunItem")
     void ShapelessRecipeWithSlimefunItem() {
         NamespacedKey key = new NamespacedKey(plugin, "shapeless_recipe_test");
-        ItemStack result = new CustomItem(Material.DIAMOND, "&6Special Diamond :o");
+        ItemStack result = new CustomItemStack(Material.DIAMOND, "&6Special Diamond :o");
         ShapelessRecipe recipe = new ShapelessRecipe(key, result);
         recipe.addIngredient(Material.BAMBOO);
 
@@ -173,7 +173,7 @@ class TestAutoCrafter {
     @DisplayName("Test crafting with a full Inventory")
     void testFullInventory() {
         NamespacedKey key = new NamespacedKey(plugin, "shapeless_recipe_test");
-        ItemStack result = new CustomItem(Material.DIAMOND, "&6Special Diamond :o");
+        ItemStack result = new CustomItemStack(Material.DIAMOND, "&6Special Diamond :o");
         ShapelessRecipe recipe = new ShapelessRecipe(key, result);
         recipe.addIngredient(Material.IRON_NUGGET);
 

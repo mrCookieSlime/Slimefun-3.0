@@ -16,8 +16,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice.MaterialChoice;
 
-import io.github.thebusybiscuit.cscorelib2.collections.LoopIterator;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.collections.LoopIterator;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.guide.SurvivalSlimefunGuide;
 
 /**
@@ -50,7 +50,7 @@ public class AsyncRecipeChoiceTask implements Runnable {
         Validate.notNull(inv, "Inventory must not be null");
 
         inventory = inv;
-        id = Bukkit.getScheduler().runTaskTimerAsynchronously(SlimefunPlugin.instance(), this, 0, UPDATE_INTERVAL).getTaskId();
+        id = Bukkit.getScheduler().runTaskTimerAsynchronously(Slimefun.instance(), this, 0, UPDATE_INTERVAL).getTaskId();
     }
 
     public void add(int slot, @Nonnull MaterialChoice choice) {

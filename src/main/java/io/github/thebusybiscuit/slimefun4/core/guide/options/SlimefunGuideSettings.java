@@ -14,18 +14,19 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuide;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuideMode;
-import io.github.thebusybiscuit.slimefun4.core.researching.Research;
 import io.github.thebusybiscuit.slimefun4.core.services.LocalizationService;
 import io.github.thebusybiscuit.slimefun4.core.services.github.GitHubService;
 import io.github.thebusybiscuit.slimefun4.core.services.localization.Language;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.NumberUtils;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
+
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 
 /**
@@ -59,7 +60,7 @@ public final class SlimefunGuideSettings {
 
     @ParametersAreNonnullByDefault
     public static void openSettings(Player p, ItemStack guide) {
-        ChestMenu menu = new ChestMenu(SlimefunPlugin.getLocalization().getMessage(p, "guide.title.settings"));
+        ChestMenu menu = new ChestMenu(Slimefun.getLocalization().getMessage(p, "guide.title.settings"));
 
         menu.setEmptySlotsClickable(false);
         menu.addMenuOpeningHandler(pl -> pl.playSound(pl.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 0.7F, 0.7F));
@@ -74,10 +75,10 @@ public final class SlimefunGuideSettings {
 
     @ParametersAreNonnullByDefault
     private static void addHeader(Player p, ChestMenu menu, ItemStack guide) {
-        LocalizationService locale = SlimefunPlugin.getLocalization();
+        LocalizationService locale = Slimefun.getLocalization();
 
         // @formatter:off
-        menu.addItem(0, new CustomItem(SlimefunGuide.getItem(SlimefunGuideMode.SURVIVAL_MODE),
+        menu.addItem(0, new CustomItemStack(SlimefunGuide.getItem(SlimefunGuideMode.SURVIVAL_MODE),
             "&e\u21E6 " + locale.getMessage(p, "guide.back.title"),
             "",
             "&7" + locale.getMessage(p, "guide.back.guide")
@@ -89,7 +90,7 @@ public final class SlimefunGuideSettings {
             return false;
         });
 
-        GitHubService github = SlimefunPlugin.getGitHubService();
+        GitHubService github = Slimefun.getGitHubService();
 
         List<String> contributorsLore = new ArrayList<>();
         contributorsLore.add("");
@@ -98,7 +99,7 @@ public final class SlimefunGuideSettings {
         contributorsLore.add("&7\u21E8 &e" + locale.getMessage(p, "guide.credits.open"));
 
         // @formatter:off
-        menu.addItem(2, new CustomItem(SlimefunUtils.getCustomHead("e952d2b3f351a6b0487cc59db31bf5f2641133e5ba0006b18576e996a0293e52"),
+        menu.addItem(2, new CustomItemStack(SlimefunUtils.getCustomHead("e952d2b3f351a6b0487cc59db31bf5f2641133e5ba0006b18576e996a0293e52"),
             "&c" + locale.getMessage(p, "guide.title.credits"),
             contributorsLore.toArray(new String[0])
         ));
@@ -110,18 +111,18 @@ public final class SlimefunGuideSettings {
         });
 
         // @formatter:off
-        menu.addItem(4, new CustomItem(Material.WRITABLE_BOOK, 
+        menu.addItem(4, new CustomItemStack(Material.WRITABLE_BOOK, 
             ChatColor.GREEN + locale.getMessage(p, "guide.title.versions"),
             "&7&o" + locale.getMessage(p, "guide.tooltips.versions-notice"),
             "",
             "&fMinecraft: &a" + Bukkit.getBukkitVersion(),
-            "&fSlimefun: &a" + SlimefunPlugin.getVersion()),
+            "&fSlimefun: &a" + Slimefun.getVersion()),
             ChestMenuUtils.getEmptyClickHandler()
         );
         // @formatter:on
 
         // @formatter:off
-        menu.addItem(6, new CustomItem(Material.COMPARATOR, 
+        menu.addItem(6, new CustomItemStack(Material.COMPARATOR, 
            "&e" + locale.getMessage(p, "guide.title.source"),
            "", "&7Last Activity: &a" + NumberUtils.getElapsedTime(github.getLastUpdate()) + " ago",
            "&7Forks: &e" + github.getForks(),
@@ -143,7 +144,7 @@ public final class SlimefunGuideSettings {
         });
 
         // @formatter:off
-        menu.addItem(8, new CustomItem(Material.KNOWLEDGE_BOOK,
+        menu.addItem(8, new CustomItemStack(Material.KNOWLEDGE_BOOK,
             "&3" + locale.getMessage(p, "guide.title.wiki"),
             "", "&7Do you need help with an Item or machine?",
             "&7You cannot figure out what to do?",
@@ -161,14 +162,14 @@ public final class SlimefunGuideSettings {
         });
 
         // @formatter:off
-        menu.addItem(47, new CustomItem(Material.BOOKSHELF,
+        menu.addItem(47, new CustomItemStack(Material.BOOKSHELF,
             "&3" + locale.getMessage(p, "guide.title.addons"),
             "",
             "&7Slimefun is huge. But its addons are what makes",
             "&7this plugin truly shine. Go check them out, some",
             "&7of them may be exactly what you were missing out on!",
             "",
-            "&7Installed on this Server: &b" + SlimefunPlugin.getInstalledAddons().size(),
+            "&7Installed on this Server: &b" + Slimefun.getInstalledAddons().size(),
             "",
             "&7\u21E8 &eClick to see all available addons for Slimefun4"
         ));
@@ -180,9 +181,9 @@ public final class SlimefunGuideSettings {
             return false;
         });
 
-        if (SlimefunPlugin.getUpdater().getBranch().isOfficial()) {
+        if (Slimefun.getUpdater().getBranch().isOfficial()) {
             // @formatter:off
-            menu.addItem(49, new CustomItem(Material.REDSTONE_TORCH,
+            menu.addItem(49, new CustomItemStack(Material.REDSTONE_TORCH,
                 "&4" + locale.getMessage(p, "guide.title.bugs"),
                 "",
                 "&7&oBug reports have to be made in English!",
@@ -203,7 +204,7 @@ public final class SlimefunGuideSettings {
             menu.addItem(49, ChestMenuUtils.getBackground(), ChestMenuUtils.getEmptyClickHandler());
         }
 
-        menu.addItem(51, new CustomItem(Material.TOTEM_OF_UNDYING, ChatColor.RED + locale.getMessage(p, "guide.work-in-progress")), (pl, slot, item, action) -> {
+        menu.addItem(51, new CustomItemStack(Material.TOTEM_OF_UNDYING, ChatColor.RED + locale.getMessage(p, "guide.work-in-progress")), (pl, slot, item, action) -> {
             // Add something here
             return false;
         });

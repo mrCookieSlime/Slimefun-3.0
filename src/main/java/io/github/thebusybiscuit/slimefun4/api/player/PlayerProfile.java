@@ -30,19 +30,19 @@ import org.bukkit.inventory.ItemStack;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
-import io.github.thebusybiscuit.cscorelib2.chat.ChatColors;
-import io.github.thebusybiscuit.cscorelib2.config.Config;
+import io.github.bakedlibs.dough.common.ChatColors;
+import io.github.bakedlibs.dough.common.CommonPatterns;
+import io.github.bakedlibs.dough.config.Config;
 import io.github.thebusybiscuit.slimefun4.api.events.AsyncProfileLoadEvent;
 import io.github.thebusybiscuit.slimefun4.api.gps.Waypoint;
 import io.github.thebusybiscuit.slimefun4.api.items.HashedArmorpiece;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import io.github.thebusybiscuit.slimefun4.core.attributes.ProtectionType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.ProtectiveArmor;
 import io.github.thebusybiscuit.slimefun4.core.guide.GuideHistory;
-import io.github.thebusybiscuit.slimefun4.core.researching.Research;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.armor.SlimefunArmorPiece;
 import io.github.thebusybiscuit.slimefun4.utils.NumberUtils;
-import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
 
 /**
  * A class that can store a Player's {@link Research} progress for caching purposes.
@@ -85,7 +85,7 @@ public class PlayerProfile {
     }
 
     private void loadProfileData() {
-        for (Research research : SlimefunPlugin.getRegistry().getResearches()) {
+        for (Research research : Slimefun.getRegistry().getResearches()) {
             if (configFile.contains("researches." + research.getID())) {
                 researches.add(research);
             }
@@ -99,7 +99,7 @@ public class PlayerProfile {
                     waypoints.add(new Waypoint(this, key, loc, waypointName));
                 }
             } catch (Exception x) {
-                SlimefunPlugin.logger().log(Level.WARNING, x, () -> "Could not load Waypoint \"" + key + "\" for Player \"" + name + '"');
+                Slimefun.logger().log(Level.WARNING, x, () -> "Could not load Waypoint \"" + key + "\" for Player \"" + name + '"');
             }
         }
     }
@@ -307,9 +307,9 @@ public class PlayerProfile {
     }
 
     public @Nonnull String getTitle() {
-        List<String> titles = SlimefunPlugin.getRegistry().getResearchRanks();
+        List<String> titles = Slimefun.getRegistry().getResearchRanks();
 
-        float fraction = (float) researches.size() / SlimefunPlugin.getRegistry().getResearches().size();
+        float fraction = (float) researches.size() / Slimefun.getRegistry().getResearches().size();
         int index = (int) (fraction * (titles.size() - 1));
 
         return titles.get(index);
@@ -318,7 +318,7 @@ public class PlayerProfile {
     public void sendStats(@Nonnull CommandSender sender) {
         Set<Research> unlockedResearches = getResearches();
         int levels = unlockedResearches.stream().mapToInt(Research::getCost).sum();
-        int allResearches = SlimefunPlugin.getRegistry().getResearches().size();
+        int allResearches = Slimefun.getRegistry().getResearches().size();
 
         float progress = Math.round(((unlockedResearches.size() * 100.0F) / allResearches) * 100.0F) / 100.0F;
 
@@ -368,18 +368,18 @@ public class PlayerProfile {
         Validate.notNull(p, "Cannot get a PlayerProfile for: null!");
 
         UUID uuid = p.getUniqueId();
-        PlayerProfile profile = SlimefunPlugin.getRegistry().getPlayerProfiles().get(uuid);
+        PlayerProfile profile = Slimefun.getRegistry().getPlayerProfiles().get(uuid);
 
         if (profile != null) {
             callback.accept(profile);
             return true;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(SlimefunPlugin.instance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(Slimefun.instance(), () -> {
             AsyncProfileLoadEvent event = new AsyncProfileLoadEvent(new PlayerProfile(p));
             Bukkit.getPluginManager().callEvent(event);
 
-            SlimefunPlugin.getRegistry().getPlayerProfiles().put(uuid, event.getProfile());
+            Slimefun.getRegistry().getPlayerProfiles().put(uuid, event.getProfile());
             callback.accept(event.getProfile());
         });
 
@@ -398,11 +398,11 @@ public class PlayerProfile {
     public static boolean request(@Nonnull OfflinePlayer p) {
         Validate.notNull(p, "Cannot request a Profile for null");
 
-        if (!SlimefunPlugin.getRegistry().getPlayerProfiles().containsKey(p.getUniqueId())) {
+        if (!Slimefun.getRegistry().getPlayerProfiles().containsKey(p.getUniqueId())) {
             // Should probably prevent multiple requests for the same profile in the future
-            Bukkit.getScheduler().runTaskAsynchronously(SlimefunPlugin.instance(), () -> {
+            Bukkit.getScheduler().runTaskAsynchronously(Slimefun.instance(), () -> {
                 PlayerProfile pp = new PlayerProfile(p);
-                SlimefunPlugin.getRegistry().getPlayerProfiles().put(p.getUniqueId(), pp);
+                Slimefun.getRegistry().getPlayerProfiles().put(p.getUniqueId(), pp);
             });
 
             return false;
@@ -422,11 +422,11 @@ public class PlayerProfile {
      * @return An {@link Optional} describing the result
      */
     public static @Nonnull Optional<PlayerProfile> find(@Nonnull OfflinePlayer p) {
-        return Optional.ofNullable(SlimefunPlugin.getRegistry().getPlayerProfiles().get(p.getUniqueId()));
+        return Optional.ofNullable(Slimefun.getRegistry().getPlayerProfiles().get(p.getUniqueId()));
     }
 
     public static @Nonnull Iterator<PlayerProfile> iterator() {
-        return SlimefunPlugin.getRegistry().getPlayerProfiles().values().iterator();
+        return Slimefun.getRegistry().getPlayerProfiles().values().iterator();
     }
 
     public static void getBackpack(@Nullable ItemStack item, @Nonnull Consumer<PlayerBackpack> callback) {
@@ -439,9 +439,9 @@ public class PlayerProfile {
 
         for (String line : item.getItemMeta().getLore()) {
             if (line.startsWith(ChatColors.color("&7ID: ")) && line.indexOf('#') != -1) {
-                String[] splitLine = PatternUtils.HASH.split(line);
+                String[] splitLine = CommonPatterns.HASH.split(line);
 
-                if (PatternUtils.NUMERIC.matcher(splitLine[1]).matches()) {
+                if (CommonPatterns.NUMERIC.matcher(splitLine[1]).matches()) {
                     id = OptionalInt.of(Integer.parseInt(splitLine[1]));
                     uuid = splitLine[0].replace(ChatColors.color("&7ID: "), "");
                 }

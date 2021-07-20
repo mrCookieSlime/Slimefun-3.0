@@ -6,7 +6,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.apache.commons.lang.Validate;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 
 /**
  * This variation of {@link ItemSetting} allows you to define an {@link Double} range

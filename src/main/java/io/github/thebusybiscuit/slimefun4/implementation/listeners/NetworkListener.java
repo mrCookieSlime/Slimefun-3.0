@@ -12,7 +12,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import io.github.thebusybiscuit.slimefun4.api.events.ExplosiveToolBreakBlocksEvent;
 import io.github.thebusybiscuit.slimefun4.api.network.Network;
 import io.github.thebusybiscuit.slimefun4.core.networks.NetworkManager;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This {@link Listener} is responsible for all updates to a {@link Network}.
@@ -31,7 +31,7 @@ public class NetworkListener implements Listener {
      */
     private final NetworkManager manager;
 
-    public NetworkListener(@Nonnull SlimefunPlugin plugin, @Nonnull NetworkManager manager) {
+    public NetworkListener(@Nonnull Slimefun plugin, @Nonnull NetworkManager manager) {
         this.manager = manager;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }

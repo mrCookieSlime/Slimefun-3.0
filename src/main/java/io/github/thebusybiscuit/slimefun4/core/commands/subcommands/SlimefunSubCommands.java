@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 
 import io.github.thebusybiscuit.slimefun4.core.commands.SlimefunCommand;
 import io.github.thebusybiscuit.slimefun4.core.commands.SubCommand;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This class holds the implementations of every {@link SubCommand}.
@@ -24,7 +24,7 @@ public final class SlimefunSubCommands {
 
     @Nonnull
     public static Collection<SubCommand> getAllCommands(@Nonnull SlimefunCommand cmd) {
-        SlimefunPlugin plugin = cmd.getPlugin();
+        Slimefun plugin = cmd.getPlugin();
         List<SubCommand> commands = new LinkedList<>();
 
         commands.add(new HelpCommand(plugin, cmd));

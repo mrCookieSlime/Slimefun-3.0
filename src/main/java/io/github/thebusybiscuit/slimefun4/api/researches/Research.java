@@ -1,4 +1,4 @@
-package io.github.thebusybiscuit.slimefun4.core.researching;
+package io.github.thebusybiscuit.slimefun4.api.researches;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -20,13 +20,13 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerPreResearchEvent;
 import io.github.thebusybiscuit.slimefun4.api.events.ResearchUnlockEvent;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuideImplementation;
 import io.github.thebusybiscuit.slimefun4.core.services.localization.Language;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.setup.ResearchSetup;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 /**
  * Represents a research, which is bound to one
@@ -88,7 +88,7 @@ public class Research implements Keyed {
      * @return Whether this {@link Research} is enabled or not
      */
     public boolean isEnabled() {
-        return SlimefunPlugin.getRegistry().isResearchingEnabled() && enabled;
+        return Slimefun.getRegistry().isResearchingEnabled() && enabled;
     }
 
     /**
@@ -116,7 +116,7 @@ public class Research implements Keyed {
      */
     @Nonnull
     public String getName(@Nonnull Player p) {
-        String localized = SlimefunPlugin.getLocalization().getResearchName(p, key);
+        String localized = Slimefun.getLocalization().getResearchName(p, key);
         return localized != null ? localized : name;
     }
 
@@ -201,14 +201,14 @@ public class Research implements Keyed {
      * @param sfItem
      *            The {@link SlimefunItem} on which the {@link Player} clicked.
      * @param category
-     *            The {@link Category} where the {@link Player} was.
+     *            The {@link ItemGroup} where the {@link Player} was.
      * @param page
-     *            The page number of where the {@link Player} was in the {@link Category};
+     *            The page number of where the {@link Player} was in the {@link ItemGroup};
      *
      */
     @ParametersAreNonnullByDefault
-    public void unlockFromGuide(SlimefunGuideImplementation guide, Player player, PlayerProfile profile, SlimefunItem sfItem, Category category, int page) {
-        if (!SlimefunPlugin.getRegistry().getCurrentlyResearchingPlayers().contains(player.getUniqueId())) {
+    public void unlockFromGuide(SlimefunGuideImplementation guide, Player player, PlayerProfile profile, SlimefunItem sfItem, ItemGroup category, int page) {
+        if (!Slimefun.getRegistry().getCurrentlyResearchingPlayers().contains(player.getUniqueId())) {
             if (profile.hasUnlocked(this)) {
                 guide.openCategory(profile, category, page);
             } else {
@@ -219,7 +219,7 @@ public class Research implements Keyed {
                     if (this.canUnlock(player)) {
                         guide.unlockItem(player, sfItem, pl -> guide.openCategory(profile, category, page));
                     } else {
-                        SlimefunPlugin.getLocalization().sendMessage(player, "messages.not-enough-xp", true);
+                        Slimefun.getLocalization().sendMessage(player, "messages.not-enough-xp", true);
                     }
                 }
             }
@@ -239,7 +239,7 @@ public class Research implements Keyed {
             return true;
         }
 
-        boolean creativeResearch = p.getGameMode() == GameMode.CREATIVE && SlimefunPlugin.getRegistry().isFreeCreativeResearchingEnabled();
+        boolean creativeResearch = p.getGameMode() == GameMode.CREATIVE && Slimefun.getRegistry().isFreeCreativeResearchingEnabled();
         return creativeResearch || p.getLevel() >= cost;
     }
 
@@ -273,10 +273,10 @@ public class Research implements Keyed {
      * Registers this {@link Research}.
      */
     public void register() {
-        SlimefunPlugin.getResearchCfg().setDefaultValue("enable-researching", true);
+        Slimefun.getResearchCfg().setDefaultValue("enable-researching", true);
         String path = key.getNamespace() + '.' + key.getKey();
 
-        if (SlimefunPlugin.getResearchCfg().contains(path + ".enabled") && !SlimefunPlugin.getResearchCfg().getBoolean(path + ".enabled")) {
+        if (Slimefun.getResearchCfg().contains(path + ".enabled") && !Slimefun.getResearchCfg().getBoolean(path + ".enabled")) {
             for (SlimefunItem item : new ArrayList<>(items)) {
                 if (item != null) {
                     item.setResearch(null);
@@ -287,13 +287,13 @@ public class Research implements Keyed {
             return;
         }
 
-        SlimefunPlugin.getResearchCfg().setDefaultValue(path + ".cost", getCost());
-        SlimefunPlugin.getResearchCfg().setDefaultValue(path + ".enabled", true);
+        Slimefun.getResearchCfg().setDefaultValue(path + ".cost", getCost());
+        Slimefun.getResearchCfg().setDefaultValue(path + ".enabled", true);
 
-        setCost(SlimefunPlugin.getResearchCfg().getInt(path + ".cost"));
+        setCost(Slimefun.getResearchCfg().getInt(path + ".cost"));
         enabled = true;
 
-        SlimefunPlugin.getRegistry().getResearches().add(this);
+        Slimefun.getRegistry().getResearches().add(this);
     }
 
     /**
@@ -310,7 +310,7 @@ public class Research implements Keyed {
             return Optional.empty();
         }
 
-        for (Research research : SlimefunPlugin.getRegistry().getResearches()) {
+        for (Research research : Slimefun.getRegistry().getResearches()) {
             if (research.getKey().equals(key)) {
                 return Optional.of(research);
             }

@@ -10,19 +10,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.github.thebusybiscuit.slimefun4.api.exceptions.TagMisconfigurationException;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 
 class TestTagParser {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
     private static NamespacedKey key;
 
     @BeforeAll
     public static void load() {
         MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
         key = new NamespacedKey(plugin, "test");
     }
 

@@ -10,8 +10,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -23,20 +21,23 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.MushroomCow;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.inventory.InvUtils;
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.inventory.InvUtils;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.items.settings.IntRangeSetting;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.RecipeDisplayItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
+
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineRecipe;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 
 /**
@@ -53,7 +54,7 @@ public class ProduceCollector extends AContainer implements RecipeDisplayItem {
     private final Set<AnimalProduce> animalProduces = new HashSet<>();
 
     @ParametersAreNonnullByDefault
-    public ProduceCollector(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public ProduceCollector(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
         addItemSetting(range);
@@ -63,7 +64,7 @@ public class ProduceCollector extends AContainer implements RecipeDisplayItem {
     protected void registerDefaultRecipes() {
         // Milk from adult cows and goats
         addProduce(new AnimalProduce(new ItemStack(Material.BUCKET), new ItemStack(Material.MILK_BUCKET), n -> {
-            MinecraftVersion version = SlimefunPlugin.getMinecraftVersion();
+            MinecraftVersion version = Slimefun.getMinecraftVersion();
 
             if (n instanceof Cow || (version.isAtLeast(MinecraftVersion.MINECRAFT_1_17) && n instanceof Goat)) {
                 return ((Ageable) n).isAdult();
@@ -115,15 +116,15 @@ public class ProduceCollector extends AContainer implements RecipeDisplayItem {
     public @Nonnull List<ItemStack> getDisplayRecipes() {
         List<ItemStack> displayRecipes = new ArrayList<>();
 
-        displayRecipes.add(new CustomItem(Material.BUCKET, null, "&fRequires &bCow &fnearby"));
+        displayRecipes.add(new CustomItemStack(Material.BUCKET, null, "&fRequires &bCow &fnearby"));
         displayRecipes.add(new ItemStack(Material.MILK_BUCKET));
 
-        if (SlimefunPlugin.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_17)) {
-            displayRecipes.add(new CustomItem(Material.BUCKET, null, "&fRequires &bGoat &fnearby"));
+        if (Slimefun.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_17)) {
+            displayRecipes.add(new CustomItemStack(Material.BUCKET, null, "&fRequires &bGoat &fnearby"));
             displayRecipes.add(new ItemStack(Material.MILK_BUCKET));
         }
 
-        displayRecipes.add(new CustomItem(Material.BOWL, null, "&fRequires &bMooshroom &fnearby"));
+        displayRecipes.add(new CustomItemStack(Material.BOWL, null, "&fRequires &bMooshroom &fnearby"));
         displayRecipes.add(new ItemStack(Material.MUSHROOM_STEW));
 
         return displayRecipes;

@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuide;
 import io.github.thebusybiscuit.slimefun4.core.services.LocalizationService;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 
 /**
@@ -51,7 +51,7 @@ public final class Language {
         this.id = id;
         this.item = SlimefunUtils.getCustomHead(hash);
 
-        SlimefunPlugin.getItemTextureService().setTexture(item, "_UI_LANGUAGE_" + id.toUpperCase(Locale.ROOT));
+        Slimefun.getItemTextureService().setTexture(item, "_UI_LANGUAGE_" + id.toUpperCase(Locale.ROOT));
     }
 
     /**
@@ -76,7 +76,7 @@ public final class Language {
             return 100.0;
         } else {
             if (progress < 0) {
-                progress = SlimefunPlugin.getLocalization().calculateProgress(this);
+                progress = Slimefun.getLocalization().calculateProgress(this);
             }
 
             return progress;
@@ -116,7 +116,7 @@ public final class Language {
      */
     @Nonnull
     public String getName(@Nonnull Player p) {
-        return SlimefunPlugin.getLocalization().getMessage(p, "languages." + id);
+        return Slimefun.getLocalization().getMessage(p, "languages." + id);
     }
 
     /**
@@ -126,7 +126,7 @@ public final class Language {
      * @return Whether this is the default {@link Language} of this {@link Server}
      */
     public boolean isDefault() {
-        return this == SlimefunPlugin.getLocalization().getDefaultLanguage();
+        return this == Slimefun.getLocalization().getDefaultLanguage();
     }
 
     @Override

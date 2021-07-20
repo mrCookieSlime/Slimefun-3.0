@@ -8,15 +8,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.chat.ChatColors;
+import io.github.bakedlibs.dough.common.ChatColors;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemConsumptionHandler;
 import io.github.thebusybiscuit.slimefun4.core.services.LocalizationService;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * The {@link FortuneCookie} is a rather simple {@link SlimefunItem}, it's a cookie which
@@ -29,14 +29,14 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 public class FortuneCookie extends SimpleSlimefunItem<ItemConsumptionHandler> {
 
     @ParametersAreNonnullByDefault
-    public FortuneCookie(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public FortuneCookie(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
     }
 
     @Override
     public ItemConsumptionHandler getItemHandler() {
         return (e, p, item) -> {
-            List<String> messages = SlimefunPlugin.getLocalization().getMessages(p, "messages.fortune-cookie");
+            List<String> messages = Slimefun.getLocalization().getMessages(p, "messages.fortune-cookie");
             String message = messages.get(ThreadLocalRandom.current().nextInt(messages.size()));
 
             p.sendMessage(ChatColors.color(message));

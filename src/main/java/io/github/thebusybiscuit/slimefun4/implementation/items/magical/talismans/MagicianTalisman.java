@@ -18,9 +18,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.settings.TalismanEnchantment;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * The {@link MagicianTalisman} is a special kind of {@link Talisman} which awards a {@link Player}
@@ -46,7 +46,7 @@ public class MagicianTalisman extends Talisman {
                     enchantments.add(new TalismanEnchantment(this, enchantment, i));
                 }
             } catch (Exception x) {
-                SlimefunPlugin.logger().log(Level.SEVERE, x, () -> "The following Exception occurred while trying to register the following Enchantment: " + enchantment);
+                Slimefun.logger().log(Level.SEVERE, x, () -> "The following Exception occurred while trying to register the following Enchantment: " + enchantment);
             }
         }
 
@@ -56,7 +56,7 @@ public class MagicianTalisman extends Talisman {
                 addItemSetting(enchantments.toArray(new ItemSetting[0]));
             }
         } catch (Exception x) {
-            SlimefunPlugin.logger().log(Level.SEVERE, x, () -> "The following Exception was thrown when initializing the settings for " + toString());
+            Slimefun.logger().log(Level.SEVERE, x, () -> "The following Exception was thrown when initializing the settings for " + toString());
         }
     }
 

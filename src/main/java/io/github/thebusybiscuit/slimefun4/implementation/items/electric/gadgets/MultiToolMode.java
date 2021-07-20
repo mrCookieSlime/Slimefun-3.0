@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 
 class MultiToolMode {
 
@@ -20,7 +20,7 @@ class MultiToolMode {
 
     @Nullable
     SlimefunItem getItem() {
-        return SlimefunItem.getByID(item.getValue());
+        return SlimefunItem.getById(item.getValue());
     }
 
     boolean isEnabled() {

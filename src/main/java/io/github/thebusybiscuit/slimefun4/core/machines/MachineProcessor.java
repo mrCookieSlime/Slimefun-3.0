@@ -13,10 +13,11 @@ import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.blocks.BlockPosition;
+import io.github.bakedlibs.dough.blocks.BlockPosition;
 import io.github.thebusybiscuit.slimefun4.api.events.AsyncMachineOperationFinishEvent;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineProcessHolder;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
+
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 
 /**

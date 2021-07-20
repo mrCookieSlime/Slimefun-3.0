@@ -12,9 +12,9 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.VanillaItem;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 /**
  * This {@link Listener} makes sure that an {@link IronGolem} cannot be healed with
@@ -25,7 +25,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
  */
 public class IronGolemListener implements Listener {
 
-    public IronGolemListener(@Nonnull SlimefunPlugin plugin) {
+    public IronGolemListener(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -47,7 +47,7 @@ public class IronGolemListener implements Listener {
 
                 if (sfItem != null && !(sfItem instanceof VanillaItem)) {
                     e.setCancelled(true);
-                    SlimefunPlugin.getLocalization().sendMessage(e.getPlayer(), "messages.no-iron-golem-heal");
+                    Slimefun.getLocalization().sendMessage(e.getPlayer(), "messages.no-iron-golem-heal");
 
                     /*
                      * This is just there to update the Inventory...

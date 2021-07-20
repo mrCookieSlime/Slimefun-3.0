@@ -10,9 +10,9 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 /**
  * {@link GuideHistory} represents the browsing history of a {@link Player} through the
@@ -70,16 +70,16 @@ public class GuideHistory {
     }
 
     /**
-     * This method adds a {@link Category} to this {@link GuideHistory}.
-     * Should the {@link Category} already be the last element in this {@link GuideHistory},
+     * This method adds a {@link ItemGroup} to this {@link GuideHistory}.
+     * Should the {@link ItemGroup} already be the last element in this {@link GuideHistory},
      * then the entry will be overridden with the new page.
      * 
      * @param category
-     *            The {@link Category} that should be added to this {@link GuideHistory}
+     *            The {@link ItemGroup} that should be added to this {@link GuideHistory}
      * @param page
-     *            The current page of the {@link Category} that should be stored
+     *            The current page of the {@link ItemGroup} that should be stored
      */
-    public void add(@Nonnull Category category, int page) {
+    public void add(@Nonnull ItemGroup category, int page) {
         refresh(category, page);
     }
 
@@ -188,8 +188,8 @@ public class GuideHistory {
     private <T> void open(@Nonnull SlimefunGuideImplementation guide, @Nullable GuideEntry<T> entry) {
         if (entry == null) {
             guide.openMainMenu(profile, mainMenuPage);
-        } else if (entry.getIndexedObject() instanceof Category) {
-            guide.openCategory(profile, (Category) entry.getIndexedObject(), entry.getPage());
+        } else if (entry.getIndexedObject() instanceof ItemGroup) {
+            guide.openCategory(profile, (ItemGroup) entry.getIndexedObject(), entry.getPage());
         } else if (entry.getIndexedObject() instanceof SlimefunItem) {
             guide.displayItem(profile, (SlimefunItem) entry.getIndexedObject(), false);
         } else if (entry.getIndexedObject() instanceof ItemStack) {

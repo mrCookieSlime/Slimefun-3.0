@@ -25,21 +25,22 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import io.github.thebusybiscuit.cscorelib2.item.ImmutableItemMeta;
-import io.github.thebusybiscuit.cscorelib2.skull.SkullItem;
+import io.github.bakedlibs.dough.common.CommonPatterns;
+import io.github.bakedlibs.dough.items.ItemMetaSnapshot;
+import io.github.bakedlibs.dough.skins.PlayerHead;
+import io.github.bakedlibs.dough.skins.PlayerSkin;
 import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
 import io.github.thebusybiscuit.slimefun4.api.events.SlimefunItemSpawnEvent;
 import io.github.thebusybiscuit.slimefun4.api.exceptions.PrematureCodeException;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSpawnReason;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.core.attributes.Radioactive;
 import io.github.thebusybiscuit.slimefun4.core.attributes.Soulbound;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AncientPedestal;
 import io.github.thebusybiscuit.slimefun4.implementation.tasks.CapacitorTextureUpdateTask;
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ItemStackWrapper;
-
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * This utility class holds method that are directly linked to Slimefun.
@@ -79,7 +80,7 @@ public final class SlimefunUtils {
      *            The context in which this {@link Item} was flagged
      */
     public static void markAsNoPickup(@Nonnull Item item, @Nonnull String context) {
-        item.setMetadata(NO_PICKUP_METADATA, new FixedMetadataValue(SlimefunPlugin.instance(), context));
+        item.setMetadata(NO_PICKUP_METADATA, new FixedMetadataValue(Slimefun.instance(), context));
     }
 
     /**
@@ -132,7 +133,7 @@ public final class SlimefunUtils {
     private static boolean hasSoulboundFlag(@Nullable ItemMeta meta) {
         if (meta != null) {
             PersistentDataContainer container = meta.getPersistentDataContainer();
-            NamespacedKey key = SlimefunPlugin.getRegistry().getSoulboundDataKey();
+            NamespacedKey key = Slimefun.getRegistry().getSoulboundDataKey();
 
             return container.has(key, PersistentDataType.BYTE);
         }
@@ -163,7 +164,7 @@ public final class SlimefunUtils {
         ItemMeta meta = item.getItemMeta();
 
         PersistentDataContainer container = meta.getPersistentDataContainer();
-        NamespacedKey key = SlimefunPlugin.getRegistry().getSoulboundDataKey();
+        NamespacedKey key = Slimefun.getRegistry().getSoulboundDataKey();
 
         if (makeSoulbound && !isSoulbound) {
             container.set(key, PersistentDataType.BYTE, (byte) 1);
@@ -211,22 +212,23 @@ public final class SlimefunUtils {
     public static @Nonnull ItemStack getCustomHead(@Nonnull String texture) {
         Validate.notNull(texture, "The provided texture is null");
 
-        if (SlimefunPlugin.instance() == null) {
+        if (Slimefun.instance() == null) {
             throw new PrematureCodeException("You cannot instantiate a custom head before Slimefun was loaded.");
         }
 
-        if (SlimefunPlugin.getMinecraftVersion() == MinecraftVersion.UNIT_TEST) {
+        if (Slimefun.getMinecraftVersion() == MinecraftVersion.UNIT_TEST) {
             // com.mojang.authlib.GameProfile does not exist in a Test Environment
             return new ItemStack(Material.PLAYER_HEAD);
         }
 
         String base64 = texture;
 
-        if (PatternUtils.HEXADECIMAL.matcher(texture).matches()) {
+        if (CommonPatterns.HEXADECIMAL.matcher(texture).matches()) {
             base64 = Base64.getEncoder().encodeToString(("{\"textures\":{\"SKIN\":{\"url\":\"http://textures.minecraft.net/texture/" + texture + "\"}}}").getBytes(StandardCharsets.UTF_8));
         }
 
-        return SkullItem.fromBase64(base64);
+        PlayerSkin skin = PlayerSkin.fromBase64(base64);
+        return PlayerHead.getItemStack(skin);
     }
 
     public static boolean containsSimilarItem(Inventory inventory, ItemStack item, boolean checkLore) {
@@ -271,13 +273,13 @@ public final class SlimefunUtils {
             ItemMeta itemMeta = item.getItemMeta();
 
             if (sfitem instanceof SlimefunItemStack) {
-                Optional<String> id = SlimefunPlugin.getItemDataService().getItemData(itemMeta);
+                Optional<String> id = Slimefun.getItemDataService().getItemData(itemMeta);
 
                 if (id.isPresent()) {
                     return id.get().equals(((SlimefunItemStack) sfitem).getItemId());
                 }
 
-                ImmutableItemMeta meta = ((SlimefunItemStack) sfitem).getImmutableMeta();
+                ItemMetaSnapshot meta = ((SlimefunItemStack) sfitem).getItemMetaSnapshot();
                 return equalsItemMeta(itemMeta, meta, checkLore);
             } else if (sfitem.hasItemMeta()) {
                 return equalsItemMeta(itemMeta, sfitem.getItemMeta(), checkLore);
@@ -289,7 +291,7 @@ public final class SlimefunUtils {
         }
     }
 
-    private static boolean equalsItemMeta(@Nonnull ItemMeta itemMeta, @Nonnull ImmutableItemMeta meta, boolean checkLore) {
+    private static boolean equalsItemMeta(@Nonnull ItemMeta itemMeta, @Nonnull ItemMetaSnapshot meta, boolean checkLore) {
         Optional<String> displayName = meta.getDisplayName();
 
         if (itemMeta.hasDisplayName() != displayName.isPresent()) {
@@ -377,7 +379,7 @@ public final class SlimefunUtils {
         Validate.notNull(l, "Cannot update a texture for null");
         Validate.isTrue(capacity > 0, "Capacity must be greater than zero!");
 
-        SlimefunPlugin.runSync(new CapacitorTextureUpdateTask(l, charge, capacity));
+        Slimefun.runSync(new CapacitorTextureUpdateTask(l, charge, capacity));
     }
 
     /**
@@ -426,7 +428,7 @@ public final class SlimefunUtils {
     @ParametersAreNonnullByDefault
     public static @Nullable Item spawnItem(Location loc, ItemStack item, ItemSpawnReason reason, boolean addRandomOffset) {
         SlimefunItemSpawnEvent event = new SlimefunItemSpawnEvent(loc, item, reason);
-        SlimefunPlugin.instance().getServer().getPluginManager().callEvent(event);
+        Slimefun.instance().getServer().getPluginManager().callEvent(event);
 
         if (!event.isCancelled()) {
             World world = event.getLocation().getWorld();

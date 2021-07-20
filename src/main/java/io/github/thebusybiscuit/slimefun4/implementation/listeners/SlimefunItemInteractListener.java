@@ -18,12 +18,13 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
@@ -44,7 +45,7 @@ import me.mrCookieSlime.Slimefun.api.inventory.UniversalBlockMenu;
  */
 public class SlimefunItemInteractListener implements Listener {
 
-    public SlimefunItemInteractListener(@Nonnull SlimefunPlugin plugin) {
+    public SlimefunItemInteractListener(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -144,7 +145,7 @@ public class SlimefunItemInteractListener implements Listener {
                     if (menu.canOpen(clickedBlock, p)) {
                         menu.open(p);
                     } else {
-                        SlimefunPlugin.getLocalization().sendMessage(p, "inventory.no-access", true);
+                        Slimefun.getLocalization().sendMessage(p, "inventory.no-access", true);
                     }
                 } else if (BlockStorage.getStorage(clickedBlock.getWorld()).hasInventory(clickedBlock.getLocation())) {
                     BlockMenu menu = BlockStorage.getInventory(clickedBlock.getLocation());
@@ -152,7 +153,7 @@ public class SlimefunItemInteractListener implements Listener {
                     if (menu.canOpen(clickedBlock, p)) {
                         menu.open(p);
                     } else {
-                        SlimefunPlugin.getLocalization().sendMessage(p, "inventory.no-access", true);
+                        Slimefun.getLocalization().sendMessage(p, "inventory.no-access", true);
                     }
                 }
             }

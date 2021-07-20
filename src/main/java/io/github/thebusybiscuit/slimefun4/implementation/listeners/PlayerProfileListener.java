@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This {@link Listener} removes a {@link PlayerProfile} from memory if the corresponding {@link Player}
@@ -24,7 +24,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
  */
 public class PlayerProfileListener implements Listener {
 
-    public PlayerProfileListener(@Nonnull SlimefunPlugin plugin) {
+    public PlayerProfileListener(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 

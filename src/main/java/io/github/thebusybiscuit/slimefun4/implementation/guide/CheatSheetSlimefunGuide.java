@@ -1,25 +1,26 @@
 package io.github.thebusybiscuit.slimefun4.implementation.guide;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
-
 import java.util.LinkedList;
 import java.util.List;
 
-import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuide;
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.groups.FlexItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
-import io.github.thebusybiscuit.slimefun4.core.categories.FlexCategory;
+import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuide;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuideMode;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.SlimefunGuideItem;
+
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 /**
  * This is an admin-variant of the {@link SurvivalSlimefunGuide} which allows a {@link Player}
@@ -39,21 +40,21 @@ public class CheatSheetSlimefunGuide extends SurvivalSlimefunGuide {
     }
 
     /**
-     * Returns a {@link List} of visible {@link Category} instances that the {@link SlimefunGuide} would display.
+     * Returns a {@link List} of visible {@link ItemGroup} instances that the {@link SlimefunGuide} would display.
      *
      * @param p
      *            The {@link Player} who opened his {@link SlimefunGuide}
      * @param profile
      *            The {@link PlayerProfile} of the {@link Player}
-     * @return a {@link List} of visible {@link Category} instances
+     * @return a {@link List} of visible {@link ItemGroup} instances
      */
     @Nonnull
     @Override
-    protected List<Category> getVisibleCategories(@Nonnull Player p, @Nonnull PlayerProfile profile) {
-        List<Category> categories = new LinkedList<>();
+    protected List<ItemGroup> getVisibleCategories(@Nonnull Player p, @Nonnull PlayerProfile profile) {
+        List<ItemGroup> categories = new LinkedList<>();
 
-        for (Category category : SlimefunPlugin.getRegistry().getCategories()) {
-            if (!(category instanceof FlexCategory)) {
+        for (ItemGroup category : Slimefun.getRegistry().getCategories()) {
+            if (!(category instanceof FlexItemGroup)) {
                 categories.add(category);
             }
         }

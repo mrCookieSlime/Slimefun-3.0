@@ -12,19 +12,18 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.blocks.Vein;
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
-import io.github.thebusybiscuit.cscorelib2.protection.ProtectableAction;
+import io.github.bakedlibs.dough.blocks.Vein;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.bakedlibs.dough.protection.Interaction;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.items.settings.IntRangeSetting;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ToolUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
-
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * The {@link PickaxeOfVeinMining} is a powerful tool which allows you to mine an entire vein of ores
@@ -39,7 +38,7 @@ public class PickaxeOfVeinMining extends SimpleSlimefunItem<ToolUseHandler> {
     private final ItemSetting<Integer> maxBlocks = new IntRangeSetting(this, "max-blocks", 1, 16, Integer.MAX_VALUE);
 
     @ParametersAreNonnullByDefault
-    public PickaxeOfVeinMining(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public PickaxeOfVeinMining(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
         addItemSetting(maxBlocks);
     }
@@ -57,14 +56,14 @@ public class PickaxeOfVeinMining extends SimpleSlimefunItem<ToolUseHandler> {
     @ParametersAreNonnullByDefault
     private void breakBlocks(Player p, List<Block> blocks, int fortune, ItemStack tool) {
         for (Block b : blocks) {
-            if (SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(), ProtectableAction.BREAK_BLOCK)) {
+            if (Slimefun.getProtectionManager().hasPermission(p, b.getLocation(), Interaction.BREAK_BLOCK)) {
                 b.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, b.getType());
 
                 if (tool.containsEnchantment(Enchantment.SILK_TOUCH)) {
                     b.getWorld().dropItemNaturally(b.getLocation(), new ItemStack(b.getType()));
                 } else {
                     for (ItemStack drop : b.getDrops(tool)) {
-                        b.getWorld().dropItemNaturally(b.getLocation(), drop.getType().isBlock() ? drop : new CustomItem(drop, fortune));
+                        b.getWorld().dropItemNaturally(b.getLocation(), drop.getType().isBlock() ? drop : new CustomItemStack(drop, fortune));
                     }
                 }
 

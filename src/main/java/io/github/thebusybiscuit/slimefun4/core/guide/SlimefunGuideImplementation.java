@@ -9,13 +9,13 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import io.github.thebusybiscuit.slimefun4.core.guide.options.SlimefunGuideSettings;
-import io.github.thebusybiscuit.slimefun4.core.researching.Research;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.guide.SurvivalSlimefunGuide;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 /**
  * This interface is used for the different implementations that add behaviour
@@ -52,7 +52,7 @@ public interface SlimefunGuideImplementation {
     void openMainMenu(PlayerProfile profile, int page);
 
     @ParametersAreNonnullByDefault
-    void openCategory(PlayerProfile profile, Category category, int page);
+    void openCategory(PlayerProfile profile, ItemGroup category, int page);
 
     @ParametersAreNonnullByDefault
     void openSearch(PlayerProfile profile, String input, boolean addToHistory);
@@ -67,12 +67,12 @@ public interface SlimefunGuideImplementation {
     default void unlockItem(Player p, SlimefunItem sfitem, Consumer<Player> callback) {
         Research research = sfitem.getResearch();
 
-        if (p.getGameMode() == GameMode.CREATIVE && SlimefunPlugin.getRegistry().isFreeCreativeResearchingEnabled()) {
+        if (p.getGameMode() == GameMode.CREATIVE && Slimefun.getRegistry().isFreeCreativeResearchingEnabled()) {
             research.unlock(p, true, callback);
         } else {
             p.setLevel(p.getLevel() - research.getCost());
 
-            boolean skipLearningAnimation = SlimefunPlugin.getRegistry().isLearningAnimationDisabled() || !SlimefunGuideSettings.hasLearningAnimationEnabled(p);
+            boolean skipLearningAnimation = Slimefun.getRegistry().isLearningAnimationDisabled() || !SlimefunGuideSettings.hasLearningAnimationEnabled(p);
             research.unlock(p, skipLearningAnimation, callback);
         }
     }

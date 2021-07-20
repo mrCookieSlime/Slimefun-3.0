@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.slimefun4.core.attributes.Soulbound;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 
 /**
@@ -29,7 +29,7 @@ public class SoulboundListener implements Listener {
 
     private final Map<UUID, Map<Integer, ItemStack>> soulbound = new HashMap<>();
 
-    public SoulboundListener(@Nonnull SlimefunPlugin plugin) {
+    public SoulboundListener(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 

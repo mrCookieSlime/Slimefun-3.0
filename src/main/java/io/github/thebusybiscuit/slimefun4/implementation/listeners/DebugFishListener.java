@@ -21,17 +21,17 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
-import io.github.thebusybiscuit.cscorelib2.chat.ChatColors;
-import io.github.thebusybiscuit.cscorelib2.skull.SkullBlock;
+import io.github.bakedlibs.dough.common.ChatColors;
+import io.github.bakedlibs.dough.skins.PlayerHead;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetProvider;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 /**
@@ -46,7 +46,7 @@ public class DebugFishListener implements Listener {
     private final String greenCheckmark;
     private final String redCross;
 
-    public DebugFishListener(@Nonnull SlimefunPlugin plugin) {
+    public DebugFishListener(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
         greenCheckmark = "&2\u2714";
@@ -71,7 +71,7 @@ public class DebugFishListener implements Listener {
                     onRightClick(p, e.getClickedBlock(), e.getBlockFace());
                 }
             } else {
-                SlimefunPlugin.getLocalization().sendMessage(p, "messages.no-permission", true);
+                Slimefun.getLocalization().sendMessage(p, "messages.no-permission", true);
             }
         }
     }
@@ -91,18 +91,18 @@ public class DebugFishListener implements Listener {
     private void onRightClick(Player p, Block b, BlockFace face) {
         if (p.isSneaking()) {
             // Fixes #2655 - Delaying the placement to prevent a new event from being fired
-            SlimefunPlugin.runSync(() -> {
+            Slimefun.runSync(() -> {
                 Block block = b.getRelative(face);
                 block.setType(Material.PLAYER_HEAD);
-                SkullBlock.setFromHash(block, HeadTexture.MISSING_TEXTURE.getTexture());
 
+                PlayerHead.setSkin(block, HeadTexture.MISSING_TEXTURE.getAsSkin(), true);
                 p.playSound(block.getLocation(), Sound.BLOCK_BAMBOO_PLACE, 1, 1);
             }, 2L);
         } else if (BlockStorage.hasBlockInfo(b)) {
             try {
                 sendInfo(p, b);
             } catch (Exception x) {
-                SlimefunPlugin.logger().log(Level.SEVERE, "An Exception occurred while using a Debug-Fish", x);
+                Slimefun.logger().log(Level.SEVERE, "An Exception occurred while using a Debug-Fish", x);
             }
         } else {
             // Read applicable Slimefun tags
@@ -162,10 +162,10 @@ public class DebugFishListener implements Listener {
             p.sendMessage(ChatColors.color("&dTicking: " + redCross));
         }
 
-        if (SlimefunPlugin.getProfiler().hasTimings(b)) {
-            p.sendMessage(ChatColors.color("  &dTimings: &e" + SlimefunPlugin.getProfiler().getTime(b)));
-            p.sendMessage(ChatColors.color("  &dTotal Timings: &e" + SlimefunPlugin.getProfiler().getTime(item)));
-            p.sendMessage(ChatColors.color("  &dChunk Timings: &e" + SlimefunPlugin.getProfiler().getTime(b.getChunk())));
+        if (Slimefun.getProfiler().hasTimings(b)) {
+            p.sendMessage(ChatColors.color("  &dTimings: &e" + Slimefun.getProfiler().getTime(b)));
+            p.sendMessage(ChatColors.color("  &dTotal Timings: &e" + Slimefun.getProfiler().getTime(item)));
+            p.sendMessage(ChatColors.color("  &dChunk Timings: &e" + Slimefun.getProfiler().getTime(b.getChunk())));
         }
 
         if (item instanceof EnergyNetComponent) {

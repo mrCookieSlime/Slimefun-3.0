@@ -22,8 +22,8 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.Plugin;
 
-import io.github.thebusybiscuit.cscorelib2.recipes.MinecraftRecipe;
-import io.github.thebusybiscuit.cscorelib2.recipes.RecipeSnapshot;
+import io.github.bakedlibs.dough.recipes.MinecraftRecipe;
+import io.github.bakedlibs.dough.recipes.RecipeSnapshot;
 import io.github.thebusybiscuit.slimefun4.implementation.guide.SurvivalSlimefunGuide;
 
 /**

@@ -11,12 +11,12 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemConsumptionHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 import be.seeseemelk.mockbukkit.block.BlockMock;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 /**
  * This is a convenient interface for us to use in unit test classes
@@ -35,13 +35,13 @@ public interface SlimefunItemTest<T extends SlimefunItem> {
      * 
      * 
      * @param plugin
-     *            The current instance of {@link SlimefunPlugin}
+     *            The current instance of {@link Slimefun}
      * @param id
      *            An id for this {@link SlimefunItem}
      * 
      * @return A newly constructed {@link SlimefunItem}
      */
-    T registerSlimefunItem(SlimefunPlugin plugin, String id);
+    T registerSlimefunItem(Slimefun plugin, String id);
 
     @ParametersAreNonnullByDefault
     default void simulateRightClick(Player player, T item) {

@@ -41,9 +41,9 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.magical.talismans.MagicianTalisman;
 import io.github.thebusybiscuit.slimefun4.implementation.items.magical.talismans.Talisman;
 import io.github.thebusybiscuit.slimefun4.implementation.settings.TalismanEnchantment;
@@ -65,7 +65,7 @@ public class TalismanListener implements Listener {
 
     private final int[] armorSlots = { 39, 38, 37, 36 };
 
-    public TalismanListener(@Nonnull SlimefunPlugin plugin) {
+    public TalismanListener(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -259,7 +259,7 @@ public class TalismanListener implements Listener {
             int itemSlot = slot;
 
             // Update the item forcefully
-            SlimefunPlugin.runSync(() -> inv.setItem(itemSlot, item), 1L);
+            Slimefun.runSync(() -> inv.setItem(itemSlot, item), 1L);
         }
     }
 
@@ -348,7 +348,7 @@ public class TalismanListener implements Listener {
                         // We do not want to dupe blocks
                         if (!droppedItem.getType().isBlock()) {
                             int amount = Math.max(1, (dropAmount * 2) - droppedItem.getAmount());
-                            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new CustomItem(droppedItem, amount));
+                            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new CustomItemStack(droppedItem, amount));
                             doubledDrops = true;
                         }
                     }

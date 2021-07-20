@@ -7,28 +7,28 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.data.PersistentDataAPI;
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.data.persistent.PersistentDataAPI;
+import io.github.bakedlibs.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 class FireworksOption implements SlimefunGuideOption<Boolean> {
 
     @Override
     public SlimefunAddon getAddon() {
-        return SlimefunPlugin.instance();
+        return Slimefun.instance();
     }
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(SlimefunPlugin.instance(), "research_fireworks");
+        return new NamespacedKey(Slimefun.instance(), "research_fireworks");
     }
 
     @Override
     public Optional<ItemStack> getDisplayItem(Player p, ItemStack guide) {
-        if (SlimefunPlugin.getRegistry().isResearchFireworkEnabled()) {
+        if (Slimefun.getRegistry().isResearchFireworkEnabled()) {
             boolean enabled = getSelectedOption(p, guide).orElse(true);
-            ItemStack item = new CustomItem(Material.FIREWORK_ROCKET, "&bFireworks: &" + (enabled ? "aYes" : "4No"), "", "&7You can now toggle whether you", "&7will be presented with a big firework", "&7upon researching an item.", "", "&7\u21E8 &eClick to " + (enabled ? "disable" : "enable") + " your fireworks");
+            ItemStack item = new CustomItemStack(Material.FIREWORK_ROCKET, "&bFireworks: &" + (enabled ? "aYes" : "4No"), "", "&7You can now toggle whether you", "&7will be presented with a big firework", "&7upon researching an item.", "", "&7\u21E8 &eClick to " + (enabled ? "disable" : "enable") + " your fireworks");
             return Optional.of(item);
         } else {
             return Optional.empty();

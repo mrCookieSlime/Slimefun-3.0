@@ -1,4 +1,4 @@
-package io.github.thebusybiscuit.slimefun4.core.researching;
+package io.github.thebusybiscuit.slimefun4.api.researches;
 
 import java.util.function.Consumer;
 
@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import io.github.thebusybiscuit.slimefun4.api.events.ResearchUnlockEvent;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.guide.options.SlimefunGuideSettings;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.FireworkUtils;
 
 /**
@@ -63,9 +63,9 @@ public class PlayerResearchTask implements Consumer<PlayerProfile> {
             }
 
             if (!isInstant) {
-                SlimefunPlugin.runSync(() -> {
+                Slimefun.runSync(() -> {
                     p.playSound(p.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 0.7F, 1F);
-                    SlimefunPlugin.getLocalization().sendMessage(p, "messages.research.progress", true, msg -> msg.replace(PLACEHOLDER, research.getName(p)).replace("%progress%", "0%"));
+                    Slimefun.getLocalization().sendMessage(p, "messages.research.progress", true, msg -> msg.replace(PLACEHOLDER, research.getName(p)).replace("%progress%", "0%"));
                 }, 5L);
             }
 
@@ -74,14 +74,14 @@ public class PlayerResearchTask implements Consumer<PlayerProfile> {
 
             if (!event.isCancelled()) {
                 if (isInstant) {
-                    SlimefunPlugin.runSync(() -> unlockResearch(p, profile));
-                } else if (SlimefunPlugin.getRegistry().getCurrentlyResearchingPlayers().add(p.getUniqueId())) {
-                    SlimefunPlugin.getLocalization().sendMessage(p, "messages.research.start", true, msg -> msg.replace(PLACEHOLDER, research.getName(p)));
+                    Slimefun.runSync(() -> unlockResearch(p, profile));
+                } else if (Slimefun.getRegistry().getCurrentlyResearchingPlayers().add(p.getUniqueId())) {
+                    Slimefun.getLocalization().sendMessage(p, "messages.research.start", true, msg -> msg.replace(PLACEHOLDER, research.getName(p)));
                     sendUpdateMessage(p);
 
-                    SlimefunPlugin.runSync(() -> {
+                    Slimefun.runSync(() -> {
                         unlockResearch(p, profile);
-                        SlimefunPlugin.getRegistry().getCurrentlyResearchingPlayers().remove(p.getUniqueId());
+                        Slimefun.getRegistry().getCurrentlyResearchingPlayers().remove(p.getUniqueId());
                     }, (RESEARCH_PROGRESS.length + 1) * 20L);
                 }
             }
@@ -92,10 +92,10 @@ public class PlayerResearchTask implements Consumer<PlayerProfile> {
         for (int i = 1; i < RESEARCH_PROGRESS.length + 1; i++) {
             int index = i;
 
-            SlimefunPlugin.runSync(() -> {
+            Slimefun.runSync(() -> {
                 p.playSound(p.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 0.7F, 1);
 
-                SlimefunPlugin.getLocalization().sendMessage(p, "messages.research.progress", true, msg -> {
+                Slimefun.getLocalization().sendMessage(p, "messages.research.progress", true, msg -> {
                     String progress = RESEARCH_PROGRESS[index - 1] + "%";
                     return msg.replace(PLACEHOLDER, research.getName(p)).replace("%progress%", progress);
                 });
@@ -105,11 +105,11 @@ public class PlayerResearchTask implements Consumer<PlayerProfile> {
 
     private void unlockResearch(@Nonnull Player p, @Nonnull PlayerProfile profile) {
         profile.setResearched(research, true);
-        SlimefunPlugin.getLocalization().sendMessage(p, "messages.unlocked", true, msg -> msg.replace(PLACEHOLDER, research.getName(p)));
+        Slimefun.getLocalization().sendMessage(p, "messages.unlocked", true, msg -> msg.replace(PLACEHOLDER, research.getName(p)));
         onFinish(p);
 
         // Check if the Server and the Player have enabled fireworks for researches
-        if (SlimefunPlugin.getRegistry().isResearchFireworkEnabled() && SlimefunGuideSettings.hasFireworksEnabled(p)) {
+        if (Slimefun.getRegistry().isResearchFireworkEnabled() && SlimefunGuideSettings.hasFireworksEnabled(p)) {
             FireworkUtils.launchRandom(p, 1);
         }
     }

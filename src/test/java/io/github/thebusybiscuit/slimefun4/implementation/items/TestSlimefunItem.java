@@ -12,25 +12,25 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.api.exceptions.UnregisteredItemException;
 import io.github.thebusybiscuit.slimefun4.api.exceptions.WrongItemStackException;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 class TestSlimefunItem {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
 
     @BeforeAll
     public static void load() {
         MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll
@@ -41,7 +41,7 @@ class TestSlimefunItem {
     @Test
     @DisplayName("Test wiki pages getting assigned correctly")
     void testWikiPages() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "WIKI_ITEM", new CustomItem(Material.BOOK, "&cTest"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "WIKI_ITEM", new CustomItemStack(Material.BOOK, "&cTest"));
         item.register(plugin);
 
         Assertions.assertFalse(item.getWikipage().isPresent());
@@ -59,7 +59,7 @@ class TestSlimefunItem {
     @Test
     @DisplayName("Test SlimefunItem registering Recipes properly")
     void testRecipe() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "RECIPE_TEST", new CustomItem(Material.DIAMOND, "&dAnother one bites the test"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "RECIPE_TEST", new CustomItemStack(Material.DIAMOND, "&dAnother one bites the test"));
 
         ItemStack[] recipe = { null, new ItemStack(Material.DIAMOND), null, null, new ItemStack(Material.DIAMOND), null, null, new ItemStack(Material.DIAMOND), null };
         item.setRecipe(recipe);
@@ -75,7 +75,7 @@ class TestSlimefunItem {
     @Test
     @DisplayName("Test Recipe outputs being handled correctly")
     void testRecipeOutput() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "RECIPE_OUTPUT_TEST", new CustomItem(Material.DIAMOND, "&cTest"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "RECIPE_OUTPUT_TEST", new CustomItemStack(Material.DIAMOND, "&cTest"));
         item.register(plugin);
 
         Assertions.assertEquals(item.getItem(), item.getRecipeOutput());
@@ -91,7 +91,7 @@ class TestSlimefunItem {
     @Test
     @DisplayName("Test Recipe Types being handled properly")
     void testRecipeType() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "RECIPE_TYPE_TEST", new CustomItem(Material.DIAMOND, "&cTest"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "RECIPE_TYPE_TEST", new CustomItemStack(Material.DIAMOND, "&cTest"));
         item.register(plugin);
 
         Assertions.assertNotNull(item.getRecipeType());
@@ -109,7 +109,7 @@ class TestSlimefunItem {
     @DisplayName("Test SlimefunItem#isItem(...)")
     @ValueSource(booleans = { true, false })
     void testIsItem(boolean compatibility) {
-        CustomItem item = new CustomItem(Material.BEACON, "&cItem Test");
+        ItemStack item = new CustomItemStack(Material.BEACON, "&cItem Test");
         String id = "IS_ITEM_TEST" + (compatibility ? "_COMPATIBLE" : "");
         SlimefunItem sfItem = TestUtilities.mockSlimefunItem(plugin, id, item);
         sfItem.register(plugin);
@@ -118,19 +118,19 @@ class TestSlimefunItem {
 
         Assertions.assertFalse(sfItem.isItem(null));
         Assertions.assertFalse(sfItem.isItem(new ItemStack(Material.BEACON)));
-        Assertions.assertFalse(sfItem.isItem(new CustomItem(Material.REDSTONE, "&cTest")));
+        Assertions.assertFalse(sfItem.isItem(new CustomItemStack(Material.REDSTONE, "&cTest")));
 
         if (compatibility) {
-            SlimefunPlugin.getRegistry().setBackwardsCompatible(true);
+            Slimefun.getRegistry().setBackwardsCompatible(true);
 
             Assertions.assertEquals(sfItem, SlimefunItem.getByItem(item));
             Assertions.assertTrue(sfItem.isItem(item));
-            Assertions.assertTrue(sfItem.isItem(new CustomItem(Material.BEACON, "&cItem Test")));
+            Assertions.assertTrue(sfItem.isItem(new CustomItemStack(Material.BEACON, "&cItem Test")));
 
-            SlimefunPlugin.getRegistry().setBackwardsCompatible(false);
+            Slimefun.getRegistry().setBackwardsCompatible(false);
         } else {
             Assertions.assertFalse(sfItem.isItem(item));
-            Assertions.assertFalse(sfItem.isItem(new CustomItem(Material.BEACON, "&cItem Test")));
+            Assertions.assertFalse(sfItem.isItem(new CustomItemStack(Material.BEACON, "&cItem Test")));
         }
 
         Assertions.assertEquals(sfItem, SlimefunItem.getByItem(new SlimefunItemStack(sfItem.getId(), item)));
@@ -139,7 +139,7 @@ class TestSlimefunItem {
     @Test
     @DisplayName("Test WrongItemStackException")
     void testWrongItemStackException() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "WRONG_ITEMSTACK_EXCEPTION", new CustomItem(Material.NETHER_STAR, "&4Do not modify me"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "WRONG_ITEMSTACK_EXCEPTION", new CustomItemStack(Material.NETHER_STAR, "&4Do not modify me"));
         item.register(plugin);
         item.load();
 
@@ -150,16 +150,16 @@ class TestSlimefunItem {
     @Test
     @DisplayName("Test UnregisteredItemException")
     void testUnregisteredItemException() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "UNREGISTERED_ITEM_EXCEPTION", new CustomItem(Material.NETHER_STAR, "&4Do not modify me"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "UNREGISTERED_ITEM_EXCEPTION", new CustomItemStack(Material.NETHER_STAR, "&4Do not modify me"));
         Assertions.assertThrows(UnregisteredItemException.class, () -> item.getAddon());
     }
 
     @Test
     @DisplayName("Test SlimefunItem#equals(...)")
     void testEquals() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "EQUALS_TEST", new CustomItem(Material.LANTERN, "&6We are equal"));
-        SlimefunItem item2 = TestUtilities.mockSlimefunItem(plugin, "EQUALS_TEST", new CustomItem(Material.LANTERN, "&6We are equal"));
-        SlimefunItem differentItem = TestUtilities.mockSlimefunItem(plugin, "I_AM_DIFFERENT", new CustomItem(Material.LANTERN, "&6We are equal"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "EQUALS_TEST", new CustomItemStack(Material.LANTERN, "&6We are equal"));
+        SlimefunItem item2 = TestUtilities.mockSlimefunItem(plugin, "EQUALS_TEST", new CustomItemStack(Material.LANTERN, "&6We are equal"));
+        SlimefunItem differentItem = TestUtilities.mockSlimefunItem(plugin, "I_AM_DIFFERENT", new CustomItemStack(Material.LANTERN, "&6We are equal"));
 
         Assertions.assertEquals(item, item2);
         Assertions.assertNotEquals(item, differentItem);
@@ -169,9 +169,9 @@ class TestSlimefunItem {
     @Test
     @DisplayName("Test SlimefunItem#hashCode()")
     void testHashCode() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "EQUALS_TEST", new CustomItem(Material.LANTERN, "&6We are equal"));
-        SlimefunItem item2 = TestUtilities.mockSlimefunItem(plugin, "EQUALS_TEST", new CustomItem(Material.LANTERN, "&6We are equal"));
-        SlimefunItem differentItem = TestUtilities.mockSlimefunItem(plugin, "I_AM_DIFFERENT", new CustomItem(Material.LANTERN, "&6We are equal"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "EQUALS_TEST", new CustomItemStack(Material.LANTERN, "&6We are equal"));
+        SlimefunItem item2 = TestUtilities.mockSlimefunItem(plugin, "EQUALS_TEST", new CustomItemStack(Material.LANTERN, "&6We are equal"));
+        SlimefunItem differentItem = TestUtilities.mockSlimefunItem(plugin, "I_AM_DIFFERENT", new CustomItemStack(Material.LANTERN, "&6We are equal"));
 
         Assertions.assertEquals(item.hashCode(), item2.hashCode());
         Assertions.assertNotEquals(item.hashCode(), differentItem.hashCode());

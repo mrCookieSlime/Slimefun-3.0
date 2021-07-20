@@ -23,7 +23,7 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.slimefun4.api.events.AncientAltarCraftEvent;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AncientAltar;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AncientPedestal;
 import io.github.thebusybiscuit.slimefun4.implementation.listeners.AncientAltarListener;
@@ -102,7 +102,7 @@ public class AncientAltarTask implements Runnable {
         }
 
         this.stage += 1;
-        SlimefunPlugin.runSync(this, stepDelay);
+        Slimefun.runSync(this, stepDelay);
     }
 
     private boolean checkLockedItems() {
@@ -141,7 +141,7 @@ public class AncientAltarTask implements Runnable {
 
             positionLock.remove(entity);
             entity.remove();
-            entity.removeMetadata("no_pickup", SlimefunPlugin.instance());
+            entity.removeMetadata("no_pickup", Slimefun.instance());
         }
     }
 

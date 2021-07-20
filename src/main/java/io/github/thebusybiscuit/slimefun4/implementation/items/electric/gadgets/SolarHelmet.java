@@ -8,14 +8,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.items.settings.DoubleRangeSetting;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.Rechargeable;
 import io.github.thebusybiscuit.slimefun4.implementation.tasks.ArmorTask;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * The {@link SolarHelmet} can be worn by {@link Player}.
@@ -34,7 +34,7 @@ public class SolarHelmet extends SlimefunItem {
     private final ItemSetting<Double> charge;
 
     @ParametersAreNonnullByDefault
-    public SolarHelmet(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, double defaultChargingLevel) {
+    public SolarHelmet(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, double defaultChargingLevel) {
         super(category, item, recipeType, recipe);
 
         if (defaultChargingLevel <= 0) {

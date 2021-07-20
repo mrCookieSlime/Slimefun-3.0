@@ -4,17 +4,16 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.ProtectionType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.ProtectiveArmor;
 import io.github.thebusybiscuit.slimefun4.implementation.items.armor.SlimefunArmorPiece;
 
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-
 class MockBeeProtectionSuit extends SlimefunArmorPiece implements ProtectiveArmor {
 
-    public MockBeeProtectionSuit(Category category, SlimefunItemStack item) {
+    public MockBeeProtectionSuit(ItemGroup category, SlimefunItemStack item) {
         super(category, item, RecipeType.NULL, new ItemStack[9], new PotionEffect[0]);
     }
 

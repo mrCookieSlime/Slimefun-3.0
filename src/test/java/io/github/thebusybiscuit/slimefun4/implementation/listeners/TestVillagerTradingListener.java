@@ -17,29 +17,29 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.VanillaItem;
 import io.github.thebusybiscuit.slimefun4.implementation.items.misc.SyntheticEmerald;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 class TestVillagerTradingListener {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
     private static VillagerTradingListener listener;
     private static ServerMock server;
 
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
         listener = new VillagerTradingListener(plugin);
     }
 
@@ -68,7 +68,7 @@ class TestVillagerTradingListener {
 
     @Test
     void testTradingWithSlimefunItem() {
-        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MOCKED_FAKE_EMERALD", new CustomItem(Material.EMERALD, "&aFake Emerald"));
+        SlimefunItem item = TestUtilities.mockSlimefunItem(plugin, "MOCKED_FAKE_EMERALD", new CustomItemStack(Material.EMERALD, "&aFake Emerald"));
         item.register(plugin);
 
         InventoryClickEvent event = mockClickEvent(item.getItem());
@@ -86,7 +86,7 @@ class TestVillagerTradingListener {
 
     @Test
     void testTradingWithSyntheticEmerald() {
-        Category category = TestUtilities.getCategory(plugin, "shiny_emeralds");
+        ItemGroup category = TestUtilities.getCategory(plugin, "shiny_emeralds");
         SlimefunItemStack stack = new SlimefunItemStack("FAKE_EMERALD", Material.EMERALD, "&aTrade me");
         SyntheticEmerald item = new SyntheticEmerald(category, stack, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[9]);
         item.register(plugin);

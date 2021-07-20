@@ -6,12 +6,12 @@ import org.bukkit.command.CommandSender;
 
 import io.github.thebusybiscuit.slimefun4.core.commands.SlimefunCommand;
 import io.github.thebusybiscuit.slimefun4.core.commands.SubCommand;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 class HelpCommand extends SubCommand {
 
     @ParametersAreNonnullByDefault
-    HelpCommand(SlimefunPlugin plugin, SlimefunCommand cmd) {
+    HelpCommand(Slimefun plugin, SlimefunCommand cmd) {
         super(plugin, cmd, "help", false);
     }
 

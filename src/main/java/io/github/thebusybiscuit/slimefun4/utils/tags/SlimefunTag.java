@@ -19,7 +19,7 @@ import org.bukkit.Tag;
 import org.bukkit.block.data.Waterlogged;
 
 import io.github.thebusybiscuit.slimefun4.api.exceptions.TagMisconfigurationException;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.BlockPlacer;
 import io.github.thebusybiscuit.slimefun4.implementation.items.electric.machines.accelerators.CropGrowthAccelerator;
 import io.github.thebusybiscuit.slimefun4.implementation.items.magical.talismans.Talisman;
@@ -256,10 +256,10 @@ public enum SlimefunTag implements Tag<Material> {
     /**
      * This constructs a new {@link SlimefunTag}.
      * The {@link NamespacedKey} will be automatically inferred using
-     * {@link SlimefunPlugin} and {@link #name()}.
+     * {@link Slimefun} and {@link #name()}.
      */
     SlimefunTag() {
-        key = new NamespacedKey(SlimefunPlugin.instance(), name().toLowerCase(Locale.ROOT));
+        key = new NamespacedKey(Slimefun.instance(), name().toLowerCase(Locale.ROOT));
     }
 
     /**

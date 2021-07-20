@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.config.Config;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.config.Config;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.backpacks.SlimefunBackpack;
 import io.github.thebusybiscuit.slimefun4.implementation.listeners.BackpackListener;
 
@@ -125,7 +125,7 @@ public class PlayerBackpack {
      *            The players who this Backpack will be shown to
      */
     public void open(Player... players) {
-        SlimefunPlugin.runSync(() -> {
+        Slimefun.runSync(() -> {
             for (Player p : players) {
                 p.openInventory(inventory);
             }

@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 abstract class AbstractPlayerTask implements Runnable {
 
@@ -21,11 +21,11 @@ abstract class AbstractPlayerTask implements Runnable {
     }
 
     public void schedule(long delay) {
-        setID(Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunPlugin.instance(), this, delay));
+        setID(Bukkit.getScheduler().scheduleSyncDelayedTask(Slimefun.instance(), this, delay));
     }
 
     public void scheduleRepeating(long delay, long interval) {
-        setID(Bukkit.getScheduler().scheduleSyncRepeatingTask(SlimefunPlugin.instance(), this, delay, interval));
+        setID(Bukkit.getScheduler().scheduleSyncRepeatingTask(Slimefun.instance(), this, delay, interval));
     }
 
     @Override

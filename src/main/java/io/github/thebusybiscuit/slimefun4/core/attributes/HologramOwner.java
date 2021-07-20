@@ -6,9 +6,9 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
-import io.github.thebusybiscuit.cscorelib2.chat.ChatColors;
+import io.github.bakedlibs.dough.common.ChatColors;
 import io.github.thebusybiscuit.slimefun4.core.services.holograms.HologramsService;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.HologramProjector;
 
 /**
@@ -33,7 +33,7 @@ public interface HologramOwner extends ItemAttribute {
      */
     default void updateHologram(@Nonnull Block b, @Nonnull String text) {
         Location loc = b.getLocation().add(getHologramOffset(b));
-        SlimefunPlugin.getHologramsService().setHologramLabel(loc, ChatColors.color(text));
+        Slimefun.getHologramsService().setHologramLabel(loc, ChatColors.color(text));
     }
 
     /**
@@ -44,7 +44,7 @@ public interface HologramOwner extends ItemAttribute {
      */
     default void removeHologram(@Nonnull Block b) {
         Location loc = b.getLocation().add(getHologramOffset(b));
-        SlimefunPlugin.getHologramsService().removeHologram(loc);
+        Slimefun.getHologramsService().removeHologram(loc);
     }
 
     /**
@@ -59,7 +59,7 @@ public interface HologramOwner extends ItemAttribute {
      */
     @Nonnull
     default Vector getHologramOffset(@Nonnull Block block) {
-        return SlimefunPlugin.getHologramsService().getDefaultOffset();
+        return Slimefun.getHologramsService().getDefaultOffset();
     }
 
 }

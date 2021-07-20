@@ -16,8 +16,8 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.Validate;
 
-import io.github.thebusybiscuit.cscorelib2.config.Config;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.config.Config;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
 
 /**
@@ -65,9 +65,9 @@ public class GitHubService {
      * every so often to update its data.
      * 
      * @param plugin
-     *            Our instance of {@link SlimefunPlugin}
+     *            Our instance of {@link Slimefun}
      */
-    public void start(@Nonnull SlimefunPlugin plugin) {
+    public void start(@Nonnull Slimefun plugin) {
         long period = TimeUnit.HOURS.toMillis(1);
         GitHubTask task = new GitHubTask(this);
 
@@ -92,7 +92,7 @@ public class GitHubService {
             TranslatorsReader translators = new TranslatorsReader(this);
             translators.load();
         } catch (Exception x) {
-            SlimefunPlugin.logger().log(Level.SEVERE, "Failed to read 'translators.json'", x);
+            Slimefun.logger().log(Level.SEVERE, "Failed to read 'translators.json'", x);
         }
     }
 

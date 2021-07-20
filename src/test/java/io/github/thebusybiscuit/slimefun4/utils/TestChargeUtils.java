@@ -12,8 +12,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.github.thebusybiscuit.cscorelib2.data.PersistentDataAPI;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.data.persistent.PersistentDataAPI;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 
@@ -22,7 +22,7 @@ class TestChargeUtils {
     @BeforeAll
     public static void load() {
         MockBukkit.mock();
-        MockBukkit.load(SlimefunPlugin.class);
+        MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll
@@ -46,7 +46,7 @@ class TestChargeUtils {
         Assertions.assertEquals("&8\u21E8 &e\u26A1 &710.1 / 100.5 J".replace('&', ChatColor.COLOR_CHAR), meta.getLore().get(0));
 
         // Make sure the persistent data was set
-        Assertions.assertEquals(10.1, PersistentDataAPI.getFloat(meta, SlimefunPlugin.getRegistry().getItemChargeDataKey()), 0.001);
+        Assertions.assertEquals(10.1, PersistentDataAPI.getFloat(meta, Slimefun.getRegistry().getItemChargeDataKey()), 0.001);
 
         // Test exceptions
         Assertions.assertThrows(IllegalArgumentException.class, () -> ChargeUtils.setCharge(null, 1, 1));
@@ -61,7 +61,7 @@ class TestChargeUtils {
         // Test with persistent data
         ItemStack itemWithData = new ItemStack(Material.DIAMOND_SWORD);
         ItemMeta metaWithData = itemWithData.getItemMeta();
-        PersistentDataAPI.setFloat(metaWithData, SlimefunPlugin.getRegistry().getItemChargeDataKey(), 10.5f);
+        PersistentDataAPI.setFloat(metaWithData, Slimefun.getRegistry().getItemChargeDataKey(), 10.5f);
 
         Assertions.assertEquals(10.5f, ChargeUtils.getCharge(metaWithData), 0.001);
 
@@ -71,7 +71,7 @@ class TestChargeUtils {
         metaWithLore.setLore(Collections.singletonList("&8\u21E8 &e\u26A1 &710.5 / 100.5 J".replace('&', ChatColor.COLOR_CHAR)));
 
         Assertions.assertEquals(10.5, ChargeUtils.getCharge(metaWithLore), 0.001);
-        Assertions.assertTrue(PersistentDataAPI.hasFloat(metaWithLore, SlimefunPlugin.getRegistry().getItemChargeDataKey()));
+        Assertions.assertTrue(PersistentDataAPI.hasFloat(metaWithLore, Slimefun.getRegistry().getItemChargeDataKey()));
 
         // Test no data and empty lore
         ItemStack itemWithEmptyLore = new ItemStack(Material.DIAMOND_SWORD);

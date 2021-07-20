@@ -8,7 +8,7 @@ website: https://github.com/Slimefun
 description: Slimefun basically turns your entire Server into a FTB modpack without installing a single mod
 
 # Technical settings
-main: io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin
+main: io.github.thebusybiscuit.slimefun4.implementation.Slimefun
 api-version: '1.14'
 
 # (Soft) dependencies of Slimefun, we hook into these plugins.

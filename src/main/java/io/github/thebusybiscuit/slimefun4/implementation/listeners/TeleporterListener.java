@@ -13,14 +13,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.elevator.ElevatorPlate;
 import io.github.thebusybiscuit.slimefun4.implementation.items.teleporter.AbstractTeleporterPlate;
 import io.github.thebusybiscuit.slimefun4.implementation.items.teleporter.Teleporter;
 import io.github.thebusybiscuit.slimefun4.implementation.items.teleporter.TeleporterPylon;
 
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 /**
@@ -41,7 +41,7 @@ public class TeleporterListener implements Listener {
     };
     // @formatter:on
 
-    public TeleporterListener(@Nonnull SlimefunPlugin plugin) {
+    public TeleporterListener(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -71,7 +71,7 @@ public class TeleporterListener implements Listener {
             if (teleporter instanceof Teleporter && checkForPylons(b.getRelative(BlockFace.DOWN))) {
                 Block block = b.getRelative(BlockFace.DOWN);
                 UUID owner = UUID.fromString(BlockStorage.getLocationInfo(block.getLocation(), "owner"));
-                SlimefunPlugin.getGPSNetwork().getTeleportationManager().openTeleporterGUI(p, owner, block, SlimefunPlugin.getGPSNetwork().getNetworkComplexity(owner));
+                Slimefun.getGPSNetwork().getTeleportationManager().openTeleporterGUI(p, owner, block);
             }
         }
     }

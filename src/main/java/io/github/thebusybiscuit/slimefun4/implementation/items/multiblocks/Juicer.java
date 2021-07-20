@@ -16,15 +16,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.food.Juice;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import io.papermc.lib.PaperLib;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * The {@link Juicer} is a {@link MultiBlockMachine} which can be used to
@@ -39,8 +39,8 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 public class Juicer extends MultiBlockMachine {
 
     @ParametersAreNonnullByDefault
-    public Juicer(Category category, SlimefunItemStack item) {
-        super(category, item, new ItemStack[] { null, new ItemStack(Material.GLASS), null, null, new ItemStack(Material.NETHER_BRICK_FENCE), null, null, new CustomItem(Material.DISPENSER, "Dispenser (Facing up)"), null }, BlockFace.SELF);
+    public Juicer(ItemGroup category, SlimefunItemStack item) {
+        super(category, item, new ItemStack[] { null, new ItemStack(Material.GLASS), null, null, new ItemStack(Material.NETHER_BRICK_FENCE), null, null, new CustomItemStack(Material.DISPENSER, "Dispenser (Facing up)"), null }, BlockFace.SELF);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class Juicer extends MultiBlockMachine {
                             p.getWorld().playSound(b.getLocation(), Sound.ENTITY_PLAYER_SPLASH, 1F, 1F);
                             p.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, Material.HAY_BLOCK);
                         } else {
-                            SlimefunPlugin.getLocalization().sendMessage(p, "machines.full-inventory", true);
+                            Slimefun.getLocalization().sendMessage(p, "machines.full-inventory", true);
                         }
 
                         return;
@@ -79,7 +79,7 @@ public class Juicer extends MultiBlockMachine {
                 }
             }
 
-            SlimefunPlugin.getLocalization().sendMessage(p, "machines.unknown-material", true);
+            Slimefun.getLocalization().sendMessage(p, "machines.unknown-material", true);
         }
     }
 

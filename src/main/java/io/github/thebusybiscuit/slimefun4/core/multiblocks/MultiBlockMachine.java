@@ -20,21 +20,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.inventory.InvUtils;
-import io.github.thebusybiscuit.cscorelib2.protection.ProtectableAction;
+import io.github.bakedlibs.dough.inventory.InvUtils;
+import io.github.bakedlibs.dough.protection.Interaction;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSpawnReason;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.NotPlaceable;
 import io.github.thebusybiscuit.slimefun4.core.attributes.RecipeDisplayItem;
 import io.github.thebusybiscuit.slimefun4.core.handlers.MultiBlockInteractionHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.OutputChest;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * A {@link MultiBlockMachine} is a {@link SlimefunItem} that is built in the {@link World}.
@@ -52,7 +51,7 @@ public abstract class MultiBlockMachine extends SlimefunItem implements NotPlace
     protected final MultiBlock multiblock;
 
     @ParametersAreNonnullByDefault
-    protected MultiBlockMachine(Category category, SlimefunItemStack item, ItemStack[] recipe, ItemStack[] machineRecipes, BlockFace trigger) {
+    protected MultiBlockMachine(ItemGroup category, SlimefunItemStack item, ItemStack[] recipe, ItemStack[] machineRecipes, BlockFace trigger) {
         super(category, item, RecipeType.MULTIBLOCK, recipe);
         this.recipes = new ArrayList<>();
         this.displayRecipes = new ArrayList<>();
@@ -63,7 +62,7 @@ public abstract class MultiBlockMachine extends SlimefunItem implements NotPlace
     }
 
     @ParametersAreNonnullByDefault
-    protected MultiBlockMachine(Category category, SlimefunItemStack item, ItemStack[] recipe, BlockFace trigger) {
+    protected MultiBlockMachine(ItemGroup category, SlimefunItemStack item, ItemStack[] recipe, BlockFace trigger) {
         this(category, item, recipe, new ItemStack[0], trigger);
     }
 
@@ -99,7 +98,7 @@ public abstract class MultiBlockMachine extends SlimefunItem implements NotPlace
 
     @Override
     public void postRegister() {
-        SlimefunPlugin.getRegistry().getMultiBlocks().add(multiblock);
+        Slimefun.getRegistry().getMultiBlocks().add(multiblock);
     }
 
     @Override
@@ -118,7 +117,7 @@ public abstract class MultiBlockMachine extends SlimefunItem implements NotPlace
     protected @Nonnull MultiBlockInteractionHandler getInteractionHandler() {
         return (p, mb, b) -> {
             if (mb.equals(getMultiBlock())) {
-                if (canUse(p, true) && SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(), ProtectableAction.INTERACT_BLOCK)) {
+                if (canUse(p, true) && Slimefun.getProtectionManager().hasPermission(p, b.getLocation(), Interaction.INTERACT_BLOCK)) {
                     onInteract(p, b);
                 }
 

@@ -21,7 +21,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import io.github.thebusybiscuit.slimefun4.api.events.MultiBlockInteractEvent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.MultiBlockInteractionHandler;
 import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlock;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This {@link Listener} is responsible for listening to a {@link PlayerInteractEvent} and
@@ -36,7 +36,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
  */
 public class MultiBlockListener implements Listener {
 
-    public MultiBlockListener(@Nonnull SlimefunPlugin plugin) {
+    public MultiBlockListener(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -50,7 +50,7 @@ public class MultiBlockListener implements Listener {
         Block b = e.getClickedBlock();
         LinkedList<MultiBlock> multiblocks = new LinkedList<>();
 
-        for (MultiBlock mb : SlimefunPlugin.getRegistry().getMultiBlocks()) {
+        for (MultiBlock mb : Slimefun.getRegistry().getMultiBlocks()) {
             Block center = b.getRelative(mb.getTriggerBlock());
 
             if (compareMaterials(center, mb.getStructure(), mb.isSymmetric())) {

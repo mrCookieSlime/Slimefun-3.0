@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.listeners.entity.FireworksListener;
 import io.github.thebusybiscuit.slimefun4.utils.FireworkUtils;
 
@@ -25,7 +25,7 @@ class TestFireworksListener {
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        SlimefunPlugin plugin = MockBukkit.load(SlimefunPlugin.class);
+        Slimefun plugin = MockBukkit.load(Slimefun.class);
         new FireworksListener(plugin);
     }
 

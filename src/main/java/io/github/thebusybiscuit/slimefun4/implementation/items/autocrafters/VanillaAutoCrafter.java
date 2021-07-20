@@ -24,18 +24,19 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.common.CommonPatterns;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.services.MinecraftRecipeService;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.tasks.AsyncRecipeChoiceTask;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
 import io.papermc.lib.PaperLib;
+
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * The {@link VanillaAutoCrafter} is an implementation of the {@link AbstractAutoCrafter}.
@@ -52,13 +53,12 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 public class VanillaAutoCrafter extends AbstractAutoCrafter {
 
     @ParametersAreNonnullByDefault
-    public VanillaAutoCrafter(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public VanillaAutoCrafter(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
     }
 
     @Override
-    @Nullable
-    public AbstractRecipe getSelectedRecipe(@Nonnull Block b) {
+    public @Nullable AbstractRecipe getSelectedRecipe(@Nonnull Block b) {
         BlockState state = PaperLib.getBlockState(b, false).getState();
 
         if (state instanceof Skull) {
@@ -67,7 +67,7 @@ public class VanillaAutoCrafter extends AbstractAutoCrafter {
             String value = container.get(recipeStorageKey, PersistentDataType.STRING);
 
             if (value != null) {
-                String[] values = PatternUtils.COLON.split(value);
+                String[] values = CommonPatterns.COLON.split(value);
 
                 /*
                  * Normally this constructor should not be used.
@@ -76,7 +76,7 @@ public class VanillaAutoCrafter extends AbstractAutoCrafter {
                  */
                 @SuppressWarnings("deprecation")
                 NamespacedKey key = new NamespacedKey(values[0], values[1]);
-                Recipe keyedRecipe = SlimefunPlugin.getMinecraftRecipeService().getRecipe(key);
+                Recipe keyedRecipe = Slimefun.getMinecraftRecipeService().getRecipe(key);
 
                 if (keyedRecipe != null) {
                     boolean enabled = !container.has(recipeEnabledKey, PersistentDataType.BYTE);
@@ -109,7 +109,7 @@ public class VanillaAutoCrafter extends AbstractAutoCrafter {
         List<Recipe> recipes = getRecipesFor(item);
 
         if (recipes.isEmpty()) {
-            SlimefunPlugin.getLocalization().sendMessage(p, "messages.auto-crafting.no-recipes");
+            Slimefun.getLocalization().sendMessage(p, "messages.auto-crafting.no-recipes");
         } else {
             ChestMenu menu = new ChestMenu(getItemName());
             menu.setPlayerInventoryClickable(false);
@@ -153,13 +153,13 @@ public class VanillaAutoCrafter extends AbstractAutoCrafter {
 
         AbstractRecipe recipe = AbstractRecipe.of(recipes.get(index));
 
-        menu.replaceExistingItem(49, new CustomItem(Material.CRAFTING_TABLE, ChatColor.GREEN + SlimefunPlugin.getLocalization().getMessage(p, "messages.auto-crafting.select")));
+        menu.replaceExistingItem(49, new CustomItemStack(Material.CRAFTING_TABLE, ChatColor.GREEN + Slimefun.getLocalization().getMessage(p, "messages.auto-crafting.select")));
         menu.addMenuClickHandler(49, (pl, slot, item, action) -> {
             setSelectedRecipe(b, recipe);
             pl.closeInventory();
 
             p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
-            SlimefunPlugin.getLocalization().sendMessage(p, "messages.auto-crafting.recipe-set");
+            Slimefun.getLocalization().sendMessage(p, "messages.auto-crafting.recipe-set");
             showRecipe(p, b, recipe);
 
             return false;
@@ -174,7 +174,7 @@ public class VanillaAutoCrafter extends AbstractAutoCrafter {
         List<Recipe> recipes = new ArrayList<>();
 
         // Fixes #2913 - Bukkit.getRecipesFor() only checks for Materials
-        MinecraftRecipeService recipeService = SlimefunPlugin.getMinecraftRecipeService();
+        MinecraftRecipeService recipeService = Slimefun.getMinecraftRecipeService();
 
         for (Recipe recipe : recipeService.getRecipesFor(item)) {
             if (recipe instanceof ShapedRecipe || recipe instanceof ShapelessRecipe) {

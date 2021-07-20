@@ -17,10 +17,10 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BowShootHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.weapons.SlimefunBow;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 /**
  * This {@link Listener} is responsible for tracking {@link Arrow Arrows} fired from a
@@ -35,7 +35,7 @@ public class SlimefunBowListener implements Listener {
 
     private final Map<UUID, SlimefunBow> projectiles = new HashMap<>();
 
-    public void register(@Nonnull SlimefunPlugin plugin) {
+    public void register(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -63,7 +63,7 @@ public class SlimefunBowListener implements Listener {
 
     @EventHandler
     public void onArrowHit(ProjectileHitEvent e) {
-        SlimefunPlugin.runSync(() -> {
+        Slimefun.runSync(() -> {
             if (e.getEntity().isValid() && e.getEntity() instanceof Arrow) {
                 projectiles.remove(e.getEntity().getUniqueId());
             }

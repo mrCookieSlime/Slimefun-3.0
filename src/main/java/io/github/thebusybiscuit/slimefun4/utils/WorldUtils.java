@@ -2,10 +2,11 @@ package io.github.thebusybiscuit.slimefun4.utils;
 
 import javax.annotation.Nonnull;
 
-import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import org.apache.commons.lang.Validate;
 import org.bukkit.World;
+
+import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This class holds utilities for {@link World}. This will become especially useful with the changes
@@ -29,6 +30,6 @@ public final class WorldUtils {
     public static int getMinHeight(@Nonnull World world) {
         Validate.notNull(world, "World cannot be null!");
 
-        return SlimefunPlugin.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_16) ? world.getMinHeight() : 0;
+        return Slimefun.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_16) ? world.getMinHeight() : 0;
     }
 }

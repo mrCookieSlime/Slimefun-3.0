@@ -19,12 +19,13 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import io.github.thebusybiscuit.cscorelib2.blocks.BlockPosition;
-import io.github.thebusybiscuit.cscorelib2.blocks.ChunkPosition;
+import io.github.bakedlibs.dough.blocks.BlockPosition;
+import io.github.bakedlibs.dough.blocks.ChunkPosition;
 import io.github.thebusybiscuit.slimefun4.api.ErrorReport;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
@@ -62,10 +63,10 @@ public class TickerTask implements Runnable {
      * This method starts the {@link TickerTask} on an asynchronous schedule.
      * 
      * @param plugin
-     *            The instance of our {@link SlimefunPlugin}
+     *            The instance of our {@link Slimefun}
      */
-    public void start(@Nonnull SlimefunPlugin plugin) {
-        this.tickRate = SlimefunPlugin.getCfg().getInt("URID.custom-ticker-delay");
+    public void start(@Nonnull Slimefun plugin) {
+        this.tickRate = Slimefun.getCfg().getInt("URID.custom-ticker-delay");
 
         BukkitScheduler scheduler = plugin.getServer().getScheduler();
         scheduler.runTaskTimerAsynchronously(plugin, this, 100L, tickRate);
@@ -87,7 +88,7 @@ public class TickerTask implements Runnable {
             }
 
             running = true;
-            SlimefunPlugin.getProfiler().start();
+            Slimefun.getProfiler().start();
             Set<BlockTicker> tickers = new HashSet<>();
 
             // Remove any deleted blocks
@@ -99,7 +100,7 @@ public class TickerTask implements Runnable {
             }
 
             // Fixes #2576 - Remove any deleted instances of BlockStorage
-            Iterator<BlockStorage> worlds = SlimefunPlugin.getRegistry().getWorlds().values().iterator();
+            Iterator<BlockStorage> worlds = Slimefun.getRegistry().getWorlds().values().iterator();
             while (worlds.hasNext()) {
                 BlockStorage storage = worlds.next();
 
@@ -129,9 +130,9 @@ public class TickerTask implements Runnable {
             }
 
             reset();
-            SlimefunPlugin.getProfiler().stop();
+            Slimefun.getProfiler().stop();
         } catch (Exception | LinkageError x) {
-            SlimefunPlugin.logger().log(Level.SEVERE, x, () -> "An Exception was caught while ticking the Block Tickers Task for Slimefun v" + SlimefunPlugin.getVersion());
+            Slimefun.logger().log(Level.SEVERE, x, () -> "An Exception was caught while ticking the Block Tickers Task for Slimefun v" + Slimefun.getVersion());
             reset();
         }
     }
@@ -146,30 +147,30 @@ public class TickerTask implements Runnable {
                 }
             }
         } catch (ArrayIndexOutOfBoundsException | NumberFormatException x) {
-            SlimefunPlugin.logger().log(Level.SEVERE, x, () -> "An Exception has occurred while trying to resolve Chunk: " + chunk);
+            Slimefun.logger().log(Level.SEVERE, x, () -> "An Exception has occurred while trying to resolve Chunk: " + chunk);
         }
     }
 
     private void tickLocation(@Nonnull Set<BlockTicker> tickers, @Nonnull Location l) {
         Config data = BlockStorage.getLocationInfo(l);
-        SlimefunItem item = SlimefunItem.getByID(data.getString("id"));
+        SlimefunItem item = SlimefunItem.getById(data.getString("id"));
 
         if (item != null && item.getBlockTicker() != null) {
             try {
                 if (item.getBlockTicker().isSynchronized()) {
-                    SlimefunPlugin.getProfiler().scheduleEntries(1);
+                    Slimefun.getProfiler().scheduleEntries(1);
                     item.getBlockTicker().update();
 
                     /**
                      * We are inserting a new timestamp because synchronized actions
                      * are always ran with a 50ms delay (1 game tick)
                      */
-                    SlimefunPlugin.runSync(() -> {
+                    Slimefun.runSync(() -> {
                         Block b = l.getBlock();
                         tickBlock(l, b, item, data, System.nanoTime());
                     });
                 } else {
-                    long timestamp = SlimefunPlugin.getProfiler().newEntry();
+                    long timestamp = Slimefun.getProfiler().newEntry();
                     item.getBlockTicker().update();
                     Block b = l.getBlock();
                     tickBlock(l, b, item, data, timestamp);
@@ -189,7 +190,7 @@ public class TickerTask implements Runnable {
         } catch (Exception | LinkageError x) {
             reportErrors(l, item, x);
         } finally {
-            SlimefunPlugin.getProfiler().closeEntry(l, item, timestamp);
+            Slimefun.getProfiler().closeEntry(l, item, timestamp);
         }
     }
 
@@ -203,14 +204,14 @@ public class TickerTask implements Runnable {
             new ErrorReport<>(x, l, item);
             bugs.put(position, errors);
         } else if (errors == 4) {
-            SlimefunPlugin.logger().log(Level.SEVERE, "X: {0} Y: {1} Z: {2} ({3})", new Object[] { l.getBlockX(), l.getBlockY(), l.getBlockZ(), item.getId() });
-            SlimefunPlugin.logger().log(Level.SEVERE, "has thrown 4 error messages in the last 4 Ticks, the Block has been terminated.");
-            SlimefunPlugin.logger().log(Level.SEVERE, "Check your /plugins/Slimefun/error-reports/ folder for details.");
-            SlimefunPlugin.logger().log(Level.SEVERE, " ");
+            Slimefun.logger().log(Level.SEVERE, "X: {0} Y: {1} Z: {2} ({3})", new Object[] { l.getBlockX(), l.getBlockY(), l.getBlockZ(), item.getId() });
+            Slimefun.logger().log(Level.SEVERE, "has thrown 4 error messages in the last 4 Ticks, the Block has been terminated.");
+            Slimefun.logger().log(Level.SEVERE, "Check your /plugins/Slimefun/error-reports/ folder for details.");
+            Slimefun.logger().log(Level.SEVERE, " ");
             bugs.remove(position);
 
             BlockStorage.deleteLocationInfoUnsafely(l, true);
-            Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunPlugin.instance(), () -> l.getBlock().setType(Material.AIR));
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Slimefun.instance(), () -> l.getBlock().setType(Material.AIR));
         } else {
             bugs.put(position, errors);
         }

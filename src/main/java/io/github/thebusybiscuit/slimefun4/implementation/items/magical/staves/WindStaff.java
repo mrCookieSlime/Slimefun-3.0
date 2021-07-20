@@ -10,14 +10,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.items.settings.IntRangeSetting;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * The {@link WindStaff} is a powerful staff which launches the {@link Player} forward when right clicked.
@@ -30,7 +30,7 @@ public class WindStaff extends SimpleSlimefunItem<ItemUseHandler> {
     private final ItemSetting<Integer> multiplier = new IntRangeSetting(this, "power", 1, 4, Integer.MAX_VALUE);
 
     @ParametersAreNonnullByDefault
-    public WindStaff(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public WindStaff(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
         addItemSetting(multiplier);
@@ -57,7 +57,7 @@ public class WindStaff extends SimpleSlimefunItem<ItemUseHandler> {
                 p.getWorld().playEffect(p.getLocation(), Effect.SMOKE, 1);
                 p.setFallDistance(0F);
             } else {
-                SlimefunPlugin.getLocalization().sendMessage(p, "messages.hungry", true);
+                Slimefun.getLocalization().sendMessage(p, "messages.hungry", true);
             }
         };
     }

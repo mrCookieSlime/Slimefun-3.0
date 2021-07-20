@@ -16,7 +16,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import io.github.thebusybiscuit.slimefun4.api.events.ResearchUnlockEvent;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
@@ -24,12 +25,12 @@ import be.seeseemelk.mockbukkit.ServerMock;
 class TestResearchUnlocking {
 
     private ServerMock server;
-    private SlimefunPlugin plugin;
+    private Slimefun plugin;
 
     @BeforeEach
     public void load() throws InterruptedException {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
     }
 
     @AfterEach
@@ -55,7 +56,7 @@ class TestResearchUnlocking {
     @DisplayName("Test Unlocking Researches")
     @ValueSource(booleans = { true, false })
     void testUnlock(boolean instant) throws InterruptedException {
-        SlimefunPlugin.getRegistry().setResearchingEnabled(true);
+        Slimefun.getRegistry().setResearchingEnabled(true);
         Player player = server.addPlayer();
         Research research = new Research(new NamespacedKey(plugin, "unlock_me"), 1842, "Unlock me", 500);
 

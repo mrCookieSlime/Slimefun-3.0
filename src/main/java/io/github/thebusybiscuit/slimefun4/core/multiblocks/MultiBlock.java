@@ -16,9 +16,9 @@ import org.bukkit.block.BlockFace;
 
 import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
 import io.github.thebusybiscuit.slimefun4.api.events.MultiBlockInteractEvent;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.core.handlers.MultiBlockInteractionHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * A {@link MultiBlock} represents a structure build in a {@link World}.
@@ -45,7 +45,7 @@ public class MultiBlock {
         SUPPORTED_TAGS.add(Tag.WOODEN_FENCES);
 
         // Add Soul Fire support on 1.16
-        if (SlimefunPlugin.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_16)) {
+        if (Slimefun.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_16)) {
             SUPPORTED_TAGS.add(Tag.FIRE);
         }
     }

@@ -15,8 +15,9 @@ import javax.annotation.Nullable;
 
 import org.bukkit.plugin.Plugin;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
+import io.github.bakedlibs.dough.common.CommonPatterns;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+
 import kong.unirest.GetRequest;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
@@ -56,7 +57,7 @@ public class MetricsService {
      */
     private static final String DOWNLOAD_URL = "https://github.com/Slimefun/" + REPO_NAME + "/releases/download";
 
-    private final SlimefunPlugin plugin;
+    private final Slimefun plugin;
     private final File parentFolder;
     private final File metricsModuleFile;
 
@@ -79,9 +80,9 @@ public class MetricsService {
      * This constructs a new instance of our {@link MetricsService}.
      * 
      * @param plugin
-     *            Our {@link SlimefunPlugin} instance
+     *            Our {@link Slimefun} instance
      */
-    public MetricsService(@Nonnull SlimefunPlugin plugin) {
+    public MetricsService(@Nonnull Slimefun plugin) {
         this.plugin = plugin;
         this.parentFolder = new File(plugin.getDataFolder(), "cache" + File.separatorChar + "modules");
 
@@ -130,7 +131,7 @@ public class MetricsService {
             String version = metricsClass.getPackage().getImplementationVersion();
 
             // This is required to be sync due to bStats.
-            SlimefunPlugin.runSync(() -> {
+            Slimefun.runSync(() -> {
                 try {
                     start.invoke(null);
                     plugin.getLogger().info("Metrics build #" + version + " started.");
@@ -167,7 +168,7 @@ public class MetricsService {
      * @return if there is an update available.
      */
     public boolean checkForUpdate(@Nullable String currentVersion) {
-        if (currentVersion == null || !PatternUtils.NUMERIC.matcher(currentVersion).matches()) {
+        if (currentVersion == null || !CommonPatterns.NUMERIC.matcher(currentVersion).matches()) {
             return false;
         }
 
@@ -276,6 +277,6 @@ public class MetricsService {
      * @return True if the current server has metrics auto-updates enabled.
      */
     public boolean hasAutoUpdates() {
-        return SlimefunPlugin.instance().getConfig().getBoolean("metrics.auto-update");
+        return Slimefun.instance().getConfig().getBoolean("metrics.auto-update");
     }
 }

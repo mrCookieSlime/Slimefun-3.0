@@ -10,7 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 
 /**
  * This variation of {@link ItemSetting} allows you to define a default {@link Tag}.

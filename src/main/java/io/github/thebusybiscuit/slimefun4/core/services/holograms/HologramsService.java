@@ -24,9 +24,9 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import io.github.thebusybiscuit.cscorelib2.blocks.BlockPosition;
+import io.github.bakedlibs.dough.blocks.BlockPosition;
 import io.github.thebusybiscuit.slimefun4.core.attributes.HologramOwner;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This service is responsible for handling holograms.
@@ -264,15 +264,15 @@ public class HologramsService {
                     consumer.accept(hologram);
                 }
             } catch (Exception | LinkageError x) {
-                SlimefunPlugin.logger().log(Level.SEVERE, "Hologram located at {0}", new BlockPosition(loc));
-                SlimefunPlugin.logger().log(Level.SEVERE, "Something went wrong while trying to update this hologram", x);
+                Slimefun.logger().log(Level.SEVERE, "Hologram located at {0}", new BlockPosition(loc));
+                Slimefun.logger().log(Level.SEVERE, "Something went wrong while trying to update this hologram", x);
             }
         };
 
         if (Bukkit.isPrimaryThread()) {
             runnable.run();
         } else {
-            SlimefunPlugin.runSync(runnable);
+            Slimefun.runSync(runnable);
         }
     }
 
@@ -302,8 +302,8 @@ public class HologramsService {
                     return false;
                 }
             } catch (Exception | LinkageError x) {
-                SlimefunPlugin.logger().log(Level.SEVERE, "Hologram located at {0}", new BlockPosition(loc));
-                SlimefunPlugin.logger().log(Level.SEVERE, "Something went wrong while trying to remove this hologram", x);
+                Slimefun.logger().log(Level.SEVERE, "Hologram located at {0}", new BlockPosition(loc));
+                Slimefun.logger().log(Level.SEVERE, "Something went wrong while trying to remove this hologram", x);
                 return false;
             }
         } else {

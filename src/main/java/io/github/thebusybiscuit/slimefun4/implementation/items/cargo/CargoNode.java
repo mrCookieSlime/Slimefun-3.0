@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import org.bukkit.block.Block;
 
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 
 /**
  * This interface marks a {@link SlimefunItem} as a {@link CargoNode}.

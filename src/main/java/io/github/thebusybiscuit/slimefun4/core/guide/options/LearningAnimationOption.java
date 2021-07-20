@@ -10,10 +10,10 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.data.PersistentDataAPI;
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.data.persistent.PersistentDataAPI;
+import io.github.bakedlibs.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * {@link LearningAnimationOption} represents a setting in the Slimefun guide book.
@@ -27,28 +27,28 @@ class LearningAnimationOption implements SlimefunGuideOption<Boolean> {
     @Nonnull
     @Override
     public SlimefunAddon getAddon() {
-        return SlimefunPlugin.instance();
+        return Slimefun.instance();
     }
 
     @Nonnull
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(SlimefunPlugin.instance(), "research_learning_animation");
+        return new NamespacedKey(Slimefun.instance(), "research_learning_animation");
     }
 
     @Nonnull
     @Override
     public Optional<ItemStack> getDisplayItem(@Nonnull Player p, @Nonnull ItemStack guide) {
-        if (SlimefunPlugin.getRegistry().isLearningAnimationDisabled()) {
+        if (Slimefun.getRegistry().isLearningAnimationDisabled()) {
             return Optional.empty();
         } else {
             boolean enabled = getSelectedOption(p, guide).orElse(true);
             String optionState = enabled ? "enabled" : "disabled";
-            List<String> lore = SlimefunPlugin.getLocalization().getMessages(p, "guide.options.learning-animation." + optionState + ".text");
+            List<String> lore = Slimefun.getLocalization().getMessages(p, "guide.options.learning-animation." + optionState + ".text");
             lore.add("");
-            lore.add("&7\u21E8 " + SlimefunPlugin.getLocalization().getMessage(p, "guide.options.learning-animation." + optionState + ".click"));
+            lore.add("&7\u21E8 " + Slimefun.getLocalization().getMessage(p, "guide.options.learning-animation." + optionState + ".click"));
 
-            ItemStack item = new CustomItem(enabled ? Material.MAP : Material.PAPER, lore);
+            ItemStack item = new CustomItemStack(enabled ? Material.MAP : Material.PAPER, lore);
             return Optional.of(item);
         }
     }

@@ -28,8 +28,9 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
+import io.github.bakedlibs.dough.common.CommonPatterns;
 import io.github.thebusybiscuit.slimefun4.api.exceptions.TagMisconfigurationException;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
 
 /**
@@ -71,7 +72,7 @@ public class TagParser implements Keyed {
     void parse(@Nonnull SlimefunTag tag, @Nonnull BiConsumer<Set<Material>, Set<Tag<Material>>> callback) throws TagMisconfigurationException {
         String path = "/tags/" + tag.getKey().getKey() + ".json";
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(SlimefunPlugin.class.getResourceAsStream(path), StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Slimefun.class.getResourceAsStream(path), StandardCharsets.UTF_8))) {
             parse(reader.lines().collect(Collectors.joining("")), callback);
         } catch (IOException x) {
             throw new TagMisconfigurationException(key, x);
@@ -145,7 +146,7 @@ public class TagParser implements Keyed {
             }
         } else if (PatternUtils.MINECRAFT_TAG.matcher(value).matches()) {
             // Get the actual Key portion and match it to item and block tags.
-            String keyValue = PatternUtils.COLON.split(value)[1];
+            String keyValue = CommonPatterns.COLON.split(value)[1];
             NamespacedKey namespacedKey = NamespacedKey.minecraft(keyValue);
             Tag<Material> itemsTag = Bukkit.getTag(Tag.REGISTRY_ITEMS, namespacedKey, Material.class);
             Tag<Material> blocksTag = Bukkit.getTag(Tag.REGISTRY_BLOCKS, namespacedKey, Material.class);
@@ -162,7 +163,7 @@ public class TagParser implements Keyed {
             }
         } else if (PatternUtils.SLIMEFUN_TAG.matcher(value).matches()) {
             // Get a SlimefunTag enum value for the given key
-            String keyValue = PatternUtils.COLON.split(value)[1].toUpperCase(Locale.ROOT);
+            String keyValue = CommonPatterns.COLON.split(value)[1].toUpperCase(Locale.ROOT);
             SlimefunTag tag = SlimefunTag.getTag(keyValue);
 
             if (tag != null) {

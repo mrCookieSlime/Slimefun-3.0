@@ -18,7 +18,7 @@ import org.bukkit.potion.PotionEffect;
 import io.github.thebusybiscuit.slimefun4.api.events.CoolerFeedPlayerEvent;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerBackpack;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.backpacks.Cooler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.food.Juice;
 
@@ -37,10 +37,10 @@ import io.github.thebusybiscuit.slimefun4.implementation.items.food.Juice;
  */
 public class CoolerListener implements Listener {
 
-    private final SlimefunPlugin plugin;
+    private final Slimefun plugin;
     private final Cooler cooler;
 
-    public CoolerListener(@Nonnull SlimefunPlugin plugin, @Nonnull Cooler cooler) {
+    public CoolerListener(@Nonnull Slimefun plugin, @Nonnull Cooler cooler) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
         this.plugin = plugin;
@@ -94,7 +94,7 @@ public class CoolerListener implements Listener {
     private void takeJuiceFromCooler(@Nonnull Player p, @Nonnull ItemStack cooler) {
         PlayerProfile.getBackpack(cooler, backpack -> {
             if (backpack != null) {
-                SlimefunPlugin.runSync(() -> consumeJuice(p, cooler, backpack));
+                Slimefun.runSync(() -> consumeJuice(p, cooler, backpack));
             }
         });
     }

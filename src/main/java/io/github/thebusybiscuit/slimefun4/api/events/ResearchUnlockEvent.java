@@ -9,7 +9,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import io.github.thebusybiscuit.slimefun4.core.researching.Research;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 
 /**
  * This {@link Event} is called whenever a {@link Player} unlocks a {@link Research}.

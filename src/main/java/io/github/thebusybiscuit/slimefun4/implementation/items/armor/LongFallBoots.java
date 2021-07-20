@@ -5,9 +5,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 
 /**
  * {@link LongFallBoots} are a pair of boots which negate fall damage.
@@ -21,7 +21,7 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 public class LongFallBoots extends SlimefunArmorPiece {
 
     @ParametersAreNonnullByDefault
-    public LongFallBoots(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, PotionEffect[] effects) {
+    public LongFallBoots(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, PotionEffect[] effects) {
         super(category, item, recipeType, recipe, effects);
     }
 

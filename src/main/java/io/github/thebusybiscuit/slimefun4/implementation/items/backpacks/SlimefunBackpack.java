@@ -7,16 +7,16 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerBackpack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.github.thebusybiscuit.slimefun4.implementation.listeners.BackpackListener;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * This class represents a {@link SlimefunItem} that is considered a Backpack.
@@ -33,7 +33,7 @@ public class SlimefunBackpack extends SimpleSlimefunItem<ItemUseHandler> {
     private final int size;
 
     @ParametersAreNonnullByDefault
-    public SlimefunBackpack(int size, Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public SlimefunBackpack(int size, ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
         this.size = size;
@@ -74,7 +74,7 @@ public class SlimefunBackpack extends SimpleSlimefunItem<ItemUseHandler> {
         return e -> {
             e.cancel();
 
-            BackpackListener listener = SlimefunPlugin.getBackpackListener();
+            BackpackListener listener = Slimefun.getBackpackListener();
 
             if (listener != null) {
                 listener.openBackpack(e.getPlayer(), e.getItem(), this);

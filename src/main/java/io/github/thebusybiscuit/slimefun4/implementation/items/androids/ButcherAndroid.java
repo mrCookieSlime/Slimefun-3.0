@@ -11,16 +11,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 public class ButcherAndroid extends ProgrammableAndroid {
 
     private static final String METADATA_KEY = "android_killer";
 
-    public ButcherAndroid(Category category, int tier, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public ButcherAndroid(ItemGroup category, int tier, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, tier, item, recipeType, recipe);
     }
 
@@ -56,10 +56,10 @@ public class ButcherAndroid extends ProgrammableAndroid {
 
             if (attack) {
                 if (n.hasMetadata(METADATA_KEY)) {
-                    n.removeMetadata(METADATA_KEY, SlimefunPlugin.instance());
+                    n.removeMetadata(METADATA_KEY, Slimefun.instance());
                 }
 
-                n.setMetadata(METADATA_KEY, new FixedMetadataValue(SlimefunPlugin.instance(), new AndroidInstance(this, b)));
+                n.setMetadata(METADATA_KEY, new FixedMetadataValue(Slimefun.instance(), new AndroidInstance(this, b)));
 
                 ((LivingEntity) n).damage(damage);
                 break;

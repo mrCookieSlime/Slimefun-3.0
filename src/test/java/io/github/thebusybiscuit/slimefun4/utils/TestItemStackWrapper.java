@@ -13,8 +13,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ItemStackWrapper;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
@@ -24,7 +24,7 @@ class TestItemStackWrapper {
     @BeforeAll
     public static void load() {
         MockBukkit.mock();
-        MockBukkit.load(SlimefunPlugin.class);
+        MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll
@@ -35,7 +35,7 @@ class TestItemStackWrapper {
     @Test
     @DisplayName("Test if an ItemStackWrappers can be compared properly (With ItemMeta)")
     void testEqualityWithItemMeta() {
-        ItemStack item = new CustomItem(Material.LAVA_BUCKET, "&4SuperHot.exe", "", "&6Hello");
+        ItemStack item = new CustomItemStack(Material.LAVA_BUCKET, "&4SuperHot.exe", "", "&6Hello");
         ItemStackWrapper wrapper = ItemStackWrapper.wrap(item);
 
         Assertions.assertEquals(item.getType(), wrapper.getType());
@@ -59,7 +59,7 @@ class TestItemStackWrapper {
     @Test
     @DisplayName("Test if an ItemStackWrapper is immutable")
     void testImmutability() {
-        ItemStack item = new CustomItem(Material.LAVA_BUCKET, "&4SuperHot.exe", "", "&6Hello");
+        ItemStack item = new CustomItemStack(Material.LAVA_BUCKET, "&4SuperHot.exe", "", "&6Hello");
         ItemStackWrapper wrapper = ItemStackWrapper.wrap(item);
 
         Assertions.assertThrows(UnsupportedOperationException.class, () -> wrapper.setType(Material.BEDROCK));
@@ -76,7 +76,7 @@ class TestItemStackWrapper {
     void testWrapperChecking() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> ItemStackWrapper.wrap(null));
         Assertions.assertThrows(IllegalArgumentException.class, () -> ItemStackWrapper.forceWrap(null));
-        ItemStack item = new CustomItem(Material.IRON_INGOT, "A Name", "line 1", "line2");
+        ItemStack item = new CustomItemStack(Material.IRON_INGOT, "A Name", "line 1", "line2");
         ItemStackWrapper wrapper = ItemStackWrapper.wrap(item);
         ItemStackWrapper secondWrap = ItemStackWrapper.wrap(wrapper);
         // We want to check that the wrapper returned is of reference equality
@@ -90,7 +90,7 @@ class TestItemStackWrapper {
     @Test
     @DisplayName("Test wrapping an ItemStack Array")
     void testWrapArray() {
-        ItemStack[] items = { new ItemStack(Material.DIAMOND), null, new ItemStack(Material.EMERALD), new CustomItem(Material.REDSTONE, "&4Firey thing", "with lore :o") };
+        ItemStack[] items = { new ItemStack(Material.DIAMOND), null, new ItemStack(Material.EMERALD), new CustomItemStack(Material.REDSTONE, "&4Firey thing", "with lore :o") };
         ItemStackWrapper[] wrappers = ItemStackWrapper.wrapArray(items);
 
         Assertions.assertEquals(items.length, wrappers.length);
@@ -111,7 +111,7 @@ class TestItemStackWrapper {
     @Test
     @DisplayName("Test wrapping an ItemStack List")
     void testWrapList() {
-        List<ItemStack> items = Arrays.asList(new ItemStack(Material.DIAMOND), null, new ItemStack(Material.EMERALD), new CustomItem(Material.REDSTONE, "&4Firey thing", "with lore :o"));
+        List<ItemStack> items = Arrays.asList(new ItemStack(Material.DIAMOND), null, new ItemStack(Material.EMERALD), new CustomItemStack(Material.REDSTONE, "&4Firey thing", "with lore :o"));
         List<? extends ItemStack> wrappers = ItemStackWrapper.wrapList(items);
 
         Assertions.assertEquals(items.size(), wrappers.size());

@@ -7,12 +7,12 @@ import org.bukkit.entity.Cow;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.EntityInteractHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * The {@link SteelThruster} is a pretty basic crafting component.
@@ -25,7 +25,7 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 public class SteelThruster extends SlimefunItem {
 
     @ParametersAreNonnullByDefault
-    public SteelThruster(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public SteelThruster(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
         addItemHandler(onRightClickBlock(), onRightClickEntity());

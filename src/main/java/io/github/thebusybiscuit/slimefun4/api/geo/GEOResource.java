@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.slimefun4.api.events.GEOResourceGenerationEvent;
 import io.github.thebusybiscuit.slimefun4.core.services.localization.Language;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.geo.GEOMiner;
 import io.github.thebusybiscuit.slimefun4.implementation.items.geo.GEOScanner;
 
@@ -83,7 +83,7 @@ public interface GEOResource extends Keyed {
      * Registers this GEO Resource
      */
     default void register() {
-        SlimefunPlugin.getGPSNetwork().getResourceManager().register(this);
+        Slimefun.getGPSNetwork().getResourceManager().register(this);
     }
 
     /**
@@ -96,7 +96,7 @@ public interface GEOResource extends Keyed {
      */
     @Nonnull
     default String getName(@Nonnull Player p) {
-        String name = SlimefunPlugin.getLocalization().getResourceString(p, "resources." + getKey().getNamespace() + "." + getKey().getKey());
+        String name = Slimefun.getLocalization().getResourceString(p, "resources." + getKey().getNamespace() + "." + getKey().getKey());
         return name == null ? getName() : name;
     }
 

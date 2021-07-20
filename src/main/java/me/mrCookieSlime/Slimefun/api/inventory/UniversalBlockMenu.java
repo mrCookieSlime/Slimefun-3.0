@@ -2,7 +2,7 @@ package me.mrCookieSlime.Slimefun.api.inventory;
 
 import java.io.File;
 
-import io.github.thebusybiscuit.cscorelib2.config.Config;
+import io.github.bakedlibs.dough.config.Config;
 
 // This class will be deprecated, relocated and rewritten in a future version.
 public class UniversalBlockMenu extends DirtyChestMenu {

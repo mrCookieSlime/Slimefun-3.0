@@ -25,13 +25,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.multiblocks.GrindStone;
 import io.github.thebusybiscuit.slimefun4.implementation.items.multiblocks.MakeshiftSmeltery;
 import io.github.thebusybiscuit.slimefun4.implementation.items.multiblocks.OreCrusher;
 import io.github.thebusybiscuit.slimefun4.implementation.items.multiblocks.Smeltery;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineRecipe;
 
@@ -40,33 +41,33 @@ public final class PostSetup {
     private PostSetup() {}
 
     public static void setupWiki() {
-        SlimefunPlugin.logger().log(Level.INFO, "Loading Wiki pages...");
+        Slimefun.logger().log(Level.INFO, "Loading Wiki pages...");
         JsonParser parser = new JsonParser();
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(SlimefunPlugin.class.getResourceAsStream("/wiki.json"), StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Slimefun.class.getResourceAsStream("/wiki.json"), StandardCharsets.UTF_8))) {
             JsonElement element = parser.parse(reader.lines().collect(Collectors.joining("")));
             JsonObject json = element.getAsJsonObject();
 
             for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
-                SlimefunItem item = SlimefunItem.getByID(entry.getKey());
+                SlimefunItem item = SlimefunItem.getById(entry.getKey());
 
                 if (item != null) {
                     item.addOfficialWikipage(entry.getValue().getAsString());
                 }
             }
         } catch (IOException e) {
-            SlimefunPlugin.logger().log(Level.SEVERE, "Failed to load wiki.json file", e);
+            Slimefun.logger().log(Level.SEVERE, "Failed to load wiki.json file", e);
         }
     }
 
     public static void loadItems() {
-        Iterator<SlimefunItem> iterator = SlimefunPlugin.getRegistry().getEnabledSlimefunItems().iterator();
+        Iterator<SlimefunItem> iterator = Slimefun.getRegistry().getEnabledSlimefunItems().iterator();
 
         while (iterator.hasNext()) {
             SlimefunItem item = iterator.next();
 
             if (item == null) {
-                SlimefunPlugin.logger().log(Level.WARNING, "Removed bugged Item ('NULL?')");
+                Slimefun.logger().log(Level.WARNING, "Removed bugged Item ('NULL?')");
                 iterator.remove();
             } else {
                 try {
@@ -82,19 +83,19 @@ public final class PostSetup {
 
         CommandSender sender = Bukkit.getConsoleSender();
 
-        int total = SlimefunPlugin.getRegistry().getEnabledSlimefunItems().size();
+        int total = Slimefun.getRegistry().getEnabledSlimefunItems().size();
         int slimefunOnly = countNonAddonItems();
 
         sender.sendMessage("");
-        sender.sendMessage(ChatColor.GREEN + "######################### - Slimefun v" + SlimefunPlugin.getVersion() + " - #########################");
+        sender.sendMessage(ChatColor.GREEN + "######################### - Slimefun v" + Slimefun.getVersion() + " - #########################");
         sender.sendMessage("");
-        sender.sendMessage(ChatColor.GREEN + "Successfully loaded " + total + " Items and " + SlimefunPlugin.getRegistry().getResearches().size() + " Researches");
-        sender.sendMessage(ChatColor.GREEN + "( " + slimefunOnly + " Items from Slimefun, " + (total - slimefunOnly) + " Items from " + SlimefunPlugin.getInstalledAddons().size() + " Addons )");
+        sender.sendMessage(ChatColor.GREEN + "Successfully loaded " + total + " Items and " + Slimefun.getRegistry().getResearches().size() + " Researches");
+        sender.sendMessage(ChatColor.GREEN + "( " + slimefunOnly + " Items from Slimefun, " + (total - slimefunOnly) + " Items from " + Slimefun.getInstalledAddons().size() + " Addons )");
         sender.sendMessage("");
         sender.sendMessage(ChatColor.GREEN + "Slimefun is an Open-Source project that is kept alive by a large community.");
         sender.sendMessage(ChatColor.GREEN + "Consider helping us maintain this project by contributing on GitHub!");
 
-        if (SlimefunPlugin.getUpdater().getBranch().isOfficial()) {
+        if (Slimefun.getUpdater().getBranch().isOfficial()) {
             sender.sendMessage("");
             sender.sendMessage(ChatColor.GREEN + " - Source Code:  https://github.com/Slimefun/Slimefun4");
             sender.sendMessage(ChatColor.GREEN + " - Wiki:         https://github.com/Slimefun/Slimefun4/wiki");
@@ -107,9 +108,9 @@ public final class PostSetup {
 
         sender.sendMessage("");
 
-        SlimefunPlugin.getItemCfg().save();
-        SlimefunPlugin.getResearchCfg().save();
-        SlimefunPlugin.getRegistry().setAutoLoadingMode(true);
+        Slimefun.getItemCfg().save();
+        Slimefun.getResearchCfg().save();
+        Slimefun.getRegistry().setAutoLoadingMode(true);
     }
 
     /**
@@ -120,8 +121,8 @@ public final class PostSetup {
      */
     private static int countNonAddonItems() {
         // @formatter:off
-        return (int) SlimefunPlugin.getRegistry().getEnabledSlimefunItems().stream()
-                        .filter(item -> item.getAddon() instanceof SlimefunPlugin)
+        return (int) Slimefun.getRegistry().getEnabledSlimefunItems().stream()
+                        .filter(item -> item.getAddon() instanceof Slimefun)
                         .count();
         // @formatter:on
     }
@@ -166,7 +167,7 @@ public final class PostSetup {
         // Favour 8 Cobblestone -> 1 Sand Recipe over 1 Cobblestone -> 1 Gravel Recipe
         Stream<ItemStack[]> stream = grinderRecipes.stream();
 
-        if (!SlimefunPlugin.getCfg().getBoolean("options.legacy-ore-grinder")) {
+        if (!Slimefun.getCfg().getBoolean("options.legacy-ore-grinder")) {
             stream = stream.sorted((a, b) -> Integer.compare(b[0].getAmount(), a[0].getAmount()));
         }
 
@@ -192,7 +193,7 @@ public final class PostSetup {
                 }
             }
 
-            for (SlimefunItem item : SlimefunPlugin.getRegistry().getEnabledSlimefunItems()) {
+            for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
                 if (item instanceof AContainer) {
                     AContainer machine = (AContainer) item;
 
@@ -232,7 +233,7 @@ public final class PostSetup {
     }
 
     private static void registerMachineRecipe(String machine, int seconds, ItemStack[] input, ItemStack[] output) {
-        for (SlimefunItem item : SlimefunPlugin.getRegistry().getEnabledSlimefunItems()) {
+        for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
             if (item instanceof AContainer) {
                 AContainer container = (AContainer) item;
 

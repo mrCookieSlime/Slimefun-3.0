@@ -1,7 +1,8 @@
 package io.github.thebusybiscuit.slimefun4.core.guide;
 
-import io.github.thebusybiscuit.cscorelib2.inventory.ChestMenu;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+
+import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 
 /**
  * This enum holds the different designs a {@link SlimefunGuide} can have.

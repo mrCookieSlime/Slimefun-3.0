@@ -14,10 +14,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
+
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 
 // This class will be deprecated, relocated and rewritten in a future version.
@@ -47,7 +48,7 @@ public abstract class BlockMenuPreset extends ChestMenu {
         this.universal = universal;
         init();
 
-        SlimefunPlugin.getRegistry().getMenuPresets().put(id, this);
+        Slimefun.getRegistry().getMenuPresets().put(id, this);
     }
 
     private void checkIfLocked() {
@@ -250,7 +251,7 @@ public abstract class BlockMenuPreset extends ChestMenu {
     public void newInstance(@Nonnull BlockMenu menu, @Nonnull Location l) {
         Validate.notNull(l, "Cannot create a new BlockMenu without a Location");
 
-        SlimefunPlugin.runSync(() -> {
+        Slimefun.runSync(() -> {
             locked = true;
 
             try {
@@ -281,20 +282,20 @@ public abstract class BlockMenuPreset extends ChestMenu {
 
     @Nonnull
     public SlimefunItem getSlimefunItem() {
-        return SlimefunItem.getByID(id);
+        return SlimefunItem.getById(id);
     }
 
     @Nullable
     public static BlockMenuPreset getPreset(@Nullable String id) {
-        return id == null ? null : SlimefunPlugin.getRegistry().getMenuPresets().get(id);
+        return id == null ? null : Slimefun.getRegistry().getMenuPresets().get(id);
     }
 
     public static boolean isInventory(String id) {
-        return SlimefunPlugin.getRegistry().getMenuPresets().containsKey(id);
+        return Slimefun.getRegistry().getMenuPresets().containsKey(id);
     }
 
     public static boolean isUniversalInventory(String id) {
-        BlockMenuPreset preset = SlimefunPlugin.getRegistry().getMenuPresets().get(id);
+        BlockMenuPreset preset = Slimefun.getRegistry().getMenuPresets().get(id);
         return preset != null && preset.isUniversal();
     }
 

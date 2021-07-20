@@ -11,10 +11,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.inventory.ItemUtils;
+import io.github.bakedlibs.dough.items.ItemUtils;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.attributes.ProtectionType;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * The {@link Listener} for Hazmat Suit's {@link Bee} sting protection.
@@ -25,7 +25,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
  */
 public class BeeListener implements Listener {
 
-    public BeeListener(@Nonnull SlimefunPlugin plugin) {
+    public BeeListener(@Nonnull Slimefun plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 

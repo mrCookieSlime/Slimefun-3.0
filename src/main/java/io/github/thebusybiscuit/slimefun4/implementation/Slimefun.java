@@ -29,13 +29,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.scheduler.BukkitTask;
 
-import io.github.thebusybiscuit.cscorelib2.config.Config;
-import io.github.thebusybiscuit.cscorelib2.protection.ProtectionManager;
+import io.github.bakedlibs.dough.config.Config;
+import io.github.bakedlibs.dough.protection.ProtectionManager;
 import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.exceptions.TagMisconfigurationException;
 import io.github.thebusybiscuit.slimefun4.api.geo.GEOResource;
 import io.github.thebusybiscuit.slimefun4.api.gps.GPSNetwork;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.SlimefunRegistry;
 import io.github.thebusybiscuit.slimefun4.core.commands.SlimefunCommand;
@@ -120,7 +121,6 @@ import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 import io.papermc.lib.PaperLib;
 
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.MenuListener;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.UniversalBlockMenu;
 
@@ -130,13 +130,13 @@ import me.mrCookieSlime.Slimefun.api.inventory.UniversalBlockMenu;
  *
  * @author TheBusyBiscuit
  */
-public final class SlimefunPlugin extends JavaPlugin implements SlimefunAddon {
+public final class Slimefun extends JavaPlugin implements SlimefunAddon {
 
     /**
-     * Our static instance of {@link SlimefunPlugin}.
+     * Our static instance of {@link Slimefun}.
      * Make sure to clean this up in {@link #onDisable()}!
      */
-    private static SlimefunPlugin instance;
+    private static Slimefun instance;
 
     /**
      * Keep track of which {@link MinecraftVersion} we are on.
@@ -187,9 +187,9 @@ public final class SlimefunPlugin extends JavaPlugin implements SlimefunAddon {
     private final SlimefunBowListener bowListener = new SlimefunBowListener();
 
     /**
-     * Our default constructor for {@link SlimefunPlugin}.
+     * Our default constructor for {@link Slimefun}.
      */
-    public SlimefunPlugin() {
+    public Slimefun() {
         super();
     }
 
@@ -206,7 +206,7 @@ public final class SlimefunPlugin extends JavaPlugin implements SlimefunAddon {
      *            A {@link File} for this {@link Plugin}
      */
     @ParametersAreNonnullByDefault
-    public SlimefunPlugin(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+    public Slimefun(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
 
         // This is only invoked during a Unit Test
@@ -439,15 +439,15 @@ public final class SlimefunPlugin extends JavaPlugin implements SlimefunAddon {
     }
 
     /**
-     * This is a private internal method to set the de-facto instance of {@link SlimefunPlugin}.
+     * This is a private internal method to set the de-facto instance of {@link Slimefun}.
      * Having this as a seperate method ensures the seperation between static and non-static fields.
      * It also makes sonarcloud happy :)
      * Only ever use it during {@link #onEnable()} or {@link #onDisable()}.
      * 
      * @param pluginInstance
-     *            Our instance of {@link SlimefunPlugin} or null
+     *            Our instance of {@link Slimefun} or null
      */
-    private static void setInstance(@Nullable SlimefunPlugin pluginInstance) {
+    private static void setInstance(@Nullable Slimefun pluginInstance) {
         instance = pluginInstance;
     }
 
@@ -539,7 +539,7 @@ public final class SlimefunPlugin extends JavaPlugin implements SlimefunAddon {
      * 
      * @return A {@link Collection} of all compatible minecraft versions as strings
      */
-    static final @Nonnull Collection<String> getSupportedVersions() {
+    static @Nonnull Collection<String> getSupportedVersions() {
         List<String> list = new ArrayList<>();
 
         for (MinecraftVersion version : MinecraftVersion.values()) {
@@ -684,12 +684,12 @@ public final class SlimefunPlugin extends JavaPlugin implements SlimefunAddon {
     }
 
     /**
-     * This returns the global instance of {@link SlimefunPlugin}.
+     * This returns the global instance of {@link Slimefun}.
      * This may return null if the {@link Plugin} was disabled.
      *
-     * @return The {@link SlimefunPlugin} instance
+     * @return The {@link Slimefun} instance
      */
-    public static @Nullable SlimefunPlugin instance() {
+    public static @Nullable Slimefun instance() {
         return instance;
     }
 
@@ -966,7 +966,7 @@ public final class SlimefunPlugin extends JavaPlugin implements SlimefunAddon {
         validateInstance();
         String pluginName = instance.getName();
 
-        // @formatter:off
+        // @formatter:off - Collect any Plugin that (soft)-depends on Slimefun
         return Arrays.stream(instance.getServer().getPluginManager().getPlugins()).filter(plugin -> {
             PluginDescriptionFile description = plugin.getDescription();
             return description.getDepend().contains(pluginName) || description.getSoftDepend().contains(pluginName);
@@ -992,6 +992,7 @@ public final class SlimefunPlugin extends JavaPlugin implements SlimefunAddon {
         Validate.notNull(runnable, "Cannot run null");
         Validate.isTrue(delay >= 0, "The delay cannot be negative");
 
+        // Run the task instantly within a Unit Test
         if (getMinecraftVersion() == MinecraftVersion.UNIT_TEST) {
             runnable.run();
             return null;
@@ -1019,6 +1020,7 @@ public final class SlimefunPlugin extends JavaPlugin implements SlimefunAddon {
     public static @Nullable BukkitTask runSync(@Nonnull Runnable runnable) {
         Validate.notNull(runnable, "Cannot run null");
 
+        // Run the task instantly within a Unit Test
         if (getMinecraftVersion() == MinecraftVersion.UNIT_TEST) {
             runnable.run();
             return null;

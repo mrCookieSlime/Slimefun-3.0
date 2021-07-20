@@ -8,25 +8,25 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 import io.github.thebusybiscuit.slimefun4.test.presets.SlimefunItemTest;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 class TestMeatJerky implements SlimefunItemTest<MeatJerky> {
 
     private static ServerMock server;
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
 
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll
@@ -35,7 +35,7 @@ class TestMeatJerky implements SlimefunItemTest<MeatJerky> {
     }
 
     @Override
-    public MeatJerky registerSlimefunItem(SlimefunPlugin plugin, String id) {
+    public MeatJerky registerSlimefunItem(Slimefun plugin, String id) {
         SlimefunItemStack item = new SlimefunItemStack(id, Material.COOKED_BEEF, "&5Test Jerky");
         MeatJerky meat = new MeatJerky(TestUtilities.getCategory(plugin, "test_jerky"), item, RecipeType.NULL, new ItemStack[9]);
         meat.register(plugin);

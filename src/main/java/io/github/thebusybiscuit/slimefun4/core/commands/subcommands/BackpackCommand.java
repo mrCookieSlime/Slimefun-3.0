@@ -8,13 +8,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.bakedlibs.dough.common.CommonPatterns;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.commands.SlimefunCommand;
 import io.github.thebusybiscuit.slimefun4.core.commands.SubCommand;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.backpacks.RestoredBackpack;
-import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
 
 /**
  * This command that allows for backpack retrieval in the event they are lost.
@@ -29,7 +29,7 @@ import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
 class BackpackCommand extends SubCommand {
 
     @ParametersAreNonnullByDefault
-    BackpackCommand(SlimefunPlugin plugin, SlimefunCommand cmd) {
+    BackpackCommand(Slimefun plugin, SlimefunCommand cmd) {
         super(plugin, cmd, "backpack", false);
     }
 
@@ -43,12 +43,12 @@ class BackpackCommand extends SubCommand {
         if (sender instanceof Player) {
             if (sender.hasPermission("slimefun.command.backpack")) {
                 if (args.length != 3) {
-                    SlimefunPlugin.getLocalization().sendMessage(sender, "messages.usage", true, msg -> msg.replace("%usage%", "/sf backpack <Player> <ID>"));
+                    Slimefun.getLocalization().sendMessage(sender, "messages.usage", true, msg -> msg.replace("%usage%", "/sf backpack <Player> <ID>"));
                     return;
                 }
 
-                if (!PatternUtils.NUMERIC.matcher(args[2]).matches()) {
-                    SlimefunPlugin.getLocalization().sendMessage(sender, "commands.backpack.invalid-id");
+                if (!CommonPatterns.NUMERIC.matcher(args[2]).matches()) {
+                    Slimefun.getLocalization().sendMessage(sender, "commands.backpack.invalid-id");
                     return;
                 }
 
@@ -56,7 +56,7 @@ class BackpackCommand extends SubCommand {
                 OfflinePlayer backpackOwner = Bukkit.getOfflinePlayer(args[1]);
 
                 if (!(backpackOwner instanceof Player) && !backpackOwner.hasPlayedBefore()) {
-                    SlimefunPlugin.getLocalization().sendMessage(sender, "commands.backpack.player-never-joined");
+                    Slimefun.getLocalization().sendMessage(sender, "commands.backpack.player-never-joined");
                     return;
                 }
 
@@ -64,22 +64,22 @@ class BackpackCommand extends SubCommand {
 
                 PlayerProfile.get(backpackOwner, profile -> {
                     if (!profile.getBackpack(id).isPresent()) {
-                        SlimefunPlugin.getLocalization().sendMessage(sender, "commands.backpack.backpack-does-not-exist");
+                        Slimefun.getLocalization().sendMessage(sender, "commands.backpack.backpack-does-not-exist");
                         return;
                     }
 
-                    SlimefunPlugin.runSync(() -> {
+                    Slimefun.runSync(() -> {
                         ItemStack item = SlimefunItems.RESTORED_BACKPACK.clone();
-                        SlimefunPlugin.getBackpackListener().setBackpackId(backpackOwner, item, 2, id);
+                        Slimefun.getBackpackListener().setBackpackId(backpackOwner, item, 2, id);
                         ((Player) sender).getInventory().addItem(item);
-                        SlimefunPlugin.getLocalization().sendMessage(sender, "commands.backpack.restored-backpack-given");
+                        Slimefun.getLocalization().sendMessage(sender, "commands.backpack.restored-backpack-given");
                     });
                 });
             } else {
-                SlimefunPlugin.getLocalization().sendMessage(sender, "messages.no-permission", true);
+                Slimefun.getLocalization().sendMessage(sender, "messages.no-permission", true);
             }
         } else {
-            SlimefunPlugin.getLocalization().sendMessage(sender, "messages.only-players", true);
+            Slimefun.getLocalization().sendMessage(sender, "messages.only-players", true);
         }
     }
 }

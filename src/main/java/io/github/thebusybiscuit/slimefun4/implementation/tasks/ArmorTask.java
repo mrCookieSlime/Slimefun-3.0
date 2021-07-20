@@ -18,17 +18,17 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import io.github.thebusybiscuit.slimefun4.api.items.HashedArmorpiece;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.attributes.ProtectionType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.Radioactive;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.armor.SlimefunArmorPiece;
 import io.github.thebusybiscuit.slimefun4.implementation.items.electric.gadgets.SolarHelmet;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ItemStackWrapper;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * The {@link ArmorTask} is responsible for handling {@link PotionEffect PotionEffects} for
@@ -113,7 +113,7 @@ public class ArmorTask implements Runnable {
             }
 
             if (item != null && armorpiece.getItem().isPresent()) {
-                SlimefunPlugin.runSync(() -> {
+                Slimefun.runSync(() -> {
                     SlimefunArmorPiece slimefunArmor = armorpiece.getItem().get();
 
                     if (slimefunArmor.canUse(p, true)) {
@@ -130,7 +130,7 @@ public class ArmorTask implements Runnable {
     private void checkForSolarHelmet(@Nonnull Player p) {
         ItemStack helmet = p.getInventory().getHelmet();
 
-        if (SlimefunPlugin.getRegistry().isBackwardsCompatible() && !SlimefunUtils.isItemSimilar(helmet, SlimefunItems.SOLAR_HELMET, true, false)) {
+        if (Slimefun.getRegistry().isBackwardsCompatible() && !SlimefunUtils.isItemSimilar(helmet, SlimefunItems.SOLAR_HELMET, true, false)) {
             // Performance saver for slow backwards-compatible versions of Slimefun
             return;
         }
@@ -168,7 +168,7 @@ public class ArmorTask implements Runnable {
             return false;
         }
 
-        Set<SlimefunItem> radioactiveItems = SlimefunPlugin.getRegistry().getRadioactiveItems();
+        Set<SlimefunItem> radioactiveItems = Slimefun.getRegistry().getRadioactiveItems();
         ItemStack itemStack = item;
 
         if (!(item instanceof SlimefunItemStack) && radioactiveItems.size() > 1) {
@@ -179,9 +179,9 @@ public class ArmorTask implements Runnable {
         for (SlimefunItem radioactiveItem : radioactiveItems) {
             if (radioactiveItem.isItem(itemStack) && !radioactiveItem.isDisabledIn(p.getWorld())) {
                 // If the item is enabled in the world, then make radioactivity do its job
-                SlimefunPlugin.getLocalization().sendMessage(p, "messages.radiation");
+                Slimefun.getLocalization().sendMessage(p, "messages.radiation");
 
-                SlimefunPlugin.runSync(() -> {
+                Slimefun.runSync(() -> {
                     p.addPotionEffects(radiationEffects);
 
                     // if radioactive fire is enabled, set them on fire

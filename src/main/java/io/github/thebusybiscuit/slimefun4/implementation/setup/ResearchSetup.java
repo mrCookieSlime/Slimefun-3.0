@@ -6,10 +6,10 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.slimefun4.core.researching.Research;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This static setup class is used to register all default implementations of
@@ -293,7 +293,7 @@ public final class ResearchSetup {
 
     @ParametersAreNonnullByDefault
     private static void register(String key, int id, String name, int defaultCost, ItemStack... items) {
-        Research research = new Research(new NamespacedKey(SlimefunPlugin.instance(), key), id, name, defaultCost);
+        Research research = new Research(new NamespacedKey(Slimefun.instance(), key), id, name, defaultCost);
 
         for (ItemStack item : items) {
             SlimefunItem sfItem = SlimefunItem.getByItem(item);

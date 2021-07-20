@@ -8,7 +8,6 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import io.github.thebusybiscuit.slimefun4.utils.WorldUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -26,14 +25,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.DamageableItem;
 import io.github.thebusybiscuit.slimefun4.core.attributes.NotPlaceable;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.utils.WorldUtils;
 
 /**
  * The {@link SeismicAxe} is an interesting weapon. It spawns ghostly block entities in a straight line
@@ -53,7 +53,7 @@ public class SeismicAxe extends SimpleSlimefunItem<ItemUseHandler> implements No
     private static final int RANGE = 10;
 
     @ParametersAreNonnullByDefault
-    public SeismicAxe(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public SeismicAxe(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
     }
 
@@ -104,7 +104,7 @@ public class SeismicAxe extends SimpleSlimefunItem<ItemUseHandler> implements No
         FallingBlock block = ground.getWorld().spawnFallingBlock(loc, ground.getBlockData());
         block.setDropItem(false);
         block.setVelocity(new Vector(0, 0.4 + index * 0.01, 0));
-        block.setMetadata("seismic_axe", new FixedMetadataValue(SlimefunPlugin.instance(), "fake_block"));
+        block.setMetadata("seismic_axe", new FixedMetadataValue(Slimefun.instance(), "fake_block"));
     }
 
     @ParametersAreNonnullByDefault

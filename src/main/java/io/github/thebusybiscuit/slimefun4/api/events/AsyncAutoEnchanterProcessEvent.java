@@ -1,7 +1,6 @@
 package io.github.thebusybiscuit.slimefun4.api.events;
 
-import io.github.thebusybiscuit.slimefun4.implementation.items.electric.machines.enchanting.AutoEnchanter;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
+import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.event.Cancellable;
@@ -9,7 +8,9 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
+import io.github.thebusybiscuit.slimefun4.implementation.items.electric.machines.enchanting.AutoEnchanter;
+
+import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 
 /**
  * An {@link Event} that is called whenever an {@link AutoEnchanter} is

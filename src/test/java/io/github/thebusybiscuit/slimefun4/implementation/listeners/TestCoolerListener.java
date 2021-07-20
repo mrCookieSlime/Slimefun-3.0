@@ -14,20 +14,20 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.api.events.CoolerFeedPlayerEvent;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerBackpack;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.backpacks.Cooler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.food.Juice;
 import io.github.thebusybiscuit.slimefun4.test.TestUtilities;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 class TestCoolerListener {
 
@@ -40,9 +40,9 @@ class TestCoolerListener {
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
-        SlimefunPlugin plugin = MockBukkit.load(SlimefunPlugin.class);
+        Slimefun plugin = MockBukkit.load(Slimefun.class);
 
-        Category category = new Category(new NamespacedKey(plugin, "cooler_test"), new CustomItem(Material.SNOWBALL, "Mr. Freeze"));
+        ItemGroup category = new ItemGroup(new NamespacedKey(plugin, "cooler_test"), new CustomItemStack(Material.SNOWBALL, "Mr. Freeze"));
         SlimefunItemStack item = new SlimefunItemStack("TEST_COOLER", Material.SNOWBALL, "&6Test Cooler", "", "&7ID: <ID>");
         cooler = new Cooler(18, category, item, RecipeType.NULL, new ItemStack[9]);
         cooler.register(plugin);

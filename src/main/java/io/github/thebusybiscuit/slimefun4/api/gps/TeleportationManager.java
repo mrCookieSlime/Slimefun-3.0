@@ -19,15 +19,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import io.github.thebusybiscuit.cscorelib2.chat.ChatColors;
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
+import io.github.bakedlibs.dough.common.ChatColors;
+import io.github.bakedlibs.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.teleporter.Teleporter;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
 import io.github.thebusybiscuit.slimefun4.utils.NumberUtils;
 import io.papermc.lib.PaperLib;
+
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 
 /**
@@ -63,7 +64,7 @@ public final class TeleportationManager {
      */
     @ParametersAreNonnullByDefault
     public void openTeleporterGUI(Player p, UUID ownerUUID, Block b) {
-        openTeleporterGUI(p, ownerUUID, b, SlimefunPlugin.getGPSNetwork().getNetworkComplexity(ownerUUID));
+        openTeleporterGUI(p, ownerUUID, b, Slimefun.getGPSNetwork().getNetworkComplexity(ownerUUID));
     }
 
     @ParametersAreNonnullByDefault
@@ -79,7 +80,7 @@ public final class TeleportationManager {
                     menu.addItem(slot, ChestMenuUtils.getBackground(), ChestMenuUtils.getEmptyClickHandler());
                 }
 
-                menu.addItem(4, new CustomItem(HeadTexture.GLOBE_OVERWORLD.getAsItemStack(), ChatColor.YELLOW + SlimefunPlugin.getLocalization().getMessage(p, "machines.TELEPORTER.gui.title")));
+                menu.addItem(4, new CustomItemStack(HeadTexture.GLOBE_OVERWORLD.getAsItemStack(), ChatColor.YELLOW + Slimefun.getLocalization().getMessage(p, "machines.TELEPORTER.gui.title")));
                 menu.addMenuClickHandler(4, ChestMenuUtils.getEmptyClickHandler());
 
                 Location source = new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 2D, b.getZ() + 0.5D);
@@ -97,17 +98,17 @@ public final class TeleportationManager {
                     // @formatter:off
                     String[] lore = {
                         "",
-                        "&8\u21E8 &7" + SlimefunPlugin.getLocalization().getResourceString(p, "tooltips.world") + ": &f" + l.getWorld().getName(),
+                        "&8\u21E8 &7" + Slimefun.getLocalization().getResourceString(p, "tooltips.world") + ": &f" + l.getWorld().getName(),
                         "&8\u21E8 &7X: &f" + l.getX(),
                         "&8\u21E8 &7Y: &f" + l.getY(),
                         "&8\u21E8 &7Z: &f" + l.getZ(),
-                        "&8\u21E8 &7" + SlimefunPlugin.getLocalization().getMessage(p, "machines.TELEPORTER.gui.time") + ": &f" + time + "s",
+                        "&8\u21E8 &7" + Slimefun.getLocalization().getMessage(p, "machines.TELEPORTER.gui.time") + ": &f" + time + "s",
                         "",
-                        "&8\u21E8 &c" + SlimefunPlugin.getLocalization().getMessage(p, "machines.TELEPORTER.gui.tooltip")
+                        "&8\u21E8 &c" + Slimefun.getLocalization().getMessage(p, "machines.TELEPORTER.gui.tooltip")
                     };
                     // @formatter:on
 
-                    menu.addItem(slot, new CustomItem(waypoint.getIcon(), waypoint.getName().replace("player:death ", ""), lore));
+                    menu.addItem(slot, new CustomItemStack(waypoint.getIcon(), waypoint.getName().replace("player:death ", ""), lore));
                     menu.addMenuClickHandler(slot, (pl, s, item, action) -> {
                         pl.closeInventory();
                         teleport(pl.getUniqueId(), complexity, source, l, false);
@@ -117,7 +118,7 @@ public final class TeleportationManager {
                     index++;
                 }
 
-                SlimefunPlugin.runSync(() -> menu.open(p));
+                Slimefun.runSync(() -> menu.open(p));
             });
         }
     }
@@ -182,7 +183,7 @@ public final class TeleportationManager {
         teleporterUsers.remove(uuid);
 
         if (p != null) {
-            p.sendTitle(ChatColors.color(SlimefunPlugin.getLocalization().getMessage(p, "machines.TELEPORTER.cancelled")), ChatColors.color("&c&k40&f&c%"), 20, 60, 20);
+            p.sendTitle(ChatColors.color(Slimefun.getLocalization().getMessage(p, "machines.TELEPORTER.cancelled")), ChatColors.color("&c&k40&f&c%"), 20, 60, 20);
         }
     }
 
@@ -192,15 +193,15 @@ public final class TeleportationManager {
 
         if (isValid(p, source)) {
             if (progress > 99) {
-                p.sendTitle(ChatColors.color(SlimefunPlugin.getLocalization().getMessage(p, "machines.TELEPORTER.teleported")), ChatColors.color("&b100%"), 20, 60, 20);
+                p.sendTitle(ChatColors.color(Slimefun.getLocalization().getMessage(p, "machines.TELEPORTER.teleported")), ChatColors.color("&b100%"), 20, 60, 20);
                 PaperLib.teleportAsync(p, destination).thenAccept(success -> onTeleport(p, destination, success, resistance));
             } else {
-                p.sendTitle(ChatColors.color(SlimefunPlugin.getLocalization().getMessage(p, "machines.TELEPORTER.teleporting")), ChatColors.color("&b" + progress + "%"), 0, 60, 0);
+                p.sendTitle(ChatColors.color(Slimefun.getLocalization().getMessage(p, "machines.TELEPORTER.teleporting")), ChatColors.color("&b" + progress + "%"), 0, 60, 0);
 
                 source.getWorld().spawnParticle(Particle.PORTAL, source, progress * 2, 0.2F, 0.8F, 0.2F);
                 source.getWorld().playSound(source, Sound.BLOCK_BEACON_AMBIENT, 1F, 0.6F);
 
-                SlimefunPlugin.runSync(() -> updateProgress(uuid, speed, progress + speed, source, destination, resistance), 10L);
+                Slimefun.runSync(() -> updateProgress(uuid, speed, progress + speed, source, destination, resistance), 10L);
             }
         } else {
             cancel(uuid, p);
@@ -213,12 +214,12 @@ public final class TeleportationManager {
          * This needs to run on the main Thread so we force it, as
          * the async teleportation might happen on a separate Thread.
          */
-        SlimefunPlugin.runSync(() -> {
+        Slimefun.runSync(() -> {
             if (success) {
                 // Apply Resistance Effect, if enabled
                 if (resistance) {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 600, 20));
-                    SlimefunPlugin.getLocalization().sendMessage(p, "machines.TELEPORTER.invulnerability");
+                    Slimefun.getLocalization().sendMessage(p, "machines.TELEPORTER.invulnerability");
                 }
 
                 // Spawn some particles for aesthetic reasons.

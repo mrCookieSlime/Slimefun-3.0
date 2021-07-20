@@ -16,17 +16,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.cscorelib2.inventory.ItemUtils;
-import io.github.thebusybiscuit.cscorelib2.scheduling.TaskQueue;
+import io.github.bakedlibs.dough.items.ItemUtils;
+import io.github.bakedlibs.dough.scheduling.TaskQueue;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.OutputChest;
 import io.github.thebusybiscuit.slimefun4.implementation.items.tools.GoldPan;
 import io.github.thebusybiscuit.slimefun4.implementation.items.tools.NetherGoldPan;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * The {@link AutomatedPanningMachine} is a {@link MultiBlockMachine} that
@@ -44,7 +44,7 @@ public class AutomatedPanningMachine extends MultiBlockMachine {
     private final NetherGoldPan netherGoldPan = SlimefunItems.NETHER_GOLD_PAN.getItem(NetherGoldPan.class);
 
     @ParametersAreNonnullByDefault
-    public AutomatedPanningMachine(Category category, SlimefunItemStack item) {
+    public AutomatedPanningMachine(ItemGroup category, SlimefunItemStack item) {
         super(category, item, new ItemStack[] { null, null, null, null, new ItemStack(Material.OAK_TRAPDOOR), null, null, new ItemStack(Material.CAULDRON), null }, BlockFace.SELF);
     }
 
@@ -90,9 +90,9 @@ public class AutomatedPanningMachine extends MultiBlockMachine {
                 }
             });
 
-            queue.execute(SlimefunPlugin.instance());
+            queue.execute(Slimefun.instance());
         } else {
-            SlimefunPlugin.getLocalization().sendMessage(p, "machines.wrong-item", true);
+            Slimefun.getLocalization().sendMessage(p, "machines.wrong-item", true);
         }
     }
 

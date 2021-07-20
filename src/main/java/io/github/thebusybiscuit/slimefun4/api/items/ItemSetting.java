@@ -8,9 +8,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.apache.commons.lang.Validate;
 
-import io.github.thebusybiscuit.cscorelib2.config.Config;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.bakedlibs.dough.config.Config;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This class represents a Setting for a {@link SlimefunItem} that can be modified via
@@ -87,8 +86,7 @@ public class ItemSetting<T> {
      * 
      * @return The key under which this setting is stored (relative to the {@link SlimefunItem})
      */
-    @Nonnull
-    public String getKey() {
+    public @Nonnull String getKey() {
         return key;
     }
 
@@ -97,8 +95,7 @@ public class ItemSetting<T> {
      * 
      * @return The associated {@link SlimefunItem}
      */
-    @Nonnull
-    protected SlimefunItem getItem() {
+    protected @Nonnull SlimefunItem getItem() {
         return item;
     }
 
@@ -107,8 +104,7 @@ public class ItemSetting<T> {
      * 
      * @return The current value
      */
-    @Nonnull
-    public T getValue() {
+    public @Nonnull T getValue() {
         if (value != null) {
             return value;
         } else {
@@ -122,8 +118,7 @@ public class ItemSetting<T> {
      * 
      * @return The default value
      */
-    @Nonnull
-    public T getDefaultValue() {
+    public @Nonnull T getDefaultValue() {
         return defaultValue;
     }
 
@@ -145,8 +140,7 @@ public class ItemSetting<T> {
      * 
      * @return An error message which is displayed when this {@link ItemSetting} is misconfigured.
      */
-    @Nonnull
-    protected String getErrorMessage() {
+    protected @Nonnull String getErrorMessage() {
         return "Only '" + defaultValue.getClass().getSimpleName() + "' values are allowed!";
     }
 
@@ -159,8 +153,8 @@ public class ItemSetting<T> {
     public void reload() {
         Validate.notNull(item, "Cannot apply settings for a non-existing SlimefunItem");
 
-        SlimefunPlugin.getItemCfg().setDefaultValue(item.getId() + '.' + getKey(), getDefaultValue());
-        Object configuredValue = SlimefunPlugin.getItemCfg().getValue(item.getId() + '.' + getKey());
+        Slimefun.getItemCfg().setDefaultValue(item.getId() + '.' + getKey(), getDefaultValue());
+        Object configuredValue = Slimefun.getItemCfg().getValue(item.getId() + '.' + getKey());
 
         if (defaultValue.getClass().isInstance(configuredValue) || (configuredValue instanceof List && defaultValue instanceof List)) {
             // We can do an unsafe cast here, we did an isInstance(...) check before!

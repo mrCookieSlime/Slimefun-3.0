@@ -18,19 +18,19 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.github.thebusybiscuit.cscorelib2.item.CustomItem;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 
 class TestAbstractRecipe {
 
-    private static SlimefunPlugin plugin;
+    private static Slimefun plugin;
 
     @BeforeAll
     public static void load() {
         MockBukkit.mock();
-        plugin = MockBukkit.load(SlimefunPlugin.class);
+        plugin = MockBukkit.load(Slimefun.class);
     }
 
     @AfterAll
@@ -42,7 +42,7 @@ class TestAbstractRecipe {
     @DisplayName("Test ShapelessRecipe as AbstractRecipe")
     void testShapelessRecipe() {
         NamespacedKey key = new NamespacedKey(plugin, "shapeless_recipe_test");
-        ItemStack result = new CustomItem(Material.DIAMOND, "&6Special Diamond :o");
+        ItemStack result = new CustomItemStack(Material.DIAMOND, "&6Special Diamond :o");
 
         ShapelessRecipe recipe = new ShapelessRecipe(key, result);
         recipe.addIngredient(new MaterialChoice(Material.IRON_NUGGET, Material.GOLD_NUGGET));
@@ -59,7 +59,7 @@ class TestAbstractRecipe {
     @DisplayName("Test ShapedRecipe as AbstractRecipe")
     void testShapedRecipe() {
         NamespacedKey key = new NamespacedKey(plugin, "shaped_recipe_test");
-        ItemStack result = new CustomItem(Material.EMERALD, "&6Special Emerald :o");
+        ItemStack result = new CustomItemStack(Material.EMERALD, "&6Special Emerald :o");
 
         ShapedRecipe recipe = new ShapedRecipe(key, result);
         recipe.shape("OXO", " X ", "OXO");
@@ -80,7 +80,7 @@ class TestAbstractRecipe {
     @DisplayName("Test invalid recipes as AbstractRecipe")
     void testInvalidRecipes() {
         NamespacedKey key = new NamespacedKey(plugin, "furnace_recipe_test");
-        ItemStack result = new CustomItem(Material.COAL, "&6Special Coal :o");
+        ItemStack result = new CustomItemStack(Material.COAL, "&6Special Coal :o");
         FurnaceRecipe recipe = new FurnaceRecipe(key, result, Material.COAL, 1, 1);
 
         Assertions.assertNull(AbstractRecipe.of(recipe));
