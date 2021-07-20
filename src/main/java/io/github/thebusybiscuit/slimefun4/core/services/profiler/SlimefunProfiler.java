@@ -49,10 +49,10 @@ public class SlimefunProfiler {
     private static final int MAX_TICK_DURATION = 100;
 
     /**
-     * Our internal instance of {@link SlimefunThreadFactory}, it provides the naming
+     * Our internal instance of {@link ProfilerThreadFactory}, it provides the naming
      * convention for our {@link Thread} pool and also the count of this pool.
      */
-    private final SlimefunThreadFactory threadFactory = new SlimefunThreadFactory(2);
+    private final ProfilerThreadFactory threadFactory = new ProfilerThreadFactory(2);
 
     /**
      * This is our {@link Thread} pool to evaluate timings data.

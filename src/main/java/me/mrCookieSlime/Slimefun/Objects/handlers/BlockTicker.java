@@ -13,11 +13,25 @@ public abstract class BlockTicker implements ItemHandler {
 
     protected boolean unique = true;
 
-    public void update() {
+    /**
+     * This will call {@link #uniqueTick()} only if the iteration
+     * has just started.
+     * <strong>Do not call this manually.</strong>
+     */
+    public final void start() {
         if (unique) {
             uniqueTick();
             unique = false;
         }
+    }
+
+    /**
+     * This method resets the 'unique' flag for {@link BlockTicker#uniqueTick()}, so
+     * it is ready for the next iteration.
+     * <strong>Do not call this manually.</strong>
+     */
+    public final void reset() {
+        unique = true;
     }
 
     @Override
@@ -63,13 +77,6 @@ public abstract class BlockTicker implements ItemHandler {
     @Override
     public Class<? extends ItemHandler> getIdentifier() {
         return BlockTicker.class;
-    }
-
-    /**
-     * This method resets the 'unique' flag for {@link BlockTicker#uniqueTick()}
-     */
-    public void startNewTick() {
-        unique = true;
     }
 
 }

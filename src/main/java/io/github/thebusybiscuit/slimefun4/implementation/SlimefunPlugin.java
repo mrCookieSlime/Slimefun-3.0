@@ -391,7 +391,6 @@ public final class SlimefunPlugin extends JavaPlugin implements SlimefunAddon {
         // Finishes all started movements/removals of block data
         try {
             ticker.halt();
-            ticker.run();
         } catch (Exception x) {
             getLogger().log(Level.SEVERE, x, () -> "Something went wrong while disabling the ticker task for Slimefun v" + getDescription().getVersion());
         }

@@ -402,6 +402,7 @@ public class SlimefunItem implements Placeable {
         return addon;
     }
 
+    @Nullable
     public BlockTicker getBlockTicker() {
         return blockTicker;
     }

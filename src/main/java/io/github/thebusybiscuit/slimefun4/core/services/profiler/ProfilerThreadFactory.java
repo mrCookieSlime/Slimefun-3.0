@@ -14,17 +14,17 @@ import javax.annotation.Nonnull;
  * @see SlimefunProfiler
  *
  */
-final class SlimefunThreadFactory implements ThreadFactory {
+final class ProfilerThreadFactory implements ThreadFactory {
 
     private final int threadCount;
 
     /**
-     * This constructs a new {@link SlimefunThreadFactory} with the given {@link Thread} count.
+     * This constructs a new {@link ProfilerThreadFactory} with the given {@link Thread} count.
      * 
      * @param threadCount
      *            The amount of {@link Thread Threads} to provide to the {@link SlimefunProfiler}
      */
-    SlimefunThreadFactory(int threadCount) {
+    ProfilerThreadFactory(int threadCount) {
         this.threadCount = threadCount;
     }
 
