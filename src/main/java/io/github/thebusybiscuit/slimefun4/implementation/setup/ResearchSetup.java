@@ -289,6 +289,7 @@ public final class ResearchSetup {
         register("medium_tier_auto_enchanting", 277, "Fast Automatic Enchanting and Disenchanting", 48, SlimefunItems.AUTO_ENCHANTER_2, SlimefunItems.AUTO_DISENCHANTER_2);
         register("portable_teleporter", 278, "Teleportation from Anywhere", 42, SlimefunItems.PORTABLE_TELEPORTER);
         register("trident", 279, "Trident", 20, new ItemStack(Material.TRIDENT));
+        register("rainbow_armor", 280, "Wear the Rainbow", 22, SlimefunItems.RAINBOW_HELMET, SlimefunItems.RAINBOW_CHESTPLATE, SlimefunItems.RAINBOW_LEGGINGS, SlimefunItems.RAINBOW_BOOTS);
     }
 
     @ParametersAreNonnullByDefault

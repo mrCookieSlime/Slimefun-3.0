@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
@@ -17,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import io.github.thebusybiscuit.slimefun4.api.items.HashedArmorpiece;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.attributes.ProtectionType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.Radioactive;
@@ -38,7 +36,7 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
  * @author TheBusyBiscuit
  *
  */
-public class ArmorTask implements Runnable {
+public class ArmorTask extends AbstractArmorTask {
 
     private final Set<PotionEffect> radiationEffects;
     private final boolean radioactiveFire;
@@ -74,57 +72,26 @@ public class ArmorTask implements Runnable {
     }
 
     @Override
-    public void run() {
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            if (!p.isValid() || p.isDead()) {
-                continue;
-            }
-
-            PlayerProfile.get(p, profile -> {
-                ItemStack[] armor = p.getInventory().getArmorContents();
-                HashedArmorpiece[] cachedArmor = profile.getArmor();
-
-                handleSlimefunArmor(p, armor, cachedArmor);
-
-                if (hasSunlight(p)) {
-                    checkForSolarHelmet(p);
-                }
-
-                checkForRadiation(p, profile);
-            });
+    @ParametersAreNonnullByDefault
+    protected void handleArmorPiece(Player p, SlimefunArmorPiece sfArmorPiece, ItemStack armorPiece) {
+        for (PotionEffect effect : sfArmorPiece.getPotionEffects()) {
+            p.removePotionEffect(effect.getType());
+            p.addPotionEffect(effect);
         }
     }
 
+    @Override
     @ParametersAreNonnullByDefault
-    private void handleSlimefunArmor(Player p, ItemStack[] armor, HashedArmorpiece[] cachedArmor) {
-        for (int slot = 0; slot < 4; slot++) {
-            ItemStack item = armor[slot];
-            HashedArmorpiece armorpiece = cachedArmor[slot];
-
-            if (armorpiece.hasDiverged(item)) {
-                SlimefunItem sfItem = SlimefunItem.getByItem(item);
-
-                if (!(sfItem instanceof SlimefunArmorPiece)) {
-                    // If it isn't actually Armor, then we won't care about it.
-                    sfItem = null;
-                }
-
-                armorpiece.update(item, sfItem);
-            }
-
-            if (item != null && armorpiece.getItem().isPresent()) {
-                SlimefunPlugin.runSync(() -> {
-                    SlimefunArmorPiece slimefunArmor = armorpiece.getItem().get();
-
-                    if (slimefunArmor.canUse(p, true)) {
-                        for (PotionEffect effect : slimefunArmor.getPotionEffects()) {
-                            p.removePotionEffect(effect.getType());
-                            p.addPotionEffect(effect);
-                        }
-                    }
-                });
-            }
+    protected void handlePlayer(Player p, PlayerProfile profile) {
+        if (hasSunlight(p)) {
+            checkForSolarHelmet(p);
         }
+
+        checkForRadiation(p, profile);
+    }
+
+    @Override
+    protected void handleTick() {
     }
 
     private void checkForSolarHelmet(@Nonnull Player p) {
