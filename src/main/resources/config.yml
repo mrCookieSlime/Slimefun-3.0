@@ -8,6 +8,7 @@ options:
   backwards-compatibility: false
   chat-prefix: '&a&lSlimefun 4&7> '
   armor-update-interval: 10
+  radiation-update-interval: 1
   enable-armor-effects: true
   auto-save-delay-in-minutes: 10
   legacy-ore-washer: false

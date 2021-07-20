@@ -2,6 +2,7 @@ package io.github.thebusybiscuit.slimefun4.implementation.items.medical;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import io.github.thebusybiscuit.slimefun4.utils.RadiationUtils;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemConsumptionHandler;
@@ -21,6 +22,7 @@ public class Medicine extends MedicalSupply<ItemConsumptionHandler> {
         return (e, p, item) -> {
             p.setFireTicks(0);
             clearNegativeEffects(p);
+            RadiationUtils.clearExposure(p);
             heal(p);
         };
     }
